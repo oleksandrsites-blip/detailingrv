@@ -2,6 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
+<script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>detailingrv — детейлінг авто в Рівному</title>
 <meta name="description" content="Детейлінг авто в Рівному під стан саме вашої машини: полірування, кераміка, хімчистка салону, PPF-плівка. Оцінка авто за фото.">
@@ -272,67 +273,93 @@
   }
 
   /* ================= БЛОК 3: комплекси ================= */
-  .pk-wrap{position:relative}
-  .pk-grid{position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .pk{position:relative;z-index:1;display:flex;flex-direction:column;padding:64px 44px 52px;outline:none}
-  .pk + .pk{border-left:1px solid var(--line)}
-  .spot{
-    position:absolute;top:0;bottom:0;left:0;width:calc(100% / 3);pointer-events:none;z-index:0;
-    transition:transform .6s cubic-bezier(.6,0,.2,1);
+  .pk-cards{display:grid;grid-template-columns:1fr 1.06fr 1fr;gap:20px;align-items:stretch;padding-top:24px}
+  .pkc{
+    position:relative;display:flex;flex-direction:column;border-radius:28px;overflow:hidden;
+    background:linear-gradient(180deg, rgba(22,38,80,.55), rgba(8,15,34,.9) 60%);
+    border:1px solid rgba(238,243,255,.08);
+    transition:border-color .35s;
   }
-  .spot::before{ /* LED-смуга зверху */
-    content:"";position:absolute;left:12%;right:12%;top:-1px;height:2px;border-radius:2px;
-    background:var(--led);box-shadow:0 0 12px var(--led),0 0 36px rgba(160,190,255,.9);
+  .pkc:hover{border-color:rgba(238,243,255,.22)}
+  .pkc.featured{
+    margin-top:-24px;
+    border-color:rgba(238,243,255,.32);
+    box-shadow:0 40px 90px -40px rgba(120,150,255,.65);
   }
-  .spot::after{ /* світло, що падає вниз */
-    content:"";position:absolute;inset:0;
-    background:
-      radial-gradient(60% 45% at 50% 0%, rgba(160,190,255,.22), transparent 70%),
-      linear-gradient(180deg, rgba(40,64,130,.35), rgba(12,26,58,.0) 75%);
+  .pkc.featured::before{
+    content:"";position:absolute;z-index:2;left:14%;right:14%;top:0;height:2px;border-radius:2px;
+    background:var(--led);box-shadow:0 0 12px var(--led),0 0 40px rgba(160,190,255,.9);
   }
-  .pk-name{font-size:clamp(30px,2.8vw,42px);font-weight:800;letter-spacing:-.04em;line-height:1;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .pk-badge{font-size:13px;font-weight:500;letter-spacing:0;padding:6px 12px;border-radius:30px;background:var(--led);color:var(--lacquer)}
-  .pk-goal{font-size:19px;font-weight:500;letter-spacing:-.015em;line-height:1.3;margin-bottom:12px;max-width:24ch}
-  .pk-desc{font-size:15px;line-height:1.6;color:var(--pearl);font-weight:300;margin-bottom:32px;max-width:36ch}
-  .pk ul{list-style:none;display:grid;gap:13px;margin-bottom:44px}
-  .pk li{position:relative;padding-left:24px;font-size:15px;line-height:1.45;color:#C9D2EA;font-weight:300}
-  .pk li::before{
-    content:"";position:absolute;left:0;top:.42em;width:9px;height:10px;
-    background:rgba(238,243,255,.5);
+  .pkc-swatch{position:relative;height:210px;background:linear-gradient(160deg,#1B2D5C,#050B1A)}
+  .pkc.featured .pkc-swatch{height:234px}
+  .pkc-swatch canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .pkc-swatch::after{content:"";position:absolute;inset:auto 0 0 0;height:70px;background:linear-gradient(0deg, rgba(8,15,34,.9), transparent)}
+  .pkc-cap{position:absolute;z-index:1;left:32px;bottom:16px;font-size:13px;color:var(--pearl);font-weight:300}
+  .pkc-body{display:flex;flex-direction:column;flex:1;padding:26px 32px 32px}
+  .pkc-name{font-size:clamp(30px,2.6vw,40px);font-weight:800;letter-spacing:-.04em;line-height:1;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .pk-badge{font-size:12px;font-weight:500;letter-spacing:0;padding:6px 11px;border-radius:30px;background:var(--led);color:var(--lacquer)}
+  .pkc-goal{font-size:17px;font-weight:400;line-height:1.4;color:#C9D2EA;margin-bottom:26px;max-width:28ch}
+  .pkc ul{list-style:none;display:grid;gap:12px;margin-bottom:30px;padding-top:24px;border-top:1px solid var(--line)}
+  .pkc li{position:relative;padding-left:22px;font-size:15px;line-height:1.45;color:var(--pearl);font-weight:300}
+  .pkc li::before{
+    content:"";position:absolute;left:0;top:.42em;width:9px;height:10px;background:rgba(238,243,255,.45);
     clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
-    transition:background .4s, filter .4s;
   }
-  .pk.lit li::before{background:var(--led);filter:drop-shadow(0 0 4px rgba(200,215,255,.9))}
-  .pk-gift{margin-top:auto;font-size:14px;line-height:1.5;color:var(--led);margin-bottom:18px;display:flex;gap:10px;align-items:flex-start}
+  .pkc.featured li::before{background:var(--led)}
+  .pk-gift{margin-top:auto;font-size:14px;line-height:1.5;color:var(--led);margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
   .pk-gift svg{flex:none;margin-top:2px}
-  .pk-price{margin-top:auto;display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums}
-  .pk-price small{font-size:15px;color:var(--pearl);font-weight:300}
-  .pk-price strong{font-size:clamp(32px,2.8vw,44px);font-weight:700;letter-spacing:-.035em}
-  .pk-note{font-size:14px;color:var(--pearl);font-weight:300;margin-top:20px}
-
-  .pk-help{
-    margin-top:88px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;
+  .pkc-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .pk-gift + .pkc-foot{margin-top:0}
+  .pk-price{display:flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .pk-price small{font-size:14px;color:var(--pearl);font-weight:300}
+  .pk-price strong{font-size:clamp(28px,2.3vw,36px);font-weight:700;letter-spacing:-.035em}
+  .pkc-btn{
+    font-size:15px;font-weight:500;padding:13px 20px;border-radius:14px;white-space:nowrap;
+    border:1px solid rgba(238,243,255,.25);transition:background .25s,border-color .25s,color .25s;
   }
-  .pk-help p{font-size:clamp(20px,1.8vw,26px);letter-spacing:-.02em;line-height:1.35;max-width:34ch}
-  .pk-help p span{color:var(--pearl);font-weight:300}
-  .pk-help .actions{opacity:1;animation:none}
+  .pkc-btn:hover{border-color:var(--led);background:rgba(238,243,255,.08)}
+  .pkc.featured .pkc-btn{background:var(--led);color:var(--lacquer);border-color:var(--led);font-weight:700}
+  .pkc.featured .pkc-btn:hover{box-shadow:0 0 0 5px rgba(238,243,255,.14)}
+  .pk-note{margin-top:40px;font-size:15px;line-height:1.6;color:var(--pearl);font-weight:300;max-width:80ch}
+  .pk-note a{color:var(--led);border-bottom:1px solid rgba(238,243,255,.4)}
+  .pk-note a:hover{border-color:var(--led)}
 
+  @media (max-width:1100px) and (min-width:901px){
+    .pkc-body{padding:24px 24px 28px}
+    .pkc-cap{left:24px}
+  }
   @media (max-width:900px){
-    .pk-grid{grid-template-columns:1fr;border:0}
-    .spot{display:none}
-    .pk{padding:40px 0 44px}
-    .pk + .pk{border-left:0;border-top:1px solid var(--line)}
-    .pk.featured{
-      padding:40px 24px 44px;margin:0 -8px;border-radius:24px;border-top:0;
-      background:radial-gradient(80% 50% at 50% 0%, rgba(160,190,255,.2), transparent 70%),linear-gradient(180deg, rgba(40,64,130,.45), rgba(12,26,58,.2));
-      box-shadow:inset 0 2px 0 rgba(238,243,255,.9), 0 -8px 30px -12px rgba(160,190,255,.6);
+    .pk-cards{
+      display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;
+      margin:0 calc(var(--pad) * -1);padding:34px var(--pad) 10px;scrollbar-width:none;
     }
-    .pk.featured + .pk{border-top:0}
-    .pk ul{margin-bottom:32px}
-    .pk-help{grid-template-columns:1fr;margin-top:56px;gap:28px}
-    .pk-help .cta{width:100%;align-items:center;text-align:center}
+    .pk-cards::-webkit-scrollbar{display:none}
+    .pkc{flex:0 0 min(84%,360px);scroll-snap-align:center}
+    .pkc.featured{margin-top:-14px}
+    .pkc-swatch,.pkc.featured .pkc-swatch{height:170px}
+    .pkc-body{padding:22px 22px 26px}
+    .pkc-cap{left:22px}
+    .pk-note{margin-top:24px;font-size:14px}
   }
-  @media (prefers-reduced-motion:reduce){ .spot{transition:none} }
+
+  /* ================= м'які анімації появи ================= */
+  .js [data-reveal]{
+    opacity:0;transform:translateY(26px);
+    transition:opacity .9s cubic-bezier(.2,.7,.2,1) var(--d,0s), transform .9s cubic-bezier(.2,.7,.2,1) var(--d,0s);
+  }
+  .js [data-reveal].in{opacity:1;transform:none}
+  .js [data-reveal-group] > *{
+    opacity:0;transform:translateY(34px);
+    transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1);
+  }
+  .js [data-reveal-group] > :nth-child(2){transition-delay:.12s}
+  .js [data-reveal-group] > :nth-child(3){transition-delay:.24s}
+  .js [data-reveal-group].in > *{opacity:1;transform:none}
+  .js h2[data-reveal]{transform:translateY(40px);filter:blur(6px);transition-property:opacity,transform,filter}
+  .js h2[data-reveal].in{filter:none}
+  @media (prefers-reduced-motion:reduce){
+    .js [data-reveal],.js [data-reveal-group] > *{opacity:1;transform:none;filter:none;transition:none}
+  }
 </style>
 </head>
 <body>
@@ -383,14 +410,14 @@
 
 <section class="sec" id="problems" aria-labelledby="problems-h">
   <div class="sec-head">
-    <h2 id="problems-h">Не знаєте, яка послуга потрібна? <span class="thin">Почніть із проблеми</span></h2>
-    <p class="sec-lead">Розбиратися в детейлінгу не обов'язково. Оберіть, що вас не влаштовує, і подивіться, як ми це вирішуємо. Точний обсяг робіт визначимо після оцінки авто.</p>
+    <h2 id="problems-h" data-reveal>Не знаєте, яка послуга потрібна? <span class="thin">Почніть із проблеми</span></h2>
+    <p class="sec-lead" data-reveal style="--d:.12s">Розбиратися в детейлінгу не обов'язково. Оберіть, що вас не влаштовує, і подивіться, як ми це вирішуємо. Точний обсяг робіт визначимо після оцінки авто.</p>
   </div>
   <div class="pr">
     <span class="led" id="led" aria-hidden="true"></span>
     <ul class="pr-list" id="prList">
       <li>
-        <button class="prob" id="prob-0" aria-expanded="true" aria-controls="sol-0">
+        <button class="prob" id="prob-0" data-reveal style="--d:0.00s" aria-expanded="true" aria-controls="sol-0">
           <span class="prob-t">Кузов втратив блиск</span>
           <span class="prob-d"><span>Фарба потьмяніла, на сонці видно подряпини, потертості й сліди від мийок.</span></span>
         </button>
@@ -405,7 +432,7 @@
         </div>
       </li>
       <li>
-        <button class="prob" id="prob-1" aria-expanded="false" aria-controls="sol-1">
+        <button class="prob" id="prob-1" data-reveal style="--d:0.08s" aria-expanded="false" aria-controls="sol-1">
           <span class="prob-t">У салоні плями або запах</span>
           <span class="prob-d"><span>Сидіння, текстиль, пластик чи стеля брудні, а звичайного прибирання вже не вистачає.</span></span>
         </button>
@@ -420,7 +447,7 @@
         </div>
       </li>
       <li>
-        <button class="prob" id="prob-2" aria-expanded="false" aria-controls="sol-2">
+        <button class="prob" id="prob-2" data-reveal style="--d:0.16s" aria-expanded="false" aria-controls="sol-2">
           <span class="prob-t">Хочете захистити кузов</span>
           <span class="prob-d"><span>Нове або щойно відполіроване авто, і не хочеться, щоб з'являлися сколи та подряпини.</span></span>
         </button>
@@ -435,7 +462,7 @@
         </div>
       </li>
       <li>
-        <button class="prob" id="prob-3" aria-expanded="false" aria-controls="sol-3">
+        <button class="prob" id="prob-3" data-reveal style="--d:0.24s" aria-expanded="false" aria-controls="sol-3">
           <span class="prob-t">Фари стали мутними</span>
           <span class="prob-d"><span>Помутніння й жовтизна: світить гірше, а перед авто виглядає старшим, ніж є.</span></span>
         </button>
@@ -450,7 +477,7 @@
         </div>
       </li>
       <li>
-        <button class="prob" id="prob-4" aria-expanded="false" aria-controls="sol-4">
+        <button class="prob" id="prob-4" data-reveal style="--d:0.32s" aria-expanded="false" aria-controls="sol-4">
           <span class="prob-t">Потрібне комплексне оновлення</span>
           <span class="prob-d"><span>Є питання і до кузова, і до салону, і до скла та дрібних деталей.</span></span>
         </button>
@@ -465,7 +492,7 @@
         </div>
       </li>
       <li>
-        <button class="prob" id="prob-5" aria-expanded="false" aria-controls="sol-5">
+        <button class="prob" id="prob-5" data-reveal style="--d:0.40s" aria-expanded="false" aria-controls="sol-5">
           <span class="prob-t">Готуєте авто до продажу</span>
           <span class="prob-d"><span>Хочеться, щоб авто виглядало доглянутим на фото й на огляді, але без зайвих витрат.</span></span>
         </button>
@@ -485,59 +512,64 @@
 
 <section class="sec" id="packages" aria-labelledby="packages-h">
   <div class="sec-head">
-    <h2 id="packages-h">Готові комплекси <span class="thin">під типові задачі</span></h2>
-    <p class="sec-lead">Не потрібно збирати послуги самостійно. Оберіть комплекс під свою задачу, а точний обсяг робіт і вартість визначимо після оцінки авто.</p>
+    <h2 id="packages-h" data-reveal>Готові комплекси <span class="thin">під типові задачі</span></h2>
+    <p class="sec-lead" data-reveal style="--d:.12s">Не потрібно збирати послуги самостійно. Оберіть комплекс під свою задачу, а точний обсяг робіт і вартість визначимо після оцінки авто.</p>
   </div>
-  <div class="pk-wrap">
-    <div class="pk-grid" id="pkGrid">
-      <span class="spot" id="spot" aria-hidden="true"></span>
-      <article class="pk" tabindex="0" aria-labelledby="pk-basic">
-        <h3 class="pk-name" id="pk-basic">Basic</h3>
-        <p class="pk-goal">Щоб підтримувати авто чистим</p>
-        <p class="pk-desc">Для авто, якому не потрібне глибоке відновлення, але хочеться навести лад зовні й усередині.</p>
-        <ul>
-          <li>Детейлінг-мийка кузова</li>
-          <li>Очищення дисків і важкодоступних зон</li>
-          <li>Прибирання й чистка салону</li>
-          <li>Догляд за пластиком і основними поверхнями</li>
-        </ul>
-        <p class="pk-price"><small>від</small><strong>2 500</strong><small>грн</small></p>
+  <div class="pk-cards" id="pkCards" data-reveal-group>
+      <article class="pkc" aria-labelledby="pk-basic" data-level=".42" data-boost="0">
+        <div class="pkc-swatch"><canvas aria-hidden="true"></canvas><span class="pkc-cap">Лак після Basic: чистий, без полірування</span></div>
+        <div class="pkc-body">
+          <h3 class="pkc-name" id="pk-basic">Basic</h3>
+          <p class="pkc-goal">Щоб підтримувати авто чистим і доглянутим</p>
+          <ul>
+            <li>Детейлінг-мийка кузова</li>
+            <li>Очищення дисків і важкодоступних зон</li>
+            <li>Прибирання й чистка салону</li>
+            <li>Догляд за пластиком і поверхнями</li>
+          </ul>
+          <div class="pkc-foot">
+            <p class="pk-price"><small>від</small><strong>2 500</strong><small>грн</small></p>
+            <a class="pkc-btn" href="#estimate">Обрати Basic</a>
+          </div>
+        </div>
       </article>
-      <article class="pk featured lit" tabindex="0" aria-labelledby="pk-premium">
-        <h3 class="pk-name" id="pk-premium">Premium <span class="pk-badge">Найчастіше обирають</span></h3>
-        <p class="pk-goal">Щоб повернути кузову блиск і зберегти його</p>
-        <p class="pk-desc">Коли кузов потьмянів, з'явилися дрібні подряпини, а результат полірування хочеться зберегти надовго.</p>
-        <ul>
-          <li>Підготовка й очищення кузова</li>
-          <li>Полірування лакофарбового покриття</li>
-          <li>Нанесення керамічного захисту</li>
-          <li>Фінальна перевірка поверхні під лампами</li>
-        </ul>
-        <p class="pk-gift"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="6" width="12" height="8" rx="1.5" stroke="#EEF3FF" stroke-width="1.3"/><path d="M1.5 6h13M8 6v8M8 6S6.8 2 4.9 2.6C3.5 3 4.6 6 8 6Zm0 0s1.2-4 3.1-3.4C12.5 3 11.4 6 8 6Z" stroke="#EEF3FF" stroke-width="1.3"/></svg><span>Зараз антидощ на скло в подарунок</span></p>
-        <p class="pk-price" style="margin-top:0"><small>від</small><strong>12 000</strong><small>грн</small></p>
+      <article class="pkc featured" aria-labelledby="pk-premium" data-level="1" data-boost="0.6">
+        <div class="pkc-swatch"><canvas aria-hidden="true"></canvas><span class="pkc-cap">Лак після Premium: полірування й кераміка</span></div>
+        <div class="pkc-body">
+          <h3 class="pkc-name" id="pk-premium">Premium <span class="pk-badge">Найчастіше обирають</span></h3>
+          <p class="pkc-goal">Щоб повернути кузову блиск і зберегти його надовго</p>
+          <ul>
+            <li>Підготовка й очищення кузова</li>
+            <li>Полірування лакофарбового покриття</li>
+            <li>Керамічний захист</li>
+            <li>Фінальна перевірка під лампами</li>
+          </ul>
+          <p class="pk-gift"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="6" width="12" height="8" rx="1.5" stroke="#EEF3FF" stroke-width="1.3"/><path d="M1.5 6h13M8 6v8M8 6S6.8 2 4.9 2.6C3.5 3 4.6 6 8 6Zm0 0s1.2-4 3.1-3.4C12.5 3 11.4 6 8 6Z" stroke="#EEF3FF" stroke-width="1.3"/></svg><span>Зараз антидощ на скло в подарунок</span></p>
+          <div class="pkc-foot">
+            <p class="pk-price"><small>від</small><strong>12 000</strong><small>грн</small></p>
+            <a class="pkc-btn" href="#estimate">Обрати Premium</a>
+          </div>
+        </div>
       </article>
-      <article class="pk" tabindex="0" aria-labelledby="pk-full">
-        <h3 class="pk-name" id="pk-full">Full Detailing</h3>
-        <p class="pk-goal">Комплексне відновлення кузова й салону</p>
-        <p class="pk-desc">Максимум робіт: свіжий кузов, чистий салон і захист основних поверхонь.</p>
-        <ul>
-          <li>Детейлінг кузова й полірування</li>
-          <li>Хімчистка та детейлінг салону</li>
-          <li>Захисні покриття для кузова й окремих поверхонь</li>
-          <li>Чистка стиків, пластику й важкодоступних зон</li>
-        </ul>
-        <p class="pk-price"><small>від</small><strong>18 000</strong><small>грн</small></p>
+      <article class="pkc" aria-labelledby="pk-full" data-level="1" data-boost="1">
+        <div class="pkc-swatch"><canvas aria-hidden="true"></canvas><span class="pkc-cap">Кузов і салон після Full Detailing</span></div>
+        <div class="pkc-body">
+          <h3 class="pkc-name" id="pk-full">Full Detailing</h3>
+          <p class="pkc-goal">Комплексне відновлення кузова й салону</p>
+          <ul>
+            <li>Детейлінг кузова й полірування</li>
+            <li>Хімчистка та детейлінг салону</li>
+            <li>Захисні покриття кузова й поверхонь</li>
+            <li>Чистка стиків, пластику й важкодоступних зон</li>
+          </ul>
+          <div class="pkc-foot">
+            <p class="pk-price"><small>від</small><strong>18 000</strong><small>грн</small></p>
+            <a class="pkc-btn" href="#estimate">Обрати Full</a>
+          </div>
+        </div>
       </article>
-    </div>
-    <p class="pk-note">Фінальна вартість залежить від моделі, розміру та фактичного стану автомобіля.</p>
   </div>
-  <div class="pk-help">
-    <p>Не знаєте, який комплекс підійде? <span>Надішліть фото авто — оцінимо стан, підкажемо, що справді потрібно, і зорієнтуємо за ціною.</span></p>
-    <div class="actions">
-      <a class="cta" href="#estimate">Оцінити авто за фото<small>Відповімо в Telegram протягом години</small></a>
-      <a class="ghost" href="#estimate">Записатися на огляд</a>
-    </div>
-  </div>
+  <p class="pk-note" data-reveal>Фінальна вартість залежить від моделі, розміру та стану авто. Не знаєте, який комплекс підійде? <a href="#estimate">Надішліть фото</a>, і ми підкажемо.</p>
 </section>
 
 <div class="pad" id="pad" aria-hidden="true"><div class="orbit"><div class="disc"></div></div><span class="dot"></span></div>
@@ -861,28 +893,126 @@
     if (!en.isIntersecting) return;
     led.style.opacity = '';
     if (!reduce) led.classList.add('flick');
+    setTimeout(placeLed, 600); setTimeout(placeLed, 1500);
     ob.disconnect();
   }, { threshold: .35 }).observe(list);
 })();
 </script>
 
 <script>
+/* ---------- м'які анімації появи ---------- */
 (() => {
-  const grid = document.getElementById('pkGrid');
-  const spot = document.getElementById('spot');
-  const cols = [...grid.querySelectorAll('.pk')];
-  const home = cols.findIndex(c => c.classList.contains('featured'));
-  function light(i) {
-    spot.style.transform = `translateX(${i * 100}%)`;
-    cols.forEach((c, k) => c.classList.toggle('lit', k === i));
-  }
-  cols.forEach((c, i) => {
-    c.addEventListener('mouseenter', () => light(i));
-    c.addEventListener('focus', () => light(i));
+  const els = document.querySelectorAll('[data-reveal],[data-reveal-group]');
+  if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: .15, rootMargin: '0px 0px -8% 0px' });
+  els.forEach(e => io.observe(e));
+})();
+
+/* ---------- комплекси: живі зразки лаку ---------- */
+(() => {
+  const cards = [...document.querySelectorAll('.pkc')];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fs = `
+  precision highp float;
+  varying vec2 vUv;
+  uniform vec2 uRes; uniform float uTime; uniform float uProg; uniform float uLevel; uniform float uBoost; uniform float uSeed;
+  float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+  float h1(float n){return fract(sin(n)*43758.5453);}
+  float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+    return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+1.),f.x),f.y);}
+  float hexEdge(vec2 p){const vec2 s=vec2(1.,1.7320508);
+    vec4 hc=floor(vec4(p,p-vec2(.5,1.))/s.xyxy)+.5;
+    vec4 h=vec4(p-hc.xy*s,p-(hc.zw+.5)*s);
+    vec2 g=dot(h.xy,h.xy)<dot(h.zw,h.zw)?h.xy:h.zw; g=abs(g);
+    return .5-max(dot(g,s*.5),g.x);}
+  float swirls(vec2 p,vec2 c,float seed){vec2 d=p-c;float r=length(d);float a=atan(d.y,d.x);
+    float t=r*190.;float k=floor(t);
+    float seg=noise(vec2(a*(3.+h1(k+seed)*7.)+h1(k*1.3+seed)*20.,k*.37));
+    return smoothstep(.58,.72,seg)*pow(1.-abs(fract(t)-.5)*2.,8.)*(.4+.6*h1(k+seed*3.))*smoothstep(1.2,.05,r);}
+  void main(){
+    vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;
+    float depth=1./(.78-p.y*.9);
+    float bend=p.x*p.x;
+    vec2 q=vec2(p.x*depth*1.1,depth*1.6+bend*.5)+vec2(uTime*.03+uSeed,0.);
+    q+=(vec2(noise(p*40.),noise(p*40.+7.))-.5)*.01*depth;
+    q*=1.75;
+    float e=hexEdge(q);
+    float far=smoothstep(7.,2.,depth);
+    float region=smoothstep(-.55,.45,p.y+.25*p.x)*far;
+    float w=.019+.002*depth;
+    float lightClean=((1.-smoothstep(w*.55,w,e))*1.1+exp(-e*14.)*.3)*region;
+    float lightDirty=(exp(-e*4.5)*.42+.04)*region;
+    vec3 paint=mix(vec3(.012,.025,.07),vec3(.05,.10,.24),smoothstep(-.6,.6,p.y+.3*p.x));
+    float sheen=exp(-pow((p.y-.05-.25*p.x*p.x)*3.,2.))*(.18+.12*uBoost);
+    vec3 led=vec3(.93,.96,1.);
+    vec3 clean=paint+vec3(.35,.5,.95)*sheen+led*lightClean*(1.+.15*uBoost);
+    float sw=swirls(p,vec2(.35,.2),uSeed+1.)+swirls(p,vec2(-.4,.3),uSeed+5.)*.7;
+    vec3 dirty=paint*1.1+vec3(.022,.027,.04)+vec3(.35,.5,.95)*sheen*.45+led*lightDirty*.55+vec3(.85,.9,1.)*sw*(lightDirty*2.4+.04);
+    float x=vUv.x;
+    float front=uProg*1.4-.2;
+    float done=1.-smoothstep(front-.12,front+.12,x);
+    float m=done*uLevel;
+    vec3 col=mix(dirty,clean,m);
+    // смуга полірувальника на фронті
+    col+=vec3(.7,.78,1.)*exp(-pow((x-front)*14.,2.))*.35*(1.-step(1.,uProg))*step(.001,uProg);
+    col*=1.-.25*dot(vUv-.5,vUv-.5)*2.;
+    col=col/(1.+col*.25);
+    gl_FragColor=vec4(pow(col,vec3(.92)),1.);
+  }`;
+  const vs = `attribute vec2 a;varying vec2 vUv;void main(){vUv=a*.5+.5;gl_Position=vec4(a,0.,1.);}`;
+  const items = [];
+  cards.forEach((card, idx) => {
+    const cv = card.querySelector('canvas');
+    const gl = cv.getContext('webgl', { antialias: false });
+    if (!gl) return;
+    const sh = (t, src) => { const o = gl.createShader(t); gl.shaderSource(o, src); gl.compileShader(o); return o; };
+    const pr = gl.createProgram();
+    gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(pr); gl.useProgram(pr);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+    const a = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
+    const U = n => gl.getUniformLocation(pr, n);
+    const it = { card, cv, gl, u: { res: U('uRes'), time: U('uTime'), prog: U('uProg'), level: U('uLevel'), boost: U('uBoost'), seed: U('uSeed') },
+      level: +card.dataset.level, boost: +card.dataset.boost, seed: idx * 3.7, prog: reduce ? 1 : 0, start: null, delay: idx * 180, visible: false };
+    gl.uniform1f(it.u.level, it.level); gl.uniform1f(it.u.boost, it.boost); gl.uniform1f(it.u.seed, it.seed);
+    items.push(it);
   });
-  grid.addEventListener('mouseleave', () => light(home));
-  grid.addEventListener('focusout', e => { if (!grid.contains(e.relatedTarget)) light(home); });
-  light(home);
+  function size(it) {
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    const r = it.cv.getBoundingClientRect();
+    it.cv.width = Math.max(1, Math.round(r.width * dpr)); it.cv.height = Math.max(1, Math.round(r.height * dpr));
+    it.gl.viewport(0, 0, it.cv.width, it.cv.height);
+    it.gl.uniform2f(it.u.res, it.cv.width, it.cv.height);
+  }
+  items.forEach(size);
+  addEventListener('resize', () => items.forEach(size));
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    const it = items.find(i => i.card === e.target); if (!it) return;
+    it.visible = e.isIntersecting;
+    if (e.isIntersecting && it.start === null) it.start = performance.now() + it.delay + 350;
+  }), { threshold: .3 });
+  items.forEach(it => io.observe(it.card));
+  const t0 = performance.now();
+  function frame(now) {
+    requestAnimationFrame(frame);
+    items.forEach(it => {
+      if (!it.visible) return;
+      if (!reduce && it.start !== null && now > it.start) it.prog = Math.min(1, (now - it.start) / 1700);
+      it.gl.uniform1f(it.u.prog, it.prog);
+      it.gl.uniform1f(it.u.time, reduce ? 0 : (now - t0) / 1000);
+      it.gl.drawArrays(it.gl.TRIANGLES, 0, 3);
+    });
+  }
+  requestAnimationFrame(frame);
+
+  // на телефоні одразу показуємо Premium по центру
+  const wrap = document.getElementById('pkCards');
+  const feat = wrap.querySelector('.featured');
+  if (matchMedia('(max-width:900px)').matches && feat)
+    wrap.scrollLeft = feat.offsetLeft - (wrap.clientWidth - feat.offsetWidth) / 2;
 })();
 </script>
 </body>
