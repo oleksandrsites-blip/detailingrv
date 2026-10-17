@@ -290,12 +290,8 @@
     content:"";position:absolute;z-index:2;left:14%;right:14%;top:0;height:2px;border-radius:2px;
     background:var(--led);box-shadow:0 0 12px var(--led),0 0 40px rgba(160,190,255,.9);
   }
-  .pkc-swatch{position:relative;height:210px;background:linear-gradient(160deg,#1B2D5C,#050B1A)}
-  .pkc.featured .pkc-swatch{height:234px}
-  .pkc-swatch canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-  .pkc-swatch::after{content:"";position:absolute;inset:auto 0 0 0;height:70px;background:linear-gradient(0deg, rgba(8,15,34,.9), transparent)}
-  .pkc-cap{position:absolute;z-index:1;left:32px;bottom:16px;font-size:13px;color:var(--pearl);font-weight:300}
-  .pkc-body{display:flex;flex-direction:column;flex:1;padding:26px 32px 32px}
+  .pkc-body{display:flex;flex-direction:column;flex:1;padding:44px 34px 34px}
+  .pkc.featured{background:radial-gradient(70% 40% at 50% 0%, rgba(160,190,255,.22), transparent 70%),linear-gradient(180deg, rgba(30,50,105,.6), rgba(8,15,34,.92) 65%)}
   .pkc-name{font-size:clamp(30px,2.6vw,40px);font-weight:800;letter-spacing:-.04em;line-height:1;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
   .pk-badge{font-size:12px;font-weight:500;letter-spacing:0;padding:6px 11px;border-radius:30px;background:var(--led);color:var(--lacquer)}
   .pkc-goal{font-size:17px;font-weight:400;line-height:1.4;color:#C9D2EA;margin-bottom:26px;max-width:28ch}
@@ -325,8 +321,7 @@
   .pk-note a:hover{border-color:var(--led)}
 
   @media (max-width:1100px) and (min-width:901px){
-    .pkc-body{padding:24px 24px 28px}
-    .pkc-cap{left:24px}
+    .pkc-body{padding:36px 24px 28px}
   }
   @media (max-width:900px){
     .pk-cards{
@@ -336,9 +331,7 @@
     .pk-cards::-webkit-scrollbar{display:none}
     .pkc{flex:0 0 min(84%,360px);scroll-snap-align:center}
     .pkc.featured{margin-top:-14px}
-    .pkc-swatch,.pkc.featured .pkc-swatch{height:170px}
-    .pkc-body{padding:22px 22px 26px}
-    .pkc-cap{left:22px}
+    .pkc-body{padding:32px 22px 26px}
     .pk-note{margin-top:24px;font-size:14px}
   }
 
@@ -516,8 +509,7 @@
     <p class="sec-lead" data-reveal style="--d:.12s">Не потрібно збирати послуги самостійно. Оберіть комплекс під свою задачу, а точний обсяг робіт і вартість визначимо після оцінки авто.</p>
   </div>
   <div class="pk-cards" id="pkCards" data-reveal-group>
-      <article class="pkc" aria-labelledby="pk-basic" data-level=".42" data-boost="0">
-        <div class="pkc-swatch"><canvas aria-hidden="true"></canvas><span class="pkc-cap">Лак після Basic: чистий, без полірування</span></div>
+      <article class="pkc" aria-labelledby="pk-basic">
         <div class="pkc-body">
           <h3 class="pkc-name" id="pk-basic">Basic</h3>
           <p class="pkc-goal">Щоб підтримувати авто чистим і доглянутим</p>
@@ -533,8 +525,7 @@
           </div>
         </div>
       </article>
-      <article class="pkc featured" aria-labelledby="pk-premium" data-level="1" data-boost="0.6">
-        <div class="pkc-swatch"><canvas aria-hidden="true"></canvas><span class="pkc-cap">Лак після Premium: полірування й кераміка</span></div>
+      <article class="pkc featured" aria-labelledby="pk-premium">
         <div class="pkc-body">
           <h3 class="pkc-name" id="pk-premium">Premium <span class="pk-badge">Найчастіше обирають</span></h3>
           <p class="pkc-goal">Щоб повернути кузову блиск і зберегти його надовго</p>
@@ -551,8 +542,7 @@
           </div>
         </div>
       </article>
-      <article class="pkc" aria-labelledby="pk-full" data-level="1" data-boost="1">
-        <div class="pkc-swatch"><canvas aria-hidden="true"></canvas><span class="pkc-cap">Кузов і салон після Full Detailing</span></div>
+      <article class="pkc" aria-labelledby="pk-full">
         <div class="pkc-body">
           <h3 class="pkc-name" id="pk-full">Full Detailing</h3>
           <p class="pkc-goal">Комплексне відновлення кузова й салону</p>
@@ -910,104 +900,8 @@
   els.forEach(e => io.observe(e));
 })();
 
-/* ---------- комплекси: живі зразки лаку ---------- */
+/* ---------- комплекси ---------- */
 (() => {
-  const cards = [...document.querySelectorAll('.pkc')];
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const fs = `
-  precision highp float;
-  varying vec2 vUv;
-  uniform vec2 uRes; uniform float uTime; uniform float uProg; uniform float uLevel; uniform float uBoost; uniform float uSeed;
-  float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
-  float h1(float n){return fract(sin(n)*43758.5453);}
-  float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
-    return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+1.),f.x),f.y);}
-  float hexEdge(vec2 p){const vec2 s=vec2(1.,1.7320508);
-    vec4 hc=floor(vec4(p,p-vec2(.5,1.))/s.xyxy)+.5;
-    vec4 h=vec4(p-hc.xy*s,p-(hc.zw+.5)*s);
-    vec2 g=dot(h.xy,h.xy)<dot(h.zw,h.zw)?h.xy:h.zw; g=abs(g);
-    return .5-max(dot(g,s*.5),g.x);}
-  float swirls(vec2 p,vec2 c,float seed){vec2 d=p-c;float r=length(d);float a=atan(d.y,d.x);
-    float t=r*190.;float k=floor(t);
-    float seg=noise(vec2(a*(3.+h1(k+seed)*7.)+h1(k*1.3+seed)*20.,k*.37));
-    return smoothstep(.58,.72,seg)*pow(1.-abs(fract(t)-.5)*2.,8.)*(.4+.6*h1(k+seed*3.))*smoothstep(1.2,.05,r);}
-  void main(){
-    vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;
-    float depth=1./(.78-p.y*.9);
-    float bend=p.x*p.x;
-    vec2 q=vec2(p.x*depth*1.1,depth*1.6+bend*.5)+vec2(uTime*.03+uSeed,0.);
-    q+=(vec2(noise(p*40.),noise(p*40.+7.))-.5)*.01*depth;
-    q*=1.75;
-    float e=hexEdge(q);
-    float far=smoothstep(7.,2.,depth);
-    float region=smoothstep(-.55,.45,p.y+.25*p.x)*far;
-    float w=.019+.002*depth;
-    float lightClean=((1.-smoothstep(w*.55,w,e))*1.1+exp(-e*14.)*.3)*region;
-    float lightDirty=(exp(-e*4.5)*.42+.04)*region;
-    vec3 paint=mix(vec3(.012,.025,.07),vec3(.05,.10,.24),smoothstep(-.6,.6,p.y+.3*p.x));
-    float sheen=exp(-pow((p.y-.05-.25*p.x*p.x)*3.,2.))*(.18+.12*uBoost);
-    vec3 led=vec3(.93,.96,1.);
-    vec3 clean=paint+vec3(.35,.5,.95)*sheen+led*lightClean*(1.+.15*uBoost);
-    float sw=swirls(p,vec2(.35,.2),uSeed+1.)+swirls(p,vec2(-.4,.3),uSeed+5.)*.7;
-    vec3 dirty=paint*1.1+vec3(.022,.027,.04)+vec3(.35,.5,.95)*sheen*.45+led*lightDirty*.55+vec3(.85,.9,1.)*sw*(lightDirty*2.4+.04);
-    float x=vUv.x;
-    float front=uProg*1.4-.2;
-    float done=1.-smoothstep(front-.12,front+.12,x);
-    float m=done*uLevel;
-    vec3 col=mix(dirty,clean,m);
-    // смуга полірувальника на фронті
-    col+=vec3(.7,.78,1.)*exp(-pow((x-front)*14.,2.))*.35*(1.-step(1.,uProg))*step(.001,uProg);
-    col*=1.-.25*dot(vUv-.5,vUv-.5)*2.;
-    col=col/(1.+col*.25);
-    gl_FragColor=vec4(pow(col,vec3(.92)),1.);
-  }`;
-  const vs = `attribute vec2 a;varying vec2 vUv;void main(){vUv=a*.5+.5;gl_Position=vec4(a,0.,1.);}`;
-  const items = [];
-  cards.forEach((card, idx) => {
-    const cv = card.querySelector('canvas');
-    const gl = cv.getContext('webgl', { antialias: false });
-    if (!gl) return;
-    const sh = (t, src) => { const o = gl.createShader(t); gl.shaderSource(o, src); gl.compileShader(o); return o; };
-    const pr = gl.createProgram();
-    gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs));
-    gl.linkProgram(pr); gl.useProgram(pr);
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
-    const a = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
-    const U = n => gl.getUniformLocation(pr, n);
-    const it = { card, cv, gl, u: { res: U('uRes'), time: U('uTime'), prog: U('uProg'), level: U('uLevel'), boost: U('uBoost'), seed: U('uSeed') },
-      level: +card.dataset.level, boost: +card.dataset.boost, seed: idx * 3.7, prog: reduce ? 1 : 0, start: null, delay: idx * 180, visible: false };
-    gl.uniform1f(it.u.level, it.level); gl.uniform1f(it.u.boost, it.boost); gl.uniform1f(it.u.seed, it.seed);
-    items.push(it);
-  });
-  function size(it) {
-    const dpr = Math.min(devicePixelRatio || 1, 1.5);
-    const r = it.cv.getBoundingClientRect();
-    it.cv.width = Math.max(1, Math.round(r.width * dpr)); it.cv.height = Math.max(1, Math.round(r.height * dpr));
-    it.gl.viewport(0, 0, it.cv.width, it.cv.height);
-    it.gl.uniform2f(it.u.res, it.cv.width, it.cv.height);
-  }
-  items.forEach(size);
-  addEventListener('resize', () => items.forEach(size));
-  const io = new IntersectionObserver(es => es.forEach(e => {
-    const it = items.find(i => i.card === e.target); if (!it) return;
-    it.visible = e.isIntersecting;
-    if (e.isIntersecting && it.start === null) it.start = performance.now() + it.delay + 350;
-  }), { threshold: .3 });
-  items.forEach(it => io.observe(it.card));
-  const t0 = performance.now();
-  function frame(now) {
-    requestAnimationFrame(frame);
-    items.forEach(it => {
-      if (!it.visible) return;
-      if (!reduce && it.start !== null && now > it.start) it.prog = Math.min(1, (now - it.start) / 1700);
-      it.gl.uniform1f(it.u.prog, it.prog);
-      it.gl.uniform1f(it.u.time, reduce ? 0 : (now - t0) / 1000);
-      it.gl.drawArrays(it.gl.TRIANGLES, 0, 3);
-    });
-  }
-  requestAnimationFrame(frame);
-
   // на телефоні одразу показуємо Premium по центру
   const wrap = document.getElementById('pkCards');
   const feat = wrap.querySelector('.featured');
