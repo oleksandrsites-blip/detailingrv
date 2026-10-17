@@ -138,7 +138,7 @@
 
   /* ---------- полірувальна машинка під курсором ---------- */
   .pad{
-    position:fixed;left:0;top:0;z-index:20;
+    position:absolute;left:0;top:0;z-index:20;
     width:132px;height:132px;margin:-66px 0 0 -66px;
     pointer-events:none;opacity:0;transition:opacity .35s;
   }
@@ -189,6 +189,95 @@
     .lead,.actions{animation:none;opacity:1}
     .hint i,.pad .disc,.pad .orbit{animation:none}
   }
+
+  /* ================= БЛОК 2: проблема → рішення ================= */
+  .sec{padding:150px var(--pad) 150px;position:relative}
+  .sec-head{max-width:760px;margin-bottom:72px}
+  h2{
+    font-weight:800;font-size:clamp(34px,4.2vw,64px);
+    line-height:1;letter-spacing:-.04em;margin-bottom:24px;
+  }
+  h2 .thin{font-weight:300;color:var(--pearl)}
+  .sec-lead{max-width:52ch;font-size:clamp(16px,1.2vw,18px);line-height:1.6;font-weight:300;color:var(--pearl)}
+
+  .pr{position:relative;min-height:560px}
+  .pr-list{list-style:none;width:44%;padding-left:28px;border-left:1px solid var(--line)}
+  .led{
+    position:absolute;left:-1px;top:0;width:3px;border-radius:3px;
+    background:var(--led);
+    box-shadow:0 0 10px var(--led),0 0 28px rgba(160,190,255,.8);
+  }
+  .led.flick{animation:flick .9s steps(1) 1}
+  @keyframes flick{0%{opacity:0}10%{opacity:1}16%{opacity:.15}24%{opacity:1}30%{opacity:.4}38%,100%{opacity:1}}
+  .prob{
+    all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;
+    padding:20px 0;
+  }
+  .prob-t{
+    display:block;font-size:clamp(20px,1.9vw,28px);font-weight:500;letter-spacing:-.02em;line-height:1.2;
+    color:rgba(238,243,255,.38);transition:color .3s;
+  }
+  .prob:hover .prob-t{color:rgba(238,243,255,.7)}
+  .prob[aria-expanded="true"] .prob-t{color:var(--led)}
+  .prob-d{
+    display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s ease, opacity .45s;opacity:0;
+    font-size:15px;line-height:1.55;color:var(--pearl);font-weight:300;max-width:42ch;
+  }
+  .prob-d > span{overflow:hidden}
+  .prob[aria-expanded="true"] .prob-d{grid-template-rows:1fr;opacity:1}
+  .prob[aria-expanded="true"] .prob-d > span{padding-top:10px}
+
+  .sol{
+    position:absolute;left:52%;right:0;top:0;
+    padding:44px 48px 46px;border-radius:28px;
+    background:
+      radial-gradient(90% 70% at 100% 0%, rgba(120,150,255,.16), transparent 60%),
+      linear-gradient(160deg, rgba(27,45,92,.55), rgba(8,16,36,.6));
+    border:1px solid rgba(238,243,255,.09);
+    overflow:hidden;
+    visibility:hidden;opacity:0;
+  }
+  .sol.show{visibility:visible;opacity:1;animation:reveal .85s cubic-bezier(.6,0,.2,1)}
+  @keyframes reveal{from{clip-path:inset(0 100% 0 0 round 28px)}to{clip-path:inset(0 0 0 0 round 28px)}}
+  .sol .sweep{
+    position:absolute;top:-10%;bottom:-10%;left:0;width:90px;pointer-events:none;
+    background:linear-gradient(90deg,transparent,rgba(238,243,255,.35) 45%,rgba(255,255,255,.9) 50%,rgba(238,243,255,.35) 55%,transparent);
+    filter:blur(6px);transform:translateX(-120px);opacity:0;
+  }
+  .sol.show .sweep{animation:sweep .85s cubic-bezier(.6,0,.2,1)}
+  @keyframes sweep{0%{transform:translateX(-120px);opacity:1}90%{opacity:1}100%{transform:translateX(calc(var(--w,600px) + 40px));opacity:0}}
+  .sol-for{font-size:15px;color:var(--pearl);margin-bottom:14px;font-weight:300}
+  .sol h3{font-size:clamp(30px,3vw,46px);font-weight:700;letter-spacing:-.035em;line-height:1.02;margin-bottom:22px}
+  .sol-text{font-size:17px;line-height:1.6;color:#C9D2EA;font-weight:300;max-width:46ch;margin-bottom:34px}
+  .sol dl{display:flex;gap:48px;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:28px}
+  .sol dt{font-size:13px;color:var(--pearl);margin-bottom:6px;font-weight:300}
+  .sol dd{font-size:20px;font-weight:500;letter-spacing:-.01em}
+  .sol-tip{font-size:15px;line-height:1.55;color:var(--pearl);font-weight:300;margin-bottom:30px;max-width:48ch}
+  .sol-tip b{color:var(--led);font-weight:500}
+  .sol .ghost{font-size:16px}
+
+  .pr-cta{
+    margin-top:96px;padding-top:48px;border-top:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;
+  }
+  .pr-cta p{font-size:clamp(20px,1.8vw,26px);letter-spacing:-.02em;line-height:1.3;max-width:30ch}
+  .pr-cta p span{color:var(--pearl);font-weight:300}
+
+  @media (max-width:900px){
+    .sec{padding:100px var(--pad)}
+    .sec-head{margin-bottom:44px}
+    .pr{min-height:0}
+    .pr-list{width:100%;padding-left:20px}
+    .sol{position:relative;left:auto;right:auto;display:none;padding:28px 24px 30px;border-radius:22px;margin:4px 0 18px}
+    .sol.show{display:block}
+    .sol dl{gap:28px}
+    .pr-cta{margin-top:56px}
+    .pr-cta .cta{width:100%;align-items:center;text-align:center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .sol.show,.sol.show .sweep,.led.flick{animation:none}
+    .led{transition:none}
+  }
 </style>
 </head>
 <body>
@@ -205,7 +294,7 @@
       detailingrv
     </a>
     <nav class="nav" aria-label="Розділи">
-      <a href="#services">Послуги</a>
+      <a href="#problems">Послуги</a>
       <a href="#packages">Комплекси</a>
       <a href="#results">До і після</a>
       <a href="#faq">Питання</a>
@@ -234,6 +323,112 @@
       <div class="val"><span id="meterLabel">Відполіровано</span><strong id="meterVal">0%</strong></div>
       <div class="bar"><div id="meterBar"></div></div>
     </div>
+  </div>
+</section>
+
+<section class="sec" id="problems" aria-labelledby="problems-h">
+  <div class="sec-head">
+    <h2 id="problems-h">Не знаєте, яка послуга потрібна? <span class="thin">Почніть із проблеми</span></h2>
+    <p class="sec-lead">Розбиратися в детейлінгу не обов'язково. Оберіть, що вас не влаштовує, і подивіться, як ми це вирішуємо. Точний обсяг робіт визначимо після оцінки авто.</p>
+  </div>
+  <div class="pr">
+    <span class="led" id="led" aria-hidden="true"></span>
+    <ul class="pr-list" id="prList">
+      <li>
+        <button class="prob" id="prob-0" aria-expanded="true" aria-controls="sol-0">
+          <span class="prob-t">Кузов втратив блиск</span>
+          <span class="prob-d"><span>Фарба потьмяніла, на сонці видно подряпини, потертості й сліди від мийок.</span></span>
+        </button>
+        <div class="sol show" id="sol-0" role="region" aria-labelledby="prob-0">
+          <span class="sweep" aria-hidden="true"></span>
+          <p class="sol-for">Що зробимо</p>
+          <h3>Полірування кузова</h3>
+          <p class="sol-text">Знімаємо мікрошар пошкодженого лаку разом із павутинкою та подряпинами. Повертаються глибина кольору й дзеркальний блиск.</p>
+          <dl><div><dt>Скільки часу</dt><dd>1–2 дні</dd></div><div><dt>Вартість</dt><dd>від 6 000 грн</dd></div></dl>
+          <p class="sol-tip">Щоб блиск тримався роками, після полірування радимо <b>керамічне покриття</b>.</p>
+          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
+        </div>
+      </li>
+      <li>
+        <button class="prob" id="prob-1" aria-expanded="false" aria-controls="sol-1">
+          <span class="prob-t">У салоні плями або запах</span>
+          <span class="prob-d"><span>Сидіння, текстиль, пластик чи стеля брудні, а звичайного прибирання вже не вистачає.</span></span>
+        </button>
+        <div class="sol" id="sol-1" role="region" aria-labelledby="prob-1">
+          <span class="sweep" aria-hidden="true"></span>
+          <p class="sol-for">Що зробимо</p>
+          <h3>Хімчистка салону</h3>
+          <p class="sol-text">Глибоко чистимо сидіння, стелю, килими, пластик і стики. Запах прибираємо, а не маскуємо ароматизатором.</p>
+          <dl><div><dt>Скільки часу</dt><dd>1 день</dd></div><div><dt>Вартість</dt><dd>від 3 500 грн</dd></div></dl>
+          <p class="sol-tip">Після чистки шкіру живимо й захищаємо, щоб вона не тріскалась.</p>
+          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
+        </div>
+      </li>
+      <li>
+        <button class="prob" id="prob-2" aria-expanded="false" aria-controls="sol-2">
+          <span class="prob-t">Хочете захистити кузов</span>
+          <span class="prob-d"><span>Нове або щойно відполіроване авто, і не хочеться, щоб з'являлися сколи та подряпини.</span></span>
+        </button>
+        <div class="sol" id="sol-2" role="region" aria-labelledby="prob-2">
+          <span class="sweep" aria-hidden="true"></span>
+          <p class="sol-for">Що зробимо</p>
+          <h3>PPF-плівка або кераміка</h3>
+          <p class="sol-text">Плівка Llumar чи STEK бере на себе камінці й подряпини на капоті, бампері, дзеркалах або на всьому кузові. Кераміка — коли головне блиск і легка мийка.</p>
+          <dl><div><dt>Скільки часу</dt><dd>2–5 днів</dd></div><div><dt>Вартість</dt><dd>від 9 000 грн</dd></div></dl>
+          <p class="sol-tip">Що обрати, підкажемо після огляду: це залежить від того, як і де ви їздите.</p>
+          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
+        </div>
+      </li>
+      <li>
+        <button class="prob" id="prob-3" aria-expanded="false" aria-controls="sol-3">
+          <span class="prob-t">Фари стали мутними</span>
+          <span class="prob-d"><span>Помутніння й жовтизна: світить гірше, а перед авто виглядає старшим, ніж є.</span></span>
+        </button>
+        <div class="sol" id="sol-3" role="region" aria-labelledby="prob-3">
+          <span class="sweep" aria-hidden="true"></span>
+          <p class="sol-for">Що зробимо</p>
+          <h3>Відновлення фар</h3>
+          <p class="sol-text">Шліфуємо й полірумо пластик фар до прозорості, а зверху наносимо захист, щоб жовтизна не повернулась за сезон.</p>
+          <dl><div><dt>Скільки часу</dt><dd>2–3 години</dd></div><div><dt>Вартість</dt><dd>від 1 200 грн</dd></div></dl>
+          <p class="sol-tip">Можна поєднати з мийкою, і авто заберете того ж дня.</p>
+          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
+        </div>
+      </li>
+      <li>
+        <button class="prob" id="prob-4" aria-expanded="false" aria-controls="sol-4">
+          <span class="prob-t">Потрібне комплексне оновлення</span>
+          <span class="prob-d"><span>Є питання і до кузова, і до салону, і до скла та дрібних деталей.</span></span>
+        </button>
+        <div class="sol" id="sol-4" role="region" aria-labelledby="prob-4">
+          <span class="sweep" aria-hidden="true"></span>
+          <p class="sol-for">Що зробимо</p>
+          <h3>Комплексний детейлінг</h3>
+          <p class="sol-text">Кузов, салон, диски, скло й стики — одним комплексом за планом, який погоджуємо до початку робіт.</p>
+          <dl><div><dt>Скільки часу</dt><dd>3–5 днів</dd></div><div><dt>Вартість</dt><dd>від 18 000 грн</dd></div></dl>
+          <p class="sol-tip">Окремі послуги в комплексі обходяться дешевше, ніж якщо робити їх по черзі.</p>
+          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
+        </div>
+      </li>
+      <li>
+        <button class="prob" id="prob-5" aria-expanded="false" aria-controls="sol-5">
+          <span class="prob-t">Готуєте авто до продажу</span>
+          <span class="prob-d"><span>Хочеться, щоб авто виглядало доглянутим на фото й на огляді, але без зайвих витрат.</span></span>
+        </button>
+        <div class="sol" id="sol-5" role="region" aria-labelledby="prob-5">
+          <span class="sweep" aria-hidden="true"></span>
+          <p class="sol-for">Що зробимо</p>
+          <h3>Передпродажна підготовка</h3>
+          <p class="sol-text">Мийка, легке полірування, чистка салону й фар — тільки те, що реально впливає на перше враження покупця.</p>
+          <dl><div><dt>Скільки часу</dt><dd>1 день</dd></div><div><dt>Вартість</dt><dd>від 4 500 грн</dd></div></dl>
+          <p class="sol-tip">Покажемо, на чому можна заощадити, бо покупець цього не помітить.</p>
+          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="pr-cta">
+    <p>Не впевнені, що саме потрібно авто? <span>Надішліть фото, і підкажемо, з чого почати.</span></p>
+    <a class="cta" href="#estimate">Оцінити авто за фото<small>Відповімо в Telegram протягом години</small></a>
   </div>
 </section>
 
@@ -309,8 +504,8 @@
 
   /* ---------- курсор-машинка ---------- */
   let last = null, spinT;
-  function movePad(x, y) {
-    pad.style.transform = `translate(${x}px, ${y}px)`;
+  function movePad(x, y, abs) {
+    pad.style.transform = abs ? `translate(${x}px, ${y}px)` : `translate(${x}px, ${y + scrollY}px)`;
     pad.classList.add('on', 'spin');
     clearTimeout(spinT);
     spinT = setTimeout(() => pad.classList.remove('spin'), 220);
@@ -365,7 +560,7 @@
       const y = pts[i][1] + (pts[i + 1][1] - pts[i][1]) * e + Math.sin(now / 90) * 6;
       if (prev) { stroke(prev[0], prev[1], x, y, brush()); stroke(prev[0], prev[1], x, y, brush()); }
       prev = [x, y];
-      movePad(x + r.left, y + r.top);
+      movePad(x + hero.offsetLeft, y + hero.offsetTop, true);
       if (t < 1) requestAnimationFrame(step);
       else { pad.classList.remove('on'); endIntro(); }
     }
@@ -498,6 +693,68 @@
   }
   requestAnimationFrame(frame);
   runIntro();
+})();
+</script>
+
+<script>
+(() => {
+  const list = document.getElementById('prList');
+  const led = document.getElementById('led');
+  const btns = [...list.querySelectorAll('.prob')];
+  const mq = matchMedia('(max-width:900px)');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cur = 0;
+  const pr = list.parentElement;
+  let ly = null, lh = 0, followUntil = 0;
+  function target() {
+    const t = btns[cur].querySelector('.prob-t').getBoundingClientRect();
+    const p = pr.getBoundingClientRect();
+    return [t.top - p.top, t.height];
+  }
+  function draw() {
+    const [ty, th] = target();
+    if (ly === null || reduce || performance.now() >= followUntil - 16) { ly = ty; lh = th; }
+    else { ly += (ty - ly) * .18; lh += (th - lh) * .18; }
+    led.style.transform = `translateY(${ly}px)`;
+    led.style.height = lh + 'px';
+    if (performance.now() < followUntil) requestAnimationFrame(draw);
+  }
+  function placeLed() { const go = performance.now() >= followUntil; followUntil = performance.now() + 1100; if (go) requestAnimationFrame(draw); }
+  function open(i, focus) {
+    if (i === cur && !mq.matches) return;
+    const wasOpen = btns[i].getAttribute('aria-expanded') === 'true';
+    btns.forEach((b, k) => {
+      b.setAttribute('aria-expanded', 'false');
+      document.getElementById(b.getAttribute('aria-controls')).classList.remove('show');
+    });
+    if (mq.matches && wasOpen) { cur = i; placeLed(); return; }
+    cur = i;
+    btns[i].setAttribute('aria-expanded', 'true');
+    const sol = document.getElementById(btns[i].getAttribute('aria-controls'));
+    sol.style.setProperty('--w', sol.offsetWidth + 'px');
+    void sol.offsetWidth; sol.classList.add('show');
+    sol.style.setProperty('--w', sol.offsetWidth + 'px');
+    if (focus) btns[i].focus();
+    placeLed();
+  }
+  btns.forEach((b, i) => {
+    b.addEventListener('click', () => open(i));
+    b.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); open((cur + 1) % btns.length, true); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); open((cur - 1 + btns.length) % btns.length, true); }
+    });
+  });
+  placeLed();
+  addEventListener('resize', placeLed);
+  new ResizeObserver(placeLed).observe(list);
+  // LED «вмикається», коли блок з'являється на екрані
+  led.style.opacity = 0;
+  new IntersectionObserver(([en], ob) => {
+    if (!en.isIntersecting) return;
+    led.style.opacity = '';
+    if (!reduce) led.classList.add('flick');
+    ob.disconnect();
+  }, { threshold: .35 }).observe(list);
 })();
 </script>
 </body>
