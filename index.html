@@ -1,10 +1,504 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Портфоліо</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>detailingrv — детейлінг-студія в Рівному</title>
+<meta name="description" content="Полірування, керамічний захист і антигравійна плівка в Рівному. Міряємо товщину лаку на кожній деталі перед роботою.">
+<meta name="theme-color" content="#050B1A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lacquer:#050B1A;      /* глибокий ультрамарин, база лаку */
+    --lacquer-2:#0C1A3A;
+    --led:#EEF3FF;          /* світло LED-стелі 5500K */
+    --pearl:#A9B6D6;        /* приглушений текст */
+    --haze:#5D6680;         /* матовий серпанок */
+    --line:rgba(238,243,255,.14);
+    --pad:56px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--lacquer);
+    color:var(--led);
+    font-family:"Geologica",system-ui,sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  :focus-visible{outline:2px solid var(--led);outline-offset:4px;border-radius:4px}
+
+  .hero{
+    position:relative;
+    min-height:100vh;
+    min-height:100svh;
+    display:grid;
+    grid-template-rows:auto 1fr auto;
+    isolation:isolate;
+    overflow:hidden;
+    touch-action:pan-y;
+  }
+  #paint{
+    position:absolute;inset:0;width:100%;height:100%;
+    z-index:-2;display:block;
+    background:
+      radial-gradient(120% 90% at 85% 10%, #1B2D5C 0%, transparent 55%),
+      linear-gradient(180deg,#0C1A3A,#050B1A);
+  }
+  /* читабельність тексту зліва — ніби тінь від стійки */
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(90deg, rgba(5,11,26,.82) 0%, rgba(5,11,26,.55) 34%, rgba(5,11,26,0) 62%);
+  }
+
+  /* ---------- шапка ---------- */
+  .top{
+    display:flex;align-items:center;gap:40px;
+    padding:28px var(--pad) 0;
+  }
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:21px;letter-spacing:-.02em}
+  .brand svg{width:26px;height:26px}
+  .nav{display:flex;gap:32px;margin-left:auto;font-size:15px;color:var(--pearl)}
+  .nav a{position:relative;padding:6px 0;transition:color .2s}
+  .nav a:hover{color:var(--led)}
+  .phone{font-size:15px;font-weight:500;padding:11px 18px;border:1px solid var(--line);border-radius:40px;transition:border-color .2s,background .2s;white-space:nowrap}
+  .phone:hover{border-color:rgba(238,243,255,.5);background:rgba(238,243,255,.06)}
+
+  /* ---------- основний текст ---------- */
+  .copy{
+    align-self:center;
+    padding:0 var(--pad);
+    max-width:1040px;
+    position:relative;
+    pointer-events:none;
+  }
+  .copy > *{pointer-events:auto}
+  h1{
+    font-weight:800;
+    font-size:clamp(40px, 5.7vw, 96px);
+    line-height:.94;
+    letter-spacing:-.045em;
+    margin-bottom:34px;
+  }
+  h1 .row{display:block;overflow:hidden;padding-bottom:.06em}
+  h1 .row span{display:inline-block;transform:translateY(105%);animation:rise 1.1s cubic-bezier(.2,.8,.1,1) forwards}
+  h1 .row:nth-child(2) span{animation-delay:.12s}
+  h1 .thin{font-weight:300;color:var(--pearl)}
+  @keyframes rise{to{transform:none}}
+  .lead{
+    max-width:46ch;
+    font-size:clamp(16px,1.25vw,19px);
+    line-height:1.6;
+    color:var(--pearl);
+    font-weight:300;
+    margin-bottom:40px;
+    opacity:0;animation:fade .9s .5s forwards;
+  }
+  .lead b{color:var(--led);font-weight:500}
+  .actions{display:flex;align-items:center;gap:32px;flex-wrap:wrap;opacity:0;animation:fade .9s .7s forwards}
+  @keyframes fade{to{opacity:1}}
+  .cta{
+    display:inline-flex;flex-direction:column;gap:3px;
+    padding:18px 30px 16px;
+    background:var(--led);color:var(--lacquer);
+    border-radius:16px;
+    font-weight:700;font-size:17px;letter-spacing:-.01em;
+    box-shadow:0 0 0 0 rgba(238,243,255,.0), 0 18px 50px -12px rgba(160,190,255,.55);
+    transition:transform .25s, box-shadow .25s;
+  }
+  .cta small{font-weight:400;font-size:13px;color:#3A4767}
+  .cta:hover{transform:translateY(-2px);box-shadow:0 0 0 6px rgba(238,243,255,.12), 0 24px 60px -12px rgba(160,190,255,.7)}
+  .ghost{font-size:16px;font-weight:500;border-bottom:1px solid rgba(238,243,255,.35);padding-bottom:4px;transition:border-color .2s}
+  .ghost:hover{border-color:var(--led)}
+
+  /* ---------- нижня смуга: підказка + лічильник ---------- */
+  .bottom{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+    padding:0 var(--pad) 34px;
+    font-size:14px;color:var(--pearl);
+    pointer-events:none;
+  }
+  .hint{display:flex;align-items:center;gap:14px;opacity:0;transition:opacity .8s}
+  .hint.show{opacity:1}
+  .hint i{
+    width:34px;height:34px;border-radius:50%;flex:none;
+    border:1px dashed rgba(238,243,255,.55);
+    animation:spin 2.4s linear infinite;
+  }
+  .meter{min-width:240px;text-align:right}
+  .meter .val{display:flex;justify-content:space-between;gap:20px;margin-bottom:10px}
+  .meter .val strong{color:var(--led);font-weight:500;font-variant-numeric:tabular-nums}
+  .bar{height:2px;background:rgba(238,243,255,.14);border-radius:2px;overflow:hidden}
+  .bar div{height:100%;width:0;background:var(--led);transition:width .4s ease;box-shadow:0 0 12px var(--led)}
+  .meter.done .val span{color:var(--led)}
+
+  /* ---------- полірувальна машинка під курсором ---------- */
+  .pad{
+    position:fixed;left:0;top:0;z-index:20;
+    width:132px;height:132px;margin:-66px 0 0 -66px;
+    pointer-events:none;opacity:0;transition:opacity .35s;
+  }
+  .pad.on{opacity:1}
+  .pad .orbit{width:100%;height:100%;animation:orbit .18s linear infinite paused}
+  .pad.spin .orbit{animation-play-state:running}
+  .pad .disc{
+    width:100%;height:100%;border-radius:50%;
+    border:1.5px solid rgba(238,243,255,.75);
+    background:
+      repeating-conic-gradient(rgba(238,243,255,.22) 0 4deg, transparent 4deg 18deg);
+    -webkit-mask:radial-gradient(circle, transparent 0 38%, #000 39% 100%);
+            mask:radial-gradient(circle, transparent 0 38%, #000 39% 100%);
+    animation:spin 1.6s linear infinite paused;
+  }
+  .pad.spin .disc{animation-duration:.35s;animation-play-state:running}
+  .pad .dot{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:var(--led)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes orbit{
+    0%{transform:translate(3px,0)}25%{transform:translate(0,3px)}
+    50%{transform:translate(-3px,0)}75%{transform:translate(0,-3px)}100%{transform:translate(3px,0)}
+  }
+  @media (hover:hover) and (pointer:fine){ .hero{cursor:none} .hero a{cursor:pointer} }
+
+  /* ---------- адаптив ---------- */
+  @media (max-width:980px){
+    :root{--pad:28px}
+    .nav{display:none}
+    .phone{margin-left:auto}
+  }
+  @media (max-width:640px){
+    :root{--pad:20px}
+    .top{padding-top:20px}
+    .brand{font-size:19px}
+    .phone{font-size:14px;padding:9px 14px}
+    .hero::before{background:linear-gradient(0deg, rgba(5,11,26,.92) 0%, rgba(5,11,26,.75) 48%, rgba(5,11,26,0) 75%)}
+    .copy{align-self:end;padding-bottom:28px}
+    h1{margin-bottom:22px}
+    .lead{margin-bottom:28px}
+    .actions{gap:22px}
+    .cta{width:100%;align-items:center;text-align:center}
+    .bottom{flex-direction:column;align-items:stretch;padding-bottom:24px}
+    .meter{min-width:0;text-align:left}
+    .pad{width:96px;height:96px;margin:-48px 0 0 -48px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    h1 .row span{animation:none;transform:none}
+    .lead,.actions{animation:none;opacity:1}
+    .hint i,.pad .disc,.pad .orbit{animation:none}
+  }
+</style>
 </head>
 <body>
-  <h1>Скоро тут буде моє портфоліо</h1>
+
+<section class="hero" id="hero">
+  <canvas id="paint" aria-hidden="true"></canvas>
+
+  <header class="top">
+    <a class="brand" href="#" aria-label="detailingrv, на головну">
+      <svg viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <path d="M13 1.5 23 7.25v11.5L13 24.5 3 18.75V7.25L13 1.5Z" stroke="#EEF3FF" stroke-width="1.6"/>
+        <path d="M13 7.5 18 10.4v5.2L13 18.5 8 15.6v-5.2L13 7.5Z" fill="#EEF3FF"/>
+      </svg>
+      detailingrv
+    </a>
+    <nav class="nav" aria-label="Розділи">
+      <a href="#polish">Полірування</a>
+      <a href="#ceramic">Кераміка</a>
+      <a href="#ppf">Плівка</a>
+      <a href="#works">Роботи</a>
+    </nav>
+    <a class="phone" href="tel:+380670002407">067 000 24 07</a>
+  </header>
+
+  <div class="copy">
+    <h1>
+      <span class="row"><span>Три мікрони лаку</span></span>
+      <span class="row"><span class="thin">між тьмяним і дзеркальним</span></span>
+    </h1>
+    <p class="lead">
+      Детейлінг-студія в Рівному: полірування, кераміка, антигравійна плівка.
+      Перед роботою міряємо товщину лаку на кожній деталі — <b>і чесно кажемо, якщо полірувати вже нічого.</b>
+    </p>
+    <div class="actions">
+      <a class="cta" href="#book">Записатися на огляд<small>Заміри безкоштовно, 20 хвилин</small></a>
+      <a class="ghost" href="#works">Подивитися роботи</a>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="hint" id="hint"><i aria-hidden="true"></i><span id="hintText">Поведіть курсором по капоту — це і є полірування</span></div>
+    <div class="meter" id="meter" aria-live="polite">
+      <div class="val"><span id="meterLabel">Відполіровано</span><strong id="meterVal">0%</strong></div>
+      <div class="bar"><div id="meterBar"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="pad" id="pad" aria-hidden="true"><div class="orbit"><div class="disc"></div></div><span class="dot"></span></div>
+
+<script>
+(() => {
+  const hero = document.getElementById('hero');
+  const cv = document.getElementById('paint');
+  const pad = document.getElementById('pad');
+  const hint = document.getElementById('hint');
+  const hintText = document.getElementById('hintText');
+  const meter = document.getElementById('meter');
+  const meterVal = document.getElementById('meterVal');
+  const meterBar = document.getElementById('meterBar');
+  const meterLabel = document.getElementById('meterLabel');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarse = matchMedia('(pointer: coarse)').matches;
+  if (coarse) hintText.textContent = 'Проведіть пальцем по капоту — це і є полірування';
+
+  /* ---------- маска «відполірованості» ---------- */
+  const mask = document.createElement('canvas');
+  const mctx = mask.getContext('2d', { willReadFrequently: true });
+  function sizeMask() {
+    const r = hero.getBoundingClientRect();
+    const w = 384, h = Math.max(120, Math.round(384 * r.height / r.width));
+    const old = mask.width ? mctx.getImageData(0, 0, mask.width, mask.height) : null;
+    const tmp = old ? Object.assign(document.createElement('canvas'), { width: mask.width, height: mask.height }) : null;
+    if (tmp) tmp.getContext('2d').putImageData(old, 0, 0);
+    mask.width = w; mask.height = h;
+    mctx.fillStyle = '#000'; mctx.fillRect(0, 0, w, h);
+    if (tmp) mctx.drawImage(tmp, 0, 0, w, h);
+    maskDirty = true;
+  }
+  let maskDirty = true;
+
+  function dab(x, y, rCss) {
+    const r = hero.getBoundingClientRect();
+    const sx = mask.width / r.width;
+    const mx = x * sx, my = y * sx, rad = rCss * sx;
+    const g = mctx.createRadialGradient(mx, my, 0, mx, my, rad);
+    g.addColorStop(0, 'rgba(255,255,255,.22)');
+    g.addColorStop(.6, 'rgba(255,255,255,.12)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    mctx.fillStyle = g;
+    mctx.beginPath(); mctx.arc(mx, my, rad, 0, Math.PI * 2); mctx.fill();
+    maskDirty = true;
+  }
+  function stroke(x0, y0, x1, y1, rCss) {
+    const d = Math.hypot(x1 - x0, y1 - y0);
+    const n = Math.max(1, Math.ceil(d / (rCss * .25)));
+    for (let i = 1; i <= n; i++) dab(x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n, rCss);
+  }
+  const brush = () => (innerWidth < 640 ? 52 : 70);
+
+  /* ---------- лічильник ---------- */
+  let finished = false;
+  function measure() {
+    const d = mctx.getImageData(0, 0, mask.width, mask.height).data;
+    let s = 0, n = 0;
+    for (let i = 0; i < d.length; i += 16) { s += d[i] / 255; n++; }
+    const pct = Math.min(100, Math.round((s / n) / .7 * 100));
+    meterVal.textContent = pct + '%';
+    meterBar.style.width = pct + '%';
+    if (pct >= 100 && !finished) {
+      finished = true;
+      meter.classList.add('done');
+      meterLabel.textContent = 'Отак виглядає лак після нас';
+      hintText.textContent = 'Запишіться — зробимо те саме з вашим авто';
+    }
+  }
+  setInterval(() => { if (maskDirty) measure(); }, 350);
+
+  /* ---------- курсор-машинка ---------- */
+  let last = null, spinT;
+  function movePad(x, y) {
+    pad.style.transform = `translate(${x}px, ${y}px)`;
+    pad.classList.add('on', 'spin');
+    clearTimeout(spinT);
+    spinT = setTimeout(() => pad.classList.remove('spin'), 220);
+  }
+  let parX = 0, parY = 0, tParX = 0, tParY = 0, intro = true;
+
+  hero.addEventListener('pointermove', e => {
+    if (intro) return;
+    const r = hero.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    tParX = x / r.width - .5; tParY = y / r.height - .5;
+    const overLink = e.target.closest('a');
+    if (e.pointerType === 'mouse') {
+      pad.style.opacity = overLink ? '0' : '';
+      movePad(e.clientX, e.clientY);
+    } else if (e.pointerType !== 'mouse') {
+      movePad(e.clientX, e.clientY);
+    }
+    if (!overLink && (e.pointerType === 'mouse' || e.buttons || e.pressure > 0)) {
+      if (last) stroke(last.x, last.y, x, y, brush()); else dab(x, y, brush());
+      last = { x, y };
+    } else last = null;
+  });
+  hero.addEventListener('pointerleave', () => { last = null; pad.classList.remove('on'); });
+  hero.addEventListener('pointerup', e => { last = null; if (e.pointerType !== 'mouse') pad.classList.remove('on'); });
+
+  /* ---------- вступ: машинка сама робить «50/50» ---------- */
+  function runIntro() {
+    const r = hero.getBoundingClientRect();
+    const mobile = r.width < 640;
+    const x0 = mobile ? r.width * .1 : r.width * .62, x1 = mobile ? r.width * .9 : r.width * .94;
+    const y0 = mobile ? r.height * .1 : r.height * .14, y1 = mobile ? r.height * .32 : r.height * .58;
+    const rows = mobile ? 3 : 4;
+    const pts = [];
+    for (let i = 0; i < rows; i++) {
+      const y = y0 + (y1 - y0) * i / (rows - 1);
+      pts.push(i % 2 ? [x1, y] : [x0, y], i % 2 ? [x0, y] : [x1, y]);
+    }
+    if (reduce) {
+      for (let i = 1; i < pts.length; i++) stroke(...pts[i - 1], ...pts[i], brush());
+      for (let i = 1; i < pts.length; i++) stroke(...pts[i - 1], ...pts[i], brush());
+      endIntro(); return;
+    }
+    const dur = 2600, t0 = performance.now() + 700;
+    let prev = null;
+    function step(now) {
+      const t = Math.min(1, Math.max(0, (now - t0) / dur));
+      if (now < t0) return requestAnimationFrame(step);
+      const f = t * (pts.length - 1), i = Math.min(pts.length - 2, Math.floor(f)), k = f - i;
+      const e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      const x = pts[i][0] + (pts[i + 1][0] - pts[i][0]) * e;
+      const y = pts[i][1] + (pts[i + 1][1] - pts[i][1]) * e + Math.sin(now / 90) * 6;
+      if (prev) { stroke(prev[0], prev[1], x, y, brush()); stroke(prev[0], prev[1], x, y, brush()); }
+      prev = [x, y];
+      movePad(x + r.left, y + r.top);
+      if (t < 1) requestAnimationFrame(step);
+      else { pad.classList.remove('on'); endIntro(); }
+    }
+    requestAnimationFrame(step);
+  }
+  function endIntro() { intro = false; hint.classList.add('show'); }
+
+  /* ---------- WebGL: відображення LED-стелі в лаку ---------- */
+  const gl = cv.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+  sizeMask();
+  addEventListener('resize', () => { sizeMask(); resize(); });
+
+  if (!gl) { runIntro(); return; }
+
+  const vs = `attribute vec2 a;varying vec2 vUv;void main(){vUv=a*.5+.5;gl_Position=vec4(a,0.,1.);}`;
+  const fs = `
+  precision highp float;
+  varying vec2 vUv;
+  uniform vec2 uRes; uniform float uTime; uniform vec2 uPar; uniform float uPortrait;
+  uniform sampler2D uMask;
+
+  float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+  float h1(float n){return fract(sin(n)*43758.5453);}
+  float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+    return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+1.),f.x),f.y);}
+
+  float hexEdge(vec2 p){
+    const vec2 s=vec2(1.,1.7320508);
+    vec4 hc=floor(vec4(p,p-vec2(.5,1.))/s.xyxy)+.5;
+    vec4 h=vec4(p-hc.xy*s,p-(hc.zw+.5)*s);
+    vec2 g=dot(h.xy,h.xy)<dot(h.zw,h.zw)?h.xy:h.zw;
+    g=abs(g);
+    return .5-max(dot(g,s*.5),g.x);
+  }
+
+  float swirls(vec2 p, vec2 c, float seed){
+    vec2 d=p-c; float r=length(d); float a=atan(d.y,d.x);
+    float t=r*300.; float k=floor(t);
+    float seg=noise(vec2(a*(3.+h1(k+seed)*7.)+h1(k*1.3+seed)*20.,k*.37));
+    float vis=smoothstep(.58,.72,seg);
+    float ln=pow(1.-abs(fract(t)-.5)*2.,8.);
+    return vis*ln*(.4+.6*h1(k+seed*3.))*smoothstep(.9,.05,r);
+  }
+
+  void main(){
+    vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;
+    float m=texture2D(uMask,vUv).r;
+
+    // лак: дзеркальна поверхня капота, у ній — шестикутна LED-стеля
+    vec2 pp=p+uPar*vec2(.03,.02);
+    float y=mix(pp.y, pp.y*.85+.08, uPortrait);
+    float depth=1./(.66-y*.95);
+    float bend=pp.x*pp.x;
+    vec2 q=vec2(pp.x*depth*(1.15+.25*bend), depth*1.7 + bend*1.2);
+    q+= (vec2(noise(p*55.),noise(p*55.+7.))-.5)*.012*depth;   // апельсинова кірка лаку
+    q+= vec2(uTime*.035+uPar.x*.5, uPar.y*.25);
+    q*=1.25;
+
+    float e=hexEdge(q);
+    float far=smoothstep(7.,2.2,depth);
+    float diag=dot(p,vec2(.78,.62));
+    float region=mix(smoothstep(-.45,.35,diag+.05), smoothstep(-.2,.35,p.y), uPortrait)*far;
+
+    float w=.022+.003*depth;
+    float lineSharp=1.-smoothstep(w*.55,w,e);
+    float glowSharp=exp(-e*14.)*.35;
+    float lightClean=(lineSharp*1.15+glowSharp)*region;
+    float lightDirty=(exp(-e*4.5)*.42+.05)*region;
+
+    vec3 paint=mix(vec3(.012,.025,.07),vec3(.05,.10,.24),smoothstep(-.6,.6,p.y+.35*p.x));
+    float sheen=exp(-pow((p.y-.05-.28*p.x*p.x+.1*p.x)*3.2,2.))*.22;
+    vec3 sheenC=vec3(.35,.5,.95)*sheen;
+
+    float fl=pow(hash(floor(gl_FragCoord.xy*.7)+floor(uTime*3.)),90.)*.6*(.15+region);
+    vec3 led=vec3(.93,.96,1.);
+
+    vec3 clean=paint+sheenC+led*lightClean+vec3(.6,.7,1.)*fl;
+
+    float sw=swirls(p,vec2(.42,.22),1.)+swirls(p,vec2(-.1,.36),5.)*.7+swirls(p,vec2(.75,-.15),9.)*.6;
+    vec3 dull=paint*1.1+vec3(.022,.027,.04);
+    vec3 dirty=dull+sheenC*.45+led*lightDirty*.55+vec3(.85,.9,1.)*sw*(lightDirty*2.4+.04);
+    dirty+=vec3(.03,.033,.042)*(noise(p*3.+uTime*.02)*.5+.5);
+
+    vec3 col=mix(dirty,clean,smoothstep(.05,.95,m));
+    float residue=smoothstep(.02,.35,m)*smoothstep(.95,.45,m);
+    col+=vec3(.12,.13,.16)*residue*(.4+lightDirty);
+
+    col*=1.-.35*dot(vUv-.5,vUv-.5)*2.;
+    col=col/(1.+col*.25);
+    gl_FragColor=vec4(pow(col,vec3(.92)),1.);
+  }`;
+  function sh(t, s) { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o);
+    if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(o)); return o; }
+  const pr = gl.createProgram();
+  gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(pr); gl.useProgram(pr);
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  const aLoc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(aLoc); gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
+  const U = n => gl.getUniformLocation(pr, n);
+  const uRes = U('uRes'), uTime = U('uTime'), uPar = U('uPar'), uPortrait = U('uPortrait');
+  const tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 1.75);
+    const r = hero.getBoundingClientRect();
+    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+    gl.viewport(0, 0, cv.width, cv.height);
+    gl.uniform2f(uRes, cv.width, cv.height);
+    gl.uniform1f(uPortrait, r.width / r.height < .9 ? 1 : 0);
+  }
+  resize();
+
+  let visible = true;
+  new IntersectionObserver(([en]) => visible = en.isIntersecting).observe(hero);
+  const start = performance.now();
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (!visible) return;
+    if (maskDirty) { gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, gl.LUMINANCE, gl.UNSIGNED_BYTE, mask); maskDirty = false; }
+    parX += (tParX - parX) * .05; parY += (tParY - parY) * .05;
+    gl.uniform1f(uTime, reduce ? 0 : (now - start) / 1000);
+    gl.uniform2f(uPar, parX, -parY);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+  requestAnimationFrame(frame);
+  runIntro();
+})();
+</script>
 </body>
 </html>
