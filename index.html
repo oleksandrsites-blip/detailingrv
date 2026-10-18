@@ -140,7 +140,7 @@
   .drl{height:1.3%;border-radius:50%;background:#fff;filter:blur(5px);box-shadow:0 0 30px 10px rgba(255,255,255,.45)}
   .d1{left:13%;width:15%;top:69.2%;transform:rotate(6deg)}
   .d2{left:70%;width:15%;top:69.2%;transform:rotate(-6deg)}
-  .bay::after{ /* фото м'яко переходить у чорне */
+  .bay::after{ /* фото м’яко переходить у чорне */
     content:"";position:absolute;inset:0;pointer-events:none;
     background:
       linear-gradient(90deg, var(--black) 0%, rgba(11,12,14,0) 22%),
@@ -632,6 +632,44 @@
     .st-n{transition:none}
   }
 
+  /* ================= БЛОК 6: відгуки ================= */
+  .rv-list{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:clamp(16px, 1.6vw, 24px)}
+  .rv-card{
+    display:flex;flex-direction:column;
+    background:var(--surface);border:1px solid var(--hair);border-radius:8px;
+    padding:clamp(24px, 2.4vw, 36px);
+  }
+  .rv-meta{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-bottom:20px;margin-bottom:26px;border-bottom:1px solid var(--hair)}
+  .rv-meta dt{font-size:12px;color:var(--grey);margin-bottom:5px}
+  .rv-meta dd{font-size:15px;font-weight:600;letter-spacing:-.01em;line-height:1.35}
+  .rv-card blockquote{margin:0}
+  .rv-pull{font-size:clamp(21px, 1.75vw, 26px);font-weight:600;letter-spacing:-.03em;line-height:1.25;margin-bottom:18px}
+  .rv-text{font-size:15px;line-height:1.65;color:var(--grey)}
+  .rv-name{display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:28px;font-size:15px;font-weight:700}
+  .rv-name::before{content:"";width:22px;height:2px;border-radius:2px;background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 18px rgba(228,246,242,.6)}
+  .rv-dots{display:none}
+
+  @media (max-width:1100px) and (orientation:landscape){
+    .rv-pull{font-size:20px}
+  }
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .rv-list{
+      display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;
+      margin:0 calc(var(--gut) * -1);padding:0 var(--gut);scroll-padding:0 var(--gut);
+      scrollbar-width:none;-webkit-overflow-scrolling:touch;
+    }
+    .rv-list::-webkit-scrollbar{display:none}
+    .rv-card{flex:0 0 min(86%, 420px);scroll-snap-align:start;padding:24px 22px}
+    .rv-pull{font-size:21px}
+    .rv-dots{display:flex;justify-content:center;gap:8px;margin-top:22px}
+    .rv-dots button{
+      all:unset;cursor:pointer;width:26px;height:3px;border-radius:3px;background:#2A2B2F;position:relative;
+      transition:background .3s, box-shadow .3s;
+    }
+    .rv-dots button::after{content:"";position:absolute;inset:-12px -4px}
+    .rv-dots button[aria-current="true"]{background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 20px rgba(228,246,242,.55)}
+  }
+
   @media (prefers-reduced-motion:reduce){
     .js .dark{animation:none;opacity:0}
     .js .tube{animation:none;opacity:.32}
@@ -691,7 +729,7 @@
 <section class="sec" id="problems" aria-labelledby="problems-h">
   <div class="pr-head">
     <h2 class="h2 rv" id="problems-h"><span class="ln"><span>Не знаєте, яка послуга потрібна?</span></span><span class="ln"><span class="soft">Почніть із проблеми</span></span></h2>
-    <p class="pr-lead fd" style="--d:.15s">Розбиратися в детейлінгу не обов'язково. Оберіть, що вас не влаштовує, і подивіться, як ми це вирішуємо. Точний обсяг робіт визначимо після оцінки авто.</p>
+    <p class="pr-lead fd" style="--d:.15s">Розбиратися в детейлінгу не обов’язково. Оберіть, що вас не влаштовує, і подивіться, як ми це вирішуємо. Точний обсяг робіт визначимо після оцінки авто.</p>
   </div>
   <div class="pr-body">
     <ul class="pr-list" id="prList">
@@ -712,7 +750,7 @@
       <li class="pr-item fd" style="--d:0.12s">
         <button class="pr-btn" id="pr-btn-2" aria-expanded="false" aria-controls="prStage" data-i="2">
           <span class="pr-t">Хочете захистити кузов</span>
-          <span class="pr-d"><span>Нове або щойно відполіроване авто, і не хочеться, щоб з'являлися сколи та подряпини.</span></span>
+          <span class="pr-d"><span>Нове або щойно відполіроване авто, і не хочеться, щоб з’являлися сколи та подряпини.</span></span>
         </button>
         <div class="pr-slot"></div>
       </li>
@@ -921,6 +959,45 @@
   </div>
 </section>
 
+
+<section class="sec" id="reviews" aria-labelledby="reviews-h">
+  <div class="pr-head">
+    <h2 class="h2 rv" id="reviews-h"><span class="ln"><span>Що кажуть клієнти</span></span><span class="ln"><span class="soft">після детейлінгу</span></span></h2>
+    <p class="pr-lead fd" style="--d:.15s">Три різні задачі: полірування з керамікою, хімчистка салону й повний детейлінг перед продажем.</p>
+  </div>
+  <div class="rv-list" id="rvList">
+    <article class="rv-card fd" style="--d:0.0s" aria-label="Відгук: Олександр Шевчук">
+      <dl class="rv-meta"><div><dt>Авто</dt><dd>BMW 5 Series</dd></div><div><dt>Послуга</dt><dd>Полірування + кераміка</dd></div></dl>
+      <blockquote>
+        <p class="rv-pull">«Колір став глибший, з’явився нормальний блиск.»</p>
+        <p class="rv-text">Давно хотів привести кузов до ладу: на сонці дуже кидались в очі дрібні подряпини й павутинка. Думав, результат буде слабший, але після полірування машина реально виглядає набагато свіжіше. Окремий плюс — перед роботою все пояснили й не намагались додати купу зайвих послуг.</p>
+      </blockquote>
+      <p class="rv-name">Олександр Шевчук</p>
+    </article>
+    <article class="rv-card fd" style="--d:0.1s" aria-label="Відгук: Ірина Кравчук">
+      <dl class="rv-meta"><div><dt>Авто</dt><dd>Volkswagen Tiguan</dd></div><div><dt>Послуга</dt><dd>Хімчистка салону</dd></div></dl>
+      <blockquote>
+        <p class="rv-pull">«Перше враження: нарешті знову чиста машина.»</p>
+        <p class="rv-text">Салон давно просив хімчистку, особливо сидіння: плями, пил у стиках і неприємний запах, який звичайним прибиранням не забирався. Після роботи все акуратно, без розводів і без різкого запаху хімії. Я задоволена!</p>
+      </blockquote>
+      <p class="rv-name">Ірина Кравчук</p>
+    </article>
+    <article class="rv-card fd" style="--d:0.2s" aria-label="Відгук: Андрій Шолудько">
+      <dl class="rv-meta"><div><dt>Авто</dt><dd>Mercedes-Benz GLC</dd></div><div><dt>Послуга</dt><dd>Full Detailing</dd></div></dl>
+      <blockquote>
+        <p class="rv-pull">«Після роботи я вже й сам не дуже хотів його продавати.»</p>
+        <p class="rv-text">Робив детейлінг перед продажем авто. Не хотів витрачати гроші на все підряд, тому сподобалось, що спершу подивились машину й сказали, що реально варто робити. Кузов освіжили, салон чистий, і навіть у дрібницях видно, що не поспішали.</p>
+      </blockquote>
+      <p class="rv-name">Андрій Шолудько</p>
+    </article>
+  </div>
+  <div class="rv-dots" id="rvDots" aria-label="Відгуки">
+    <button type="button" aria-label="Відгук 1" aria-current="true"></button>
+    <button type="button" aria-label="Відгук 2"></button>
+    <button type="button" aria-label="Відгук 3"></button>
+  </div>
+</section>
+
 <script>
 /* легкий паралакс фото за курсором (тільки мишка, тільки десктоп) */
 (() => {
@@ -941,7 +1018,7 @@
 </script>
 
 <script>
-/* меню: фон з'являється при прокрутці */
+/* меню: фон з’являється при прокрутці */
 (() => {
   const top = document.querySelector('.top');
   const on = () => top.classList.toggle('scrolled', scrollY > 30);
@@ -971,7 +1048,7 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let cur = 0, solT = null, photoT = null;
 
-  // фото «вмикається», коли блок з'являється на екрані; заразом підвантажуємо всі фото
+  // фото «вмикається», коли блок з’являється на екрані; заразом підвантажуємо всі фото
   new IntersectionObserver(([en], ob) => {
     if (!en.isIntersecting) return;
     stage.classList.add('lit');
@@ -1047,7 +1124,7 @@
 </script>
 
 <script>
-/* комплекси: фото «вмикаються», коли рядок з'являється на екрані */
+/* комплекси: фото «вмикаються», коли рядок з’являється на екрані */
 (() => {
   const rows = document.querySelectorAll('.pk');
   if (!('IntersectionObserver' in window)) { rows.forEach(r => r.classList.add('lit')); return; }
@@ -1236,7 +1313,7 @@
   const stacked = matchMedia('(max-width:760px), (max-width:1100px) and (orientation:portrait)');
   if (!('IntersectionObserver' in window)) { steps.forEach(s => s.classList.add('lit')); return; }
   if (stacked.matches) {
-    // телефон: кожна лампа вмикається, коли крок з'являється на екрані
+    // телефон: кожна лампа вмикається, коли крок з’являється на екрані
     steps.forEach(s => s.style.setProperty('--d', '0s'));
     const io = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('lit'); io.unobserve(e.target); }
@@ -1248,6 +1325,29 @@
       steps.forEach(s => s.classList.add('lit')); ob.disconnect();
     }, { threshold: .45 }).observe(row);
   }
+})();
+</script>
+
+<script>
+/* відгуки на телефоні: індикатор-лампи під каруселлю */
+(() => {
+  const list = document.getElementById('rvList');
+  const dots = [...document.querySelectorAll('#rvDots button')];
+  const cards = [...list.children];
+  let t = null;
+  list.addEventListener('scroll', () => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      const x = list.scrollLeft;
+      let best = 0, bd = Infinity;
+      cards.forEach((c, i) => { const d = Math.abs(c.offsetLeft - list.offsetLeft - x - parseFloat(getComputedStyle(list).paddingLeft) + parseFloat(getComputedStyle(list).paddingLeft)); if (d < bd) { bd = d; best = i; } });
+      if (list.scrollLeft + list.clientWidth >= list.scrollWidth - 4) best = cards.length - 1;
+      dots.forEach((d, i) => d.setAttribute('aria-current', i === best ? 'true' : 'false'));
+    }, 60);
+  }, { passive: true });
+  dots.forEach((d, i) => d.addEventListener('click', () => {
+    list.scrollTo({ left: cards[i].offsetLeft - cards[0].offsetLeft, behavior: 'smooth' });
+  }));
 })();
 </script>
 </body>
