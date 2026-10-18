@@ -6,14 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>detailingrv — детейлінг авто в Рівному</title>
 <meta name="description" content="Детейлінг авто в Рівному під стан саме вашої машини: полірування, кераміка, хімчистка салону, PPF-плівка. Оцінка авто за фото.">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0B0C0E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --black:#000;
+    --black:#0B0C0E;        /* obsidian graphite — основний фон */
+    --surface:#131417;      /* панелі й картки, на півтону світліші */
     --white:#F3F3F1;
     --grey:#9A9A96;
     --hair:rgba(243,243,241,.14);
@@ -52,7 +53,7 @@
   }
   .top.scrolled{
     height:64px;
-    background:rgba(0,0,0,.72);
+    background:rgba(11,12,14,.74);
     backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
     border-bottom-color:var(--hair);
   }
@@ -112,7 +113,7 @@
     grid-column:2;grid-row:1 / -1;
     position:relative;overflow:hidden;
     container-type:size;
-    background:#000;
+    background:var(--black);
   }
   .frame{
     position:absolute;left:50%;bottom:0;
@@ -121,8 +122,9 @@
     transform:translate(-50%, 6%);
     will-change:transform;
   }
-  .frame img{position:absolute;inset:0;width:100%;height:100%;display:block}
-  .dark{position:absolute;inset:0;background:#000;pointer-events:none}
+  .frame img{position:absolute;inset:0;width:100%;height:100%;display:block;mix-blend-mode:lighten} /* чорні ділянки фото = колір фону */
+  .frame{background:var(--black)}
+  .dark{position:absolute;inset:0;background:var(--black);pointer-events:none}
   /* світіння ламп і ходових вогнів — точно поверх фото */
   .tube,.drl{position:absolute;pointer-events:none;mix-blend-mode:screen;opacity:0}
   .tube{
@@ -141,8 +143,8 @@
   .bay::after{ /* фото м'яко переходить у чорне */
     content:"";position:absolute;inset:0;pointer-events:none;
     background:
-      linear-gradient(90deg, #000 0%, rgba(0,0,0,0) 22%),
-      linear-gradient(0deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 16%);
+      linear-gradient(90deg, var(--black) 0%, rgba(11,12,14,0) 22%),
+      linear-gradient(0deg, rgba(11,12,14,.6) 0%, rgba(11,12,14,0) 16%);
   }
 
   /* ================= ВСТУП: у боксі вмикається світло ================= */
@@ -203,7 +205,7 @@
     .logo{font-size:18px}
     .tel{
       font-size:13px;font-weight:600;padding:9px 14px;border-radius:40px;
-      background:rgba(0,0,0,.45);border:1px solid var(--hair);
+      background:rgba(11,12,14,.5);border:1px solid var(--hair);
       backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
     }
     /* фото займає весь вільний простір над текстом */
@@ -211,8 +213,8 @@
     .frame{transform:translate(-50%, 20%)}
     .bay::after{
       background:
-        linear-gradient(180deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.4) 12%, rgba(0,0,0,0) 26%),
-        linear-gradient(0deg, #000 0%, rgba(0,0,0,.7) 14%, rgba(0,0,0,0) 40%);
+        linear-gradient(180deg, rgba(11,12,14,.85) 0%, rgba(11,12,14,.4) 12%, rgba(11,12,14,0) 26%),
+        linear-gradient(0deg, var(--black) 0%, rgba(11,12,14,.7) 14%, rgba(11,12,14,0) 40%);
     }
     .copy{
       flex:none;order:1;
@@ -294,7 +296,7 @@
   .pr-slot:empty{display:none}
 
   .pr-stage{
-    position:relative;overflow:hidden;border-radius:6px;background:#0B0B0B;
+    position:relative;overflow:hidden;border-radius:6px;background:var(--surface);
     height:clamp(540px, 74vh, 700px);
     isolation:isolate;
   }
@@ -320,9 +322,9 @@
   @keyframes prsweep{0%{top:0;opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
   .pr-photos::after{
     content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
-    background:linear-gradient(0deg, #0B0B0B 0%, rgba(11,11,11,.6) 22%, rgba(11,11,11,0) 50%);
+    background:linear-gradient(0deg, var(--surface) 0%, rgba(19,20,23,.6) 22%, rgba(19,20,23,0) 50%);
   }
-  .pr-dark{position:absolute;inset:0;z-index:5;background:#000;pointer-events:none;opacity:0}
+  .pr-dark{position:absolute;inset:0;z-index:5;background:var(--black);pointer-events:none;opacity:0}
   .js .pr-stage:not(.lit) .pr-dark{opacity:1}
   .js .pr-stage.lit .pr-dark{animation:prlights 1.3s steps(1,end) forwards}
   @keyframes prlights{0%{opacity:1}10%{opacity:.5}16%{opacity:1}26%{opacity:.35}32%{opacity:.8}46%{opacity:.15}52%{opacity:.4}64%{opacity:0}100%{opacity:0}}
@@ -360,7 +362,7 @@
     .pr-slot{padding:0 0 26px}
     .pr-stage{height:auto;border-radius:6px}
     .pr-photos{position:relative;aspect-ratio:4 / 3}
-    .pr-photos::after{background:linear-gradient(0deg, #0B0B0B 0%, rgba(11,11,11,0) 45%)}
+    .pr-photos::after{background:linear-gradient(0deg, var(--surface) 0%, rgba(19,20,23,0) 45%)}
     .pr-photos{height:auto}
     .pr-sol{position:relative;padding:4px 20px 24px;margin-top:-34px}
     .pr-sol h3{font-size:clamp(26px, 7vw, 34px)}
@@ -393,7 +395,7 @@
     background:linear-gradient(90deg, rgba(228,246,242,0), var(--tube) 18%, var(--tube) 82%, rgba(228,246,242,0));
     box-shadow:0 0 14px rgba(228,246,242,.8), 0 0 50px rgba(228,246,242,.35);
   }
-  .pk-ph{position:relative;aspect-ratio:4 / 3;border-radius:6px;overflow:hidden;background:#0B0B0B}
+  .pk-ph{position:relative;aspect-ratio:4 / 3;border-radius:6px;overflow:hidden;background:var(--surface)}
   .pk-ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.08) brightness(.62);transition:filter .6s ease}
   .pk.featured .pk-ph img,.pk:hover .pk-ph img{filter:grayscale(1) contrast(1.08) brightness(.92)}
   .js .pk .pk-ph{clip-path:inset(0 0 100% 0)}
@@ -443,8 +445,9 @@
     .pk-list{border-top:0;display:grid;gap:16px}
     .pk,.pk.featured{
       display:block;margin:0;padding:0 0 24px;border:1px solid var(--hair);border-radius:8px;overflow:hidden;
+      background:var(--surface);
     }
-    .pk.featured{border-color:rgba(228,246,242,.35)}
+    .pk.featured{border-color:rgba(228,246,242,.35);background:linear-gradient(180deg, rgba(228,246,242,.07), rgba(228,246,242,0) 55%), var(--surface)}
     .pk.featured::before{left:10%;right:10%;top:0;z-index:3}
     .pk-tag{margin:0 0 0 .2em;transform:translateY(-.3em)}
     .pk-ph{aspect-ratio:16 / 10;border-radius:0;margin-bottom:22px}
