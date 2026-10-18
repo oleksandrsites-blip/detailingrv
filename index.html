@@ -463,6 +463,96 @@
     .js .pk.lit .pk-ph,.js .pk.lit .pk-ph img{animation:none}
   }
 
+  /* ================= БЛОК 4: до / після ================= */
+  .ba{
+    --x:50%;
+    position:relative;width:100%;aspect-ratio:16 / 8.6;max-height:calc(100svh - 150px);min-height:420px;
+    border-radius:6px;overflow:hidden;background:var(--surface);
+    cursor:none;user-select:none;-webkit-user-select:none;touch-action:pan-y;
+    isolation:isolate;
+  }
+  .ba-scene{position:absolute;inset:0;z-index:0}
+  .ba-scene.on{z-index:1}
+  .ba-scene:not(.on):not(.enter){visibility:hidden}
+  .ba-scene.enter{z-index:2;animation:prwipe .95s cubic-bezier(.65,0,.25,1) forwards}
+  .ba-scene.enter .ba-after img{animation:pkflash 1.5s cubic-bezier(.2,.7,.2,1) both}
+  .ba-layer{position:absolute;inset:0}
+  .ba-layer img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+  .ba-after img{filter:grayscale(1) contrast(1.14) brightness(.96)}
+  .ba-before{clip-path:inset(0 calc(100% - var(--x)) 0 0)}
+  /* «до»: тьмяний лак, серпанок, туман — залежно від виду робіт */
+  .ba-before img{filter:grayscale(1) contrast(.64) brightness(1.02) blur(.3px)}
+  .t-lights .ba-before img{filter:grayscale(1) contrast(.55) brightness(1.05) blur(1.4px)}
+  .t-interior .ba-before img{filter:grayscale(1) contrast(.7) brightness(.86)}
+  .ba-before .haze{position:absolute;inset:0;mix-blend-mode:screen;background:linear-gradient(160deg, rgba(200,200,196,.16), rgba(160,160,156,.08))}
+  .t-lights .ba-before .haze{background:radial-gradient(48% 42% at 52% 46%, rgba(235,235,230,.38), rgba(235,235,230,0) 72%), linear-gradient(160deg, rgba(200,200,196,.16), rgba(160,160,156,.08))}
+  .ba-before canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+  .ba-line{
+    position:absolute;top:0;bottom:0;left:var(--x);z-index:5;width:2px;margin-left:-1px;pointer-events:none;
+    background:var(--tube);box-shadow:0 0 12px 1px var(--tube),0 0 46px 6px rgba(228,246,242,.45);
+  }
+  .ba-line::before{ /* світло від лампи на кузові */
+    content:"";position:absolute;top:0;bottom:0;left:-110px;width:220px;
+    background:linear-gradient(90deg, rgba(228,246,242,0), rgba(228,246,242,.09) 50%, rgba(228,246,242,0));
+    mix-blend-mode:screen;
+  }
+  .ba-grip{
+    position:absolute;z-index:6;left:var(--x);top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;
+    border-radius:50%;outline:none;
+  }
+  .ba-grip:focus-visible{box-shadow:0 0 0 2px var(--white)}
+  .ba-tag{
+    position:absolute;z-index:6;bottom:22px;left:var(--x);
+    font-size:13px;font-weight:700;letter-spacing:-.005em;white-space:nowrap;
+    padding:8px 13px;border-radius:30px;pointer-events:none;
+    background:rgba(11,12,14,.55);border:1px solid rgba(243,243,241,.16);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    transition:opacity .3s;
+  }
+  .ba-tag.b{transform:translateX(calc(-100% - 16px))}
+  .ba-tag.a{transform:translateX(16px);background:rgba(243,243,241,.92);color:var(--black);border-color:transparent}
+  .js .ba:not(.lit) .ba-line,.js .ba:not(.lit) .ba-tag{opacity:0}
+  .js .ba.lit .ba-line{animation:baflick .7s steps(1,end)}
+  @keyframes baflick{0%{opacity:0}15%{opacity:1}25%{opacity:.15}40%{opacity:1}55%{opacity:.4}70%,100%{opacity:1}}
+
+  .ba-bar{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px 64px;align-items:start;margin-top:28px}
+  .ba-tabs{display:flex;flex-wrap:wrap;gap:8px}
+  .ba-tab{
+    all:unset;box-sizing:border-box;cursor:pointer;position:relative;
+    font-size:15px;font-weight:600;letter-spacing:-.01em;color:#6F6F6C;
+    padding:12px 16px;border-radius:6px;border:1px solid var(--hair);
+    transition:color .25s, border-color .25s, background .25s;
+  }
+  .ba-tab:hover{color:#C9C9C5;border-color:rgba(243,243,241,.3)}
+  .ba-tab[aria-selected="true"]{color:var(--black);background:var(--white);border-color:var(--white)}
+  .ba-tab:focus-visible{outline:2px solid var(--white);outline-offset:3px}
+  .ba-caps{display:grid;grid-template-columns:1fr 1fr;gap:28px;transition:opacity .25s}
+  .ba-caps.out{opacity:0}
+  .ba-cap{font-size:15px;line-height:1.55;color:var(--grey)}
+  .ba-cap b{display:block;font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px}
+  .ba-hint{display:none}
+
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .ba{aspect-ratio:4 / 5;max-height:none;min-height:0;cursor:auto}
+    .ba-tag{bottom:16px;font-size:12px;padding:7px 11px}
+    .ba-tag.b{transform:translateX(calc(-100% - 12px))}
+    .ba-tag.a{transform:translateX(12px)}
+    .ba-hint{
+      display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;
+      font-size:13px;color:var(--grey);transition:opacity .4s;
+    }
+    .ba-hint.gone{opacity:0}
+    .ba-bar{grid-template-columns:1fr;margin-top:22px;gap:22px}
+    .ba-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .ba-tab{text-align:center;padding:14px 10px;font-size:14px}
+    .ba-caps{gap:18px}
+    .ba-layer img{object-position:var(--mpos) !important}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ba-scene.enter,.ba-scene.enter .ba-after img,.js .ba.lit .ba-line{animation:none}
+  }
+
   @media (prefers-reduced-motion:reduce){
     .js .dark{animation:none;opacity:0}
     .js .tube{animation:none;opacity:.32}
@@ -664,6 +754,50 @@
   <p class="pk-note fd">Фінальна вартість залежить від моделі, розміру та стану авто. Не знаєте, який комплекс підійде? <a href="#estimate">Надішліть фото</a>, і ми підкажемо.</p>
 </section>
 
+
+<section class="sec" id="results" aria-labelledby="results-h">
+  <div class="pr-head">
+    <h2 class="h2 rv" id="results-h"><span class="ln"><span>Результат краще бачити,</span></span><span class="ln"><span class="soft">ніж описувати</span></span></h2>
+    <p class="pr-lead fd" style="--d:.15s">Ведіть лампою по фото й порівнюйте: зліва авто до детейлінгу, справа після.</p>
+  </div>
+  <div class="fd" style="--d:.1s">
+    <div class="ba" id="baStage" role="tabpanel" aria-labelledby="ba-tab-polish">
+      <div class="ba-scene t-polish on" data-kind="polish" style="--pos:50% 42%;--mpos:50% 40%">
+        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+      </div>
+      <div class="ba-scene t-interior" data-kind="interior" style="--pos:50% 60%;--mpos:42% 60%">
+        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+      </div>
+      <div class="ba-scene t-lights" data-kind="lights" style="--pos:50% 45%;--mpos:40% 45%">
+        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+      </div>
+      <div class="ba-scene t-complex" data-kind="complex" style="--pos:50% 58%;--mpos:50% 55%">
+        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+      </div>
+      <span class="ba-line" aria-hidden="true"></span>
+      <span class="ba-tag b" aria-hidden="true">До</span><span class="ba-tag a" aria-hidden="true">Після</span>
+      <span class="ba-grip" role="slider" tabindex="0" aria-label="Межа між «до» і «після»" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></span>
+    </div>
+    <p class="ba-hint" id="baHint"><svg width="34" height="10" viewBox="0 0 34 10" fill="none" aria-hidden="true"><path d="M5 1 1 5l4 4M29 1l4 4-4 4M1 5h32" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Ведіть пальцем по фото</p>
+    <div class="ba-bar">
+      <div class="ba-tabs" role="tablist" aria-label="Вид робіт">
+      <button class="ba-tab" role="tab" id="ba-tab-polish" aria-selected="true" aria-controls="baStage" data-i="0">Полірування</button>
+      <button class="ba-tab" role="tab" id="ba-tab-interior" aria-selected="false" aria-controls="baStage" data-i="1" tabindex="-1">Хімчистка салону</button>
+      <button class="ba-tab" role="tab" id="ba-tab-lights" aria-selected="false" aria-controls="baStage" data-i="2" tabindex="-1">Відновлення фар</button>
+      <button class="ba-tab" role="tab" id="ba-tab-complex" aria-selected="false" aria-controls="baStage" data-i="3" tabindex="-1">Комплексний детейлінг</button>
+      </div>
+      <div class="ba-caps" id="baCaps">
+        <p class="ba-cap"><b>До</b><span>Тьмяний лак, павутинка подряпин і сліди від мийок.</span></p>
+        <p class="ba-cap"><b>Після</b><span>Глибокий колір і чисті, дзеркальні відблиски на кузові.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <script>
 /* легкий паралакс фото за курсором (тільки мишка, тільки десктоп) */
 (() => {
@@ -798,6 +932,170 @@
     if (e.isIntersecting) { e.target.classList.add('lit'); io.unobserve(e.target); }
   }), { threshold: .35 });
   rows.forEach(r => io.observe(r));
+})();
+</script>
+
+<script>
+/* до / після */
+(() => {
+  const stage = document.getElementById('baStage');
+  const grip = stage.querySelector('.ba-grip');
+  const tagB = stage.querySelector('.ba-tag.b'), tagA = stage.querySelector('.ba-tag.a');
+  const scenes = [...stage.querySelectorAll('.ba-scene')];
+  const tabs = [...document.querySelectorAll('.ba-tab')];
+  const caps = document.getElementById('baCaps');
+  const hint = document.getElementById('baHint');
+  const CAPS = [["Тьмяний лак, павутинка подряпин і сліди від мийок.", "Глибокий колір і чисті, дзеркальні відблиски на кузові."], ["Плями, пил у стиках і затерта, засалена шкіра.", "Чисті сидіння, пластик і стики, без різкого запаху хімії."], ["Помутніння й жовтизна, світло розсіюється.", "Прозора оптика й свіжий вигляд передньої частини авто."], ["Втомлений вигляд і кузова, і салону, і дрібних деталей.", "Авто доглянуте повністю, від лаку до стиків у салоні."]];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(pointer:fine)').matches;
+  let x = 50, target = 50, raf = null, anim = null, cur = 0, sceneT = null;
+
+  function set(v) {
+    x = Math.max(0, Math.min(100, v));
+    stage.style.setProperty('--x', x + '%');
+    grip.setAttribute('aria-valuenow', Math.round(x));
+    tagB.style.opacity = x < 14 ? 0 : '';
+    tagA.style.opacity = x > 86 ? 0 : '';
+  }
+  // плавне слідування лампи за курсором
+  function follow() {
+    x += (target - x) * .16; set(x);
+    raf = Math.abs(target - x) > .05 ? requestAnimationFrame(follow) : null;
+  }
+  function goTo(v) { cancelAnimationFrame(anim); anim = null; target = Math.max(0, Math.min(100, v)); if (!raf) raf = requestAnimationFrame(follow); }
+  function sweep(from, to, ms) {
+    cancelAnimationFrame(anim); cancelAnimationFrame(raf); raf = null;
+    if (reduce) { target = to; return set(to); }
+    const t0 = performance.now();
+    const step = now => {
+      const t = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - t, 3);
+      set(from + (to - from) * e); target = x;
+      anim = t < 1 ? requestAnimationFrame(step) : null;
+    };
+    anim = requestAnimationFrame(step);
+  }
+  const pct = cx => { const r = stage.getBoundingClientRect(); return (cx - r.left) / r.width * 100; };
+
+  // миша: лампа йде за курсором
+  stage.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') goTo(pct(e.clientX)); });
+  stage.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse') goTo(pct(e.clientX)); });
+  // палець: горизонтальний рух веде лампу, вертикальний — гортає сторінку
+  let sx = 0, sy = 0, lock = null;
+  stage.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; lock = null; }, { passive: true });
+  stage.addEventListener('touchmove', e => {
+    const dx = e.touches[0].clientX - sx, dy = e.touches[0].clientY - sy;
+    if (lock === null && Math.abs(dx) + Math.abs(dy) > 6) lock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+    if (lock === 'x') { e.preventDefault(); cancelAnimationFrame(anim); target = pct(e.touches[0].clientX); set(target); hint.classList.add('gone'); }
+  }, { passive: false });
+  grip.addEventListener('keydown', e => {
+    const st = e.shiftKey ? 10 : 4;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(x - st); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); goTo(x + st); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(100); }
+  });
+
+  /* стан «до»: подряпини-павутинка, пил і плями поверх фото */
+  function texture(scene) {
+    const cv = scene.querySelector('canvas');
+    const r = stage.getBoundingClientRect();
+    if (!r.width) return false;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    cv.width = r.width * dpr; cv.height = r.height * dpr;
+    const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const W = r.width, H = r.height, kind = scene.dataset.kind;
+    let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    if (kind === 'polish' || kind === 'complex') {
+      c.globalCompositeOperation = 'screen';
+      [[W * .58, H * .28, .75], [W * .22, H * .6, .5], [W * .85, H * .72, .45]].forEach(([cx, cy, k]) => {
+        const max = Math.max(W, H) * k;
+        for (let rr = 5; rr < max; rr += 2 + rnd() * 2.2) {
+          const n = 1 + Math.floor(rnd() * 3);
+          for (let j = 0; j < n; j++) {
+            const a0 = rnd() * Math.PI * 2, len = .12 + rnd() * .5;
+            c.strokeStyle = `rgba(240,240,236,${(.05 + rnd() * .17) * (1 - rr / max)})`;
+            c.lineWidth = .5 + rnd() * .55;
+            c.beginPath(); c.arc(cx, cy, rr, a0, a0 + len); c.stroke();
+          }
+        }
+      });
+      for (let j = 0; j < 46; j++) {
+        const x0 = rnd() * W, y0 = rnd() * H, l = 30 + rnd() * 130, a = rnd() * Math.PI;
+        c.strokeStyle = `rgba(240,240,236,${.07 + rnd() * .12})`; c.lineWidth = .6;
+        c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo(x0 + Math.cos(a) * l * .5 + 8, y0 + Math.sin(a) * l * .5, x0 + Math.cos(a) * l, y0 + Math.sin(a) * l); c.stroke();
+      }
+    }
+    if (kind === 'interior' || kind === 'complex') {
+      c.globalCompositeOperation = 'source-over';
+      for (let j = 0; j < (kind === 'interior' ? 30 : 12); j++) {
+        const x0 = rnd() * W, y0 = H * .25 + rnd() * H * .75, rad = 10 + rnd() * 50;
+        const g = c.createRadialGradient(x0, y0, 0, x0, y0, rad);
+        g.addColorStop(0, `rgba(150,145,135,${.14 + rnd() * .14})`);
+        g.addColorStop(.7, `rgba(140,135,125,${.06 + rnd() * .06})`);
+        g.addColorStop(1, 'rgba(140,135,125,0)');
+        c.fillStyle = g; c.beginPath(); c.ellipse(x0, y0, rad, rad * (.55 + rnd() * .5), rnd() * 3, 0, Math.PI * 2); c.fill();
+      }
+    }
+    if (kind === 'lights') { // дрібна сітка тріщинок на пластику фари
+      c.globalCompositeOperation = 'screen';
+      for (let j = 0; j < 260; j++) {
+        const x0 = W * (.2 + rnd() * .65), y0 = H * (.15 + rnd() * .65), l = 4 + rnd() * 16, a = rnd() * Math.PI * 2;
+        c.strokeStyle = `rgba(240,240,236,${.06 + rnd() * .12})`; c.lineWidth = .5;
+        c.beginPath(); c.moveTo(x0, y0); c.lineTo(x0 + Math.cos(a) * l, y0 + Math.sin(a) * l); c.stroke();
+      }
+    }
+    c.globalCompositeOperation = 'source-over';
+    const dust = kind === 'interior' ? 2600 : 1500;
+    for (let j = 0; j < dust; j++) {
+      c.fillStyle = `rgba(225,225,220,${.05 + rnd() * .15})`;
+      const sz = rnd() * 1.6 + .3; c.fillRect(rnd() * W, rnd() * H, sz, sz);
+    }
+    return true;
+  }
+  const drawn = new Set();
+  const ensure = i => { if (!drawn.has(i) && texture(scenes[i])) drawn.add(i); };
+  let rw = 0;
+  addEventListener('resize', () => { const w = stage.clientWidth; if (w !== rw) { rw = w; drawn.clear(); ensure(cur); } });
+
+  function show(i, focus) {
+    if (i === cur) return;
+    tabs.forEach((t, k) => { t.setAttribute('aria-selected', k === i ? 'true' : 'false'); t.tabIndex = k === i ? 0 : -1; });
+    stage.setAttribute('aria-labelledby', tabs[i].id);
+    clearTimeout(sceneT);
+    scenes.forEach(sc => { if (sc.classList.contains('enter')) { scenes.forEach(q => q.classList.remove('on')); sc.classList.add('on'); } sc.classList.remove('enter'); });
+    const next = scenes[i];
+    cur = i; ensure(i);
+    if (reduce) scenes.forEach(sc => sc.classList.toggle('on', sc === next));
+    else {
+      void next.offsetWidth; next.classList.add('enter');
+      sceneT = setTimeout(() => { scenes.forEach(sc => sc.classList.toggle('on', sc === next)); next.classList.remove('enter'); }, 1520);
+    }
+    caps.classList.add('out');
+    setTimeout(() => {
+      const p = caps.querySelectorAll('.ba-cap span'); p[0].textContent = CAPS[i][0]; p[1].textContent = CAPS[i][1];
+      caps.classList.remove('out');
+    }, reduce ? 0 : 220);
+    sweep(92, 50, 1300);
+    if (focus) tabs[i].focus();
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => show(i));
+    t.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); show((cur + 1) % tabs.length, true); }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); show((cur - 1 + tabs.length) % tabs.length, true); }
+    });
+  });
+
+  // перший показ: лампа вмикається і проходить по кадру
+  set(reduce ? 50 : 100);
+  new IntersectionObserver(([en], ob) => {
+    if (!en.isIntersecting) return;
+    ob.disconnect();
+    stage.querySelectorAll('img').forEach(im => im.loading = 'eager');
+    rw = stage.clientWidth; ensure(0);
+    stage.classList.add('lit');
+    setTimeout(() => sweep(100, 50, 1700), reduce ? 0 : 450);
+  }, { threshold: .4 }).observe(stage);
 })();
 </script>
 </body>
