@@ -37,16 +37,24 @@
     height:100vh;height:100svh;min-height:600px;
     display:grid;
     grid-template-columns:minmax(0,1fr) minmax(0,46%);
-    grid-template-rows:auto minmax(0,1fr);
+    grid-template-rows:var(--hh) minmax(0,1fr);
     overflow:hidden;
   }
 
   /* --- шапка --- */
+  .hero{--hh:84px}
   .top{
-    grid-column:1 / -1;grid-row:1;
-    position:relative;z-index:5;
+    position:fixed;left:0;right:0;top:0;z-index:50;
     display:flex;align-items:center;gap:40px;
-    padding:28px var(--gut) 0;
+    height:var(--hh);padding:0 var(--gut);
+    transition:height .35s ease, background .35s ease, border-color .35s ease;
+    border-bottom:1px solid transparent;
+  }
+  .top.scrolled{
+    height:64px;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
+    border-bottom-color:var(--hair);
   }
   .logo{font-size:20px;font-weight:800;letter-spacing:-.04em}
   .nav{display:flex;gap:30px;margin-left:auto;font-size:14px;font-weight:500;color:var(--grey)}
@@ -184,10 +192,12 @@
       display:flex;flex-direction:column;
       height:auto;min-height:100vh;min-height:100svh;
     }
+    .hero{--hh:68px}
     .top{
-      position:absolute;left:0;right:0;top:0;
-      padding:calc(18px + env(safe-area-inset-top)) var(--gut) 0;
+      height:calc(var(--hh) + env(safe-area-inset-top));
+      padding:env(safe-area-inset-top) var(--gut) 0;
     }
+    .top.scrolled{height:calc(58px + env(safe-area-inset-top))}
     .logo{font-size:18px}
     .tel{
       font-size:13px;font-weight:600;padding:9px 14px;border-radius:40px;
@@ -222,6 +232,138 @@
     .lead strong{display:none}
     .lead{margin-bottom:16px}
     .acts{gap:12px}
+  }
+
+
+  /* ================= загальне для секцій ================= */
+  html{scroll-padding-top:72px}
+  .sec{position:relative;padding:clamp(96px, 13vh, 150px) var(--gut)}
+  .h2{
+    font-weight:800;font-size:clamp(38px, 5vw, 80px);line-height:1;letter-spacing:-.045em;
+  }
+  .h2 .ln{display:block;overflow:hidden;padding:.02em 0 .07em;margin-bottom:-.08em}
+  .h2 .ln > span{display:inline-block}
+  .h2 .soft{font-weight:300;color:#CFCFCB;letter-spacing:-.04em}
+  .js .rv .ln > span{transform:translateY(120%);transition:transform 1.1s cubic-bezier(.16,.84,.2,1)}
+  .js .rv .ln:nth-child(2) > span{transition-delay:.1s}
+  .js .rv.in .ln > span{transform:none}
+  .js .fd{opacity:0;transform:translateY(22px);transition:opacity .9s ease var(--d,0s), transform .9s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+  .js .fd.in{opacity:1;transform:none}
+
+  /* ================= БЛОК 2: проблема → рішення ================= */
+  .pr-head{
+    display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px 64px;align-items:end;
+    margin-bottom:clamp(48px, 7vh, 80px);
+  }
+  .pr-lead{font-size:16px;line-height:1.65;color:var(--grey);max-width:46ch;justify-self:end}
+  .pr-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(32px, 5vw, 88px);align-items:start}
+
+  .pr-list{list-style:none;border-top:1px solid var(--hair)}
+  .pr-item{border-bottom:1px solid var(--hair)}
+  .pr-btn{
+    all:unset;box-sizing:border-box;cursor:pointer;display:block;width:100%;
+    position:relative;padding:22px 0 22px 0;
+    transition:padding .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .pr-btn::before{ /* лампа-маркер активного пункту */
+    content:"";position:absolute;left:0;top:calc(22px + .62em);
+    width:0;height:2px;border-radius:2px;background:var(--tube);
+    box-shadow:0 0 10px var(--tube),0 0 22px rgba(228,246,242,.7);
+    font-size:clamp(21px, 2vw, 30px);
+    transition:width .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .pr-btn:focus-visible{outline:2px solid var(--white);outline-offset:4px}
+  .pr-t{
+    display:block;font-size:clamp(21px, 2vw, 30px);font-weight:600;letter-spacing:-.03em;line-height:1.25;
+    color:#5F5F5C;transition:color .3s;
+  }
+  .pr-btn:hover .pr-t{color:#B5B5B1}
+  .pr-btn[aria-expanded="true"]{padding-left:48px}
+  .pr-btn[aria-expanded="true"]::before{width:30px}
+  .pr-btn[aria-expanded="true"] .pr-t{color:var(--white)}
+  .pr-d{
+    display:grid;grid-template-rows:0fr;opacity:0;
+    transition:grid-template-rows .45s ease, opacity .45s ease;
+    font-size:15px;line-height:1.6;color:var(--grey);max-width:44ch;
+  }
+  .pr-d > span{overflow:hidden}
+  .pr-btn[aria-expanded="true"] .pr-d{grid-template-rows:1fr;opacity:1}
+  .pr-btn[aria-expanded="true"] .pr-d > span{padding-top:10px}
+  .pr-slot:empty{display:none}
+
+  .pr-stage{
+    position:relative;overflow:hidden;border-radius:6px;background:#0B0B0B;
+    height:clamp(540px, 74vh, 700px);
+    isolation:isolate;
+  }
+  .pr-photos{position:absolute;left:0;right:0;top:0;height:58%;overflow:hidden}
+  .pr-ph{position:absolute;inset:0;opacity:0;z-index:0}
+  .pr-ph.on{opacity:1;z-index:1}
+  .pr-ph.enter{z-index:2;animation:prwipe .75s cubic-bezier(.6,0,.2,1) forwards}
+  @keyframes prwipe{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+  .pr-ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.08) brightness(.88)}
+  .pr-sweep{
+    position:absolute;left:-5%;right:-5%;top:0;height:3px;z-index:3;pointer-events:none;opacity:0;
+    background:var(--tube);border-radius:3px;
+    box-shadow:0 0 14px 2px var(--tube),0 0 60px 10px rgba(228,246,242,.45);
+  }
+  .pr-sweep.go{animation:prsweep .75s cubic-bezier(.6,0,.2,1)}
+  @keyframes prsweep{0%{top:0;opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+  .pr-photos::after{
+    content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+    background:linear-gradient(0deg, #0B0B0B 0%, rgba(11,11,11,.6) 22%, rgba(11,11,11,0) 50%);
+  }
+  .pr-dark{position:absolute;inset:0;z-index:5;background:#000;pointer-events:none;opacity:0}
+  .js .pr-stage:not(.lit) .pr-dark{opacity:1}
+  .js .pr-stage.lit .pr-dark{animation:prlights 1.3s steps(1,end) forwards}
+  @keyframes prlights{0%{opacity:1}10%{opacity:.5}16%{opacity:1}26%{opacity:.35}32%{opacity:.8}46%{opacity:.15}52%{opacity:.4}64%{opacity:0}100%{opacity:0}}
+
+  .pr-sol{
+    position:absolute;left:0;right:0;bottom:0;z-index:4;
+    padding:clamp(28px, 3.4vw, 48px);
+    transition:opacity .25s ease, transform .35s ease;
+  }
+  .pr-sol.out{opacity:0;transform:translateY(8px)}
+  .pr-for{font-size:13px;color:var(--grey);margin-bottom:10px}
+  .pr-sol h3{font-size:clamp(28px, 2.6vw, 42px);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin-bottom:14px}
+  .pr-text{font-size:16px;line-height:1.6;color:#CFCFCB;max-width:48ch;margin-bottom:24px}
+  .pr-facts{display:flex;gap:44px;padding:18px 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);margin-bottom:20px}
+  .pr-facts dt{font-size:12px;color:var(--grey);margin-bottom:4px}
+  .pr-facts dd{font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .pr-foot{display:flex;align-items:center;justify-content:space-between;gap:20px 32px;flex-wrap:wrap}
+  .pr-tip{font-size:14px;line-height:1.55;color:var(--grey);max-width:40ch}
+  .pr-tip b{color:var(--white);font-weight:600}
+
+  @media (max-width:1100px){
+    .pr-head{grid-template-columns:1fr}
+    .pr-lead{justify-self:start}
+    .pr-body{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:32px}
+    .pr-stage{height:clamp(520px, 70vh, 640px)}
+    .pr-facts{gap:28px}
+  }
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .pr-body{display:block}
+    .pr-btn{padding:20px 0}
+    .pr-btn::before{top:calc(20px + .62em)}
+    .pr-btn[aria-expanded="true"]{padding-left:40px}
+    .pr-btn[aria-expanded="true"]::before{width:24px}
+    .pr-t{font-size:clamp(20px, 5.4vw, 28px)}
+    .pr-slot{padding:0 0 26px}
+    .pr-stage{height:auto;border-radius:6px}
+    .pr-photos{position:relative;aspect-ratio:4 / 3}
+    .pr-photos::after{background:linear-gradient(0deg, #0B0B0B 0%, rgba(11,11,11,0) 45%)}
+    .pr-photos{height:auto}
+    .pr-sol{position:relative;padding:4px 20px 24px;margin-top:-34px}
+    .pr-sol h3{font-size:clamp(26px, 7vw, 34px)}
+    .pr-text{font-size:15px;margin-bottom:20px}
+    .pr-facts{gap:32px;padding:14px 0}
+    .pr-dark{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .js .rv .ln > span,.js .fd{transform:none;opacity:1;transition:none}
+    .js .pr-stage .pr-dark{animation:none;opacity:0}
+    .pr-ph.enter,.pr-sweep.go{animation:none}
+    .pr-btn,.pr-btn::before,.pr-d{transition:none}
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -280,6 +422,80 @@
   </div>
 </section>
 
+<section class="sec" id="problems" aria-labelledby="problems-h">
+  <div class="pr-head">
+    <h2 class="h2 rv" id="problems-h"><span class="ln"><span>Не знаєте, яка послуга потрібна?</span></span><span class="ln"><span class="soft">Почніть із проблеми</span></span></h2>
+    <p class="pr-lead fd" style="--d:.15s">Розбиратися в детейлінгу не обов'язково. Оберіть, що вас не влаштовує, і подивіться, як ми це вирішуємо. Точний обсяг робіт визначимо після оцінки авто.</p>
+  </div>
+  <div class="pr-body">
+    <ul class="pr-list" id="prList">
+      <li class="pr-item fd" style="--d:0.00s">
+        <button class="pr-btn" id="pr-btn-0" aria-expanded="true" aria-controls="prStage" data-i="0">
+          <span class="pr-t">Кузов втратив блиск</span>
+          <span class="pr-d"><span>Фарба потьмяніла, на сонці видно подряпини, потертості й сліди від мийок.</span></span>
+        </button>
+        <div class="pr-slot"></div>
+      </li>
+      <li class="pr-item fd" style="--d:0.06s">
+        <button class="pr-btn" id="pr-btn-1" aria-expanded="false" aria-controls="prStage" data-i="1">
+          <span class="pr-t">У салоні плями або запах</span>
+          <span class="pr-d"><span>Сидіння, текстиль, пластик чи стеля брудні, а звичайного прибирання вже не вистачає.</span></span>
+        </button>
+        <div class="pr-slot"></div>
+      </li>
+      <li class="pr-item fd" style="--d:0.12s">
+        <button class="pr-btn" id="pr-btn-2" aria-expanded="false" aria-controls="prStage" data-i="2">
+          <span class="pr-t">Хочете захистити кузов</span>
+          <span class="pr-d"><span>Нове або щойно відполіроване авто, і не хочеться, щоб з'являлися сколи та подряпини.</span></span>
+        </button>
+        <div class="pr-slot"></div>
+      </li>
+      <li class="pr-item fd" style="--d:0.18s">
+        <button class="pr-btn" id="pr-btn-3" aria-expanded="false" aria-controls="prStage" data-i="3">
+          <span class="pr-t">Фари стали мутними</span>
+          <span class="pr-d"><span>Помутніння й жовтизна: світить гірше, а перед авто виглядає старшим, ніж є.</span></span>
+        </button>
+        <div class="pr-slot"></div>
+      </li>
+      <li class="pr-item fd" style="--d:0.24s">
+        <button class="pr-btn" id="pr-btn-4" aria-expanded="false" aria-controls="prStage" data-i="4">
+          <span class="pr-t">Потрібне комплексне оновлення</span>
+          <span class="pr-d"><span>Є питання і до кузова, і до салону, і до скла та дрібних деталей.</span></span>
+        </button>
+        <div class="pr-slot"></div>
+      </li>
+      <li class="pr-item fd" style="--d:0.30s">
+        <button class="pr-btn" id="pr-btn-5" aria-expanded="false" aria-controls="prStage" data-i="5">
+          <span class="pr-t">Готуєте авто до продажу</span>
+          <span class="pr-d"><span>Хочеться, щоб авто виглядало доглянутим на фото й на огляді, але без зайвих витрат.</span></span>
+        </button>
+        <div class="pr-slot"></div>
+      </li>
+    </ul>
+    <div class="pr-home" id="prHome">
+      <div class="pr-stage fd" id="prStage" role="region" aria-labelledby="pr-btn-0" style="--d:.1s">
+        <div class="pr-photos">
+        <div class="pr-ph on" data-i="0"><img src="https://images.unsplash.com/photo-1657884892350-509f7513207d?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1657884892350-509f7513207d?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1657884892350-509f7513207d?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1657884892350-509f7513207d?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 45%" loading="lazy" decoding="async"></div>
+        <div class="pr-ph" data-i="1"><img src="https://images.unsplash.com/photo-1605437241278-c1806d14a4d9?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1605437241278-c1806d14a4d9?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1605437241278-c1806d14a4d9?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1605437241278-c1806d14a4d9?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 55%" loading="lazy" decoding="async"></div>
+        <div class="pr-ph" data-i="2"><img src="https://images.unsplash.com/photo-1594051673969-172a6f721d3c?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1594051673969-172a6f721d3c?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1594051673969-172a6f721d3c?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1594051673969-172a6f721d3c?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 40%" loading="lazy" decoding="async"></div>
+        <div class="pr-ph" data-i="3"><img src="https://images.unsplash.com/photo-1676288176903-a68732722cce?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1676288176903-a68732722cce?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1676288176903-a68732722cce?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1676288176903-a68732722cce?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:60% 40%" loading="lazy" decoding="async"></div>
+        <div class="pr-ph" data-i="4"><img src="https://images.unsplash.com/photo-1633014041037-f5446fb4ce99?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1633014041037-f5446fb4ce99?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1633014041037-f5446fb4ce99?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1633014041037-f5446fb4ce99?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 50%" loading="lazy" decoding="async"></div>
+        <div class="pr-ph" data-i="5"><img src="https://images.unsplash.com/photo-1621592773340-dbf8760fde8b?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1621592773340-dbf8760fde8b?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1621592773340-dbf8760fde8b?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1621592773340-dbf8760fde8b?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 60%" loading="lazy" decoding="async"></div>
+          <span class="pr-sweep" aria-hidden="true"></span>
+        </div>
+        <div class="pr-sol" id="prSol" aria-live="polite">
+          <p class="pr-for">Що зробимо</p>
+          <h3>Полірування кузова</h3>
+          <p class="pr-text">Знімаємо мікрошар пошкодженого лаку разом із павутинкою та подряпинами. Повертаються глибина кольору й дзеркальний блиск.</p>
+          <dl class="pr-facts"><div><dt>Скільки часу</dt><dd>1–2 дні</dd></div><div><dt>Вартість</dt><dd>від 6 000 грн</dd></div></dl>
+          <div class="pr-foot"><p class="pr-tip">Щоб блиск тримався роками, після полірування радимо <b>керамічне покриття</b>.</p><a class="link" href="#estimate">Оцінити своє авто за фото</a></div>
+        </div>
+        <span class="pr-dark" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <script>
 /* легкий паралакс фото за курсором (тільки мишка, тільки десктоп) */
 (() => {
@@ -296,6 +512,107 @@
     f.style.transform = 'translate(calc(-50% + ' + x + 'px), calc(6% + ' + y + 'px)) scale(1.03)';
     raf = Math.abs(tx - x) + Math.abs(ty - y) > .05 ? requestAnimationFrame(loop) : null;
   }
+})();
+</script>
+
+<script>
+/* меню: фон з'являється при прокрутці */
+(() => {
+  const top = document.querySelector('.top');
+  const on = () => top.classList.toggle('scrolled', scrollY > 30);
+  on(); addEventListener('scroll', on, { passive: true });
+})();
+
+/* поява блоків */
+(() => {
+  const els = document.querySelectorAll('.rv,.fd');
+  if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+  els.forEach(e => io.observe(e));
+})();
+
+/* проблема → рішення */
+(() => {
+  const DATA = [{"h": "Полірування кузова", "t": "Знімаємо мікрошар пошкодженого лаку разом із павутинкою та подряпинами. Повертаються глибина кольору й дзеркальний блиск.", "time": "1–2 дні", "price": "від 6 000 грн", "tip": "Щоб блиск тримався роками, після полірування радимо <b>керамічне покриття</b>."}, {"h": "Хімчистка салону", "t": "Глибоко чистимо сидіння, стелю, килими, пластик і стики. Запах прибираємо, а не маскуємо ароматизатором.", "time": "1 день", "price": "від 3 500 грн", "tip": "Після чистки шкіру живимо й захищаємо, щоб вона <b>не тріскалась</b>."}, {"h": "PPF-плівка або кераміка", "t": "Плівка Llumar чи STEK бере на себе камінці й подряпини на капоті, бампері та дзеркалах. Кераміка — коли головне блиск і легка мийка.", "time": "2–5 днів", "price": "від 9 000 грн", "tip": "Що обрати, підкажемо після огляду: це залежить від того, <b>як і де ви їздите</b>."}, {"h": "Відновлення фар", "t": "Шліфуємо й полірумо пластик фар до прозорості, а зверху наносимо захист, щоб жовтизна не повернулась за сезон.", "time": "2–3 години", "price": "від 1 200 грн", "tip": "Можна поєднати з мийкою, і авто <b>заберете того ж дня</b>."}, {"h": "Комплексний детейлінг", "t": "Кузов, салон, диски, скло й стики — одним комплексом за планом, який погоджуємо до початку робіт.", "time": "3–5 днів", "price": "від 18 000 грн", "tip": "Окремі послуги в комплексі обходяться <b>дешевше</b>, ніж якщо робити їх по черзі."}, {"h": "Передпродажна підготовка", "t": "Мийка, легке полірування, чистка салону й фар — тільки те, що реально впливає на перше враження покупця.", "time": "1 день", "price": "від 4 500 грн", "tip": "Покажемо, на чому можна заощадити, бо <b>покупець цього не помітить</b>."}];
+  const btns = [...document.querySelectorAll('.pr-btn')];
+  const stage = document.getElementById('prStage');
+  const home = document.getElementById('prHome');
+  const sol = document.getElementById('prSol');
+  const phs = [...stage.querySelectorAll('.pr-ph')];
+  const sweep = stage.querySelector('.pr-sweep');
+  const mq = matchMedia('(max-width:760px), (max-width:1100px) and (orientation:portrait)');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cur = 0, hoverT = null, solT = null;
+
+  // фото «вмикається», коли блок з'являється на екрані; заразом підвантажуємо всі фото
+  new IntersectionObserver(([en], ob) => {
+    if (!en.isIntersecting) return;
+    stage.classList.add('lit');
+    phs.forEach(p => { const im = p.querySelector('img'); im.loading = 'eager'; });
+    ob.disconnect();
+  }, { threshold: .3 }).observe(stage);
+
+  function place() {
+    if (mq.matches) btns[cur].parentElement.querySelector('.pr-slot').appendChild(stage);
+    else if (stage.parentElement !== home) home.appendChild(stage);
+  }
+
+  function select(i, opts = {}) {
+    if (i === cur) return;
+    const prev = cur; cur = i;
+    btns.forEach((b, k) => b.setAttribute('aria-expanded', k === i ? 'true' : 'false'));
+    stage.setAttribute('aria-labelledby', btns[i].id);
+
+    // фото: нове проявляється під смугою світла
+    phs.forEach(p => p.classList.remove('enter'));
+    const next = phs[i];
+    if (reduce) { phs.forEach(p => p.classList.toggle('on', p === next)); }
+    else {
+      next.classList.add('enter');
+      sweep.classList.remove('go'); void sweep.offsetWidth; sweep.classList.add('go');
+      clearTimeout(next._t);
+      next._t = setTimeout(() => { phs.forEach(p => p.classList.toggle('on', p === next)); next.classList.remove('enter'); }, 760);
+    }
+
+    // текст рішення
+    const d = DATA[i];
+    sol.classList.add('out');
+    clearTimeout(solT);
+    solT = setTimeout(() => {
+      sol.querySelector('h3').textContent = d.h;
+      sol.querySelector('.pr-text').textContent = d.t;
+      const dd = sol.querySelectorAll('.pr-facts dd'); dd[0].textContent = d.time; dd[1].textContent = d.price;
+      sol.querySelector('.pr-tip').innerHTML = d.tip;
+      sol.classList.remove('out');
+    }, reduce ? 0 : 220);
+
+    if (mq.matches) {
+      place();
+      // тримаємо відкритий пункт у полі зору
+      setTimeout(() => {
+        const y = btns[i].getBoundingClientRect().top;
+        if (y < 76 || y > innerHeight * .55) scrollTo({ top: scrollY + y - 84, behavior: reduce ? 'auto' : 'smooth' });
+      }, reduce ? 0 : 470);
+    }
+    if (opts.focus) btns[i].focus();
+  }
+
+  btns.forEach((b, i) => {
+    b.addEventListener('click', () => select(i));
+    b.addEventListener('mouseenter', () => {
+      if (mq.matches || !matchMedia('(pointer:fine)').matches) return;
+      clearTimeout(hoverT); hoverT = setTimeout(() => select(i), 140);
+    });
+    b.addEventListener('mouseleave', () => clearTimeout(hoverT));
+    b.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); select((cur + 1) % btns.length, { focus: true }); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); select((cur - 1 + btns.length) % btns.length, { focus: true }); }
+    });
+  });
+  place();
+  mq.addEventListener('change', place);
 })();
 </script>
 </body>
