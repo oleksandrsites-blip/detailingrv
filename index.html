@@ -468,7 +468,7 @@
     --x:50%;
     position:relative;width:100%;aspect-ratio:16 / 8.6;max-height:calc(100svh - 150px);min-height:420px;
     border-radius:6px;overflow:hidden;background:var(--surface);
-    cursor:none;user-select:none;-webkit-user-select:none;touch-action:pan-y;
+    cursor:ew-resize;user-select:none;-webkit-user-select:none;touch-action:pan-y;
     isolation:isolate;
   }
   .ba-scene{position:absolute;inset:0;z-index:0}
@@ -498,10 +498,17 @@
     mix-blend-mode:screen;
   }
   .ba-grip{
-    position:absolute;z-index:6;left:var(--x);top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;
-    border-radius:50%;outline:none;
+    position:absolute;z-index:6;left:var(--x);top:50%;width:38px;height:62px;margin:-31px 0 0 -19px;
+    display:grid;place-items:center;border-radius:20px;outline:none;color:var(--white);
+    background:rgba(11,12,14,.5);border:1px solid rgba(228,246,242,.55);
+    box-shadow:0 0 18px rgba(228,246,242,.35);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    transition:transform .2s ease, background .2s ease;
   }
+  .ba.drag .ba-grip,.ba-grip:hover{transform:scale(1.08);background:rgba(11,12,14,.7)}
   .ba-grip:focus-visible{box-shadow:0 0 0 2px var(--white)}
+  .js .ba:not(.lit) .ba-grip{opacity:0}
+  .ba-grip{transition:opacity .4s, transform .2s ease, background .2s ease}
   .ba-tag{
     position:absolute;z-index:6;bottom:22px;left:var(--x);
     font-size:13px;font-weight:700;letter-spacing:-.005em;white-space:nowrap;
@@ -516,7 +523,18 @@
   .js .ba.lit .ba-line{animation:baflick .7s steps(1,end)}
   @keyframes baflick{0%{opacity:0}15%{opacity:1}25%{opacity:.15}40%{opacity:1}55%{opacity:.4}70%,100%{opacity:1}}
 
-  .ba-bar{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px 64px;align-items:start;margin-top:28px}
+  .ba-wrap{
+    display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.3fr);
+    grid-template-areas:"head media" "tabs media" "caps media";
+    grid-template-rows:auto auto 1fr;column-gap:clamp(40px, 5vw, 88px);align-items:start;
+  }
+  .ba-head{grid-area:head}
+  .ba-media{grid-area:media}
+  .ba-tabs{grid-area:tabs}
+  .ba-caps{grid-area:caps}
+  .ba-h2{font-size:clamp(36px, 3.7vw, 62px)}
+  .ba-lead{font-size:16px;line-height:1.65;color:var(--grey);max-width:40ch;margin-top:22px}
+  .ba{aspect-ratio:auto;height:min(calc(100svh - 190px), 680px);min-height:440px;max-height:none}
   .ba-tabs{display:flex;flex-wrap:wrap;gap:8px}
   .ba-tab{
     all:unset;box-sizing:border-box;cursor:pointer;position:relative;
@@ -533,8 +551,30 @@
   .ba-cap b{display:block;font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px}
   .ba-hint{display:none}
 
+
+  @media (min-width:761px) and (orientation:landscape), (min-width:1101px){
+    .ba-tabs{display:block;margin-top:clamp(28px, 4.5vh, 44px);border-top:1px solid var(--hair)}
+    .ba-tab{
+      display:block;width:100%;padding:16px 0;border:0;border-bottom:1px solid var(--hair);border-radius:0;
+      font-size:clamp(18px, 1.5vw, 22px);color:#5F5F5C;background:none;
+      transition:color .3s, padding .45s cubic-bezier(.2,.7,.2,1);
+    }
+    .ba-tab::before{
+      content:"";position:absolute;left:0;top:50%;width:0;height:2px;border-radius:2px;background:var(--tube);
+      box-shadow:0 0 10px var(--tube),0 0 22px rgba(228,246,242,.7);transition:width .45s cubic-bezier(.2,.7,.2,1);
+    }
+    .ba-tab:hover{color:#B5B5B1;border-color:var(--hair)}
+    .ba-tab[aria-selected="true"]{color:var(--white);background:none;border-color:var(--hair);padding-left:40px}
+    .ba-tab[aria-selected="true"]::before{width:24px}
+    .ba-caps{margin-top:28px}
+  }
   @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
-    .ba{aspect-ratio:4 / 5;max-height:none;min-height:0;cursor:auto}
+    .ba-wrap{display:flex;flex-direction:column;align-items:stretch}
+    .ba-head{margin-bottom:clamp(40px, 6vh, 64px)}
+    .ba-h2{font-size:clamp(38px, 5vw, 80px)}
+    .ba-lead{margin-top:20px}
+    .ba-grip{display:none}
+    .ba{aspect-ratio:4 / 5;height:auto;max-height:none;min-height:0;cursor:auto}
     .ba-tag{bottom:16px;font-size:12px;padding:7px 11px}
     .ba-tag.b{transform:translateX(calc(-100% - 12px))}
     .ba-tag.a{transform:translateX(12px)}
@@ -543,8 +583,8 @@
       font-size:13px;color:var(--grey);transition:opacity .4s;
     }
     .ba-hint.gone{opacity:0}
-    .ba-bar{grid-template-columns:1fr;margin-top:22px;gap:22px}
-    .ba-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .ba-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:22px}
+    .ba-caps{margin-top:22px}
     .ba-tab{text-align:center;padding:14px 10px;font-size:14px}
     .ba-caps{gap:18px}
     .ba-layer img{object-position:var(--mpos) !important}
@@ -756,44 +796,44 @@
 
 
 <section class="sec" id="results" aria-labelledby="results-h">
-  <div class="pr-head">
-    <h2 class="h2 rv" id="results-h"><span class="ln"><span>Результат краще бачити,</span></span><span class="ln"><span class="soft">ніж описувати</span></span></h2>
-    <p class="pr-lead fd" style="--d:.15s">Ведіть лампою по фото й порівнюйте: зліва авто до детейлінгу, справа після.</p>
-  </div>
-  <div class="fd" style="--d:.1s">
+  <div class="ba-wrap">
+    <div class="ba-head">
+      <h2 class="h2 ba-h2 rv" id="results-h"><span class="ln"><span>Результат краще бачити,</span></span><span class="ln"><span class="soft">ніж описувати</span></span></h2>
+      <p class="ba-lead fd" style="--d:.15s">Перетягніть лампу по фото й порівняйте: зліва авто до детейлінгу, справа після.</p>
+    </div>
+    <div class="ba-media fd" style="--d:.1s">
     <div class="ba" id="baStage" role="tabpanel" aria-labelledby="ba-tab-polish">
       <div class="ba-scene t-polish on" data-kind="polish" style="--pos:50% 42%;--mpos:50% 40%">
-        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
       </div>
       <div class="ba-scene t-interior" data-kind="interior" style="--pos:50% 60%;--mpos:42% 60%">
-        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
       </div>
       <div class="ba-scene t-lights" data-kind="lights" style="--pos:50% 45%;--mpos:40% 45%">
-        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
       </div>
       <div class="ba-scene t-complex" data-kind="complex" style="--pos:50% 58%;--mpos:50% 55%">
-        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 1330px" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
       </div>
       <span class="ba-line" aria-hidden="true"></span>
       <span class="ba-tag b" aria-hidden="true">До</span><span class="ba-tag a" aria-hidden="true">Після</span>
-      <span class="ba-grip" role="slider" tabindex="0" aria-label="Межа між «до» і «після»" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></span>
+      <span class="ba-grip" role="slider" tabindex="0" aria-label="Межа між «до» і «після»" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true"><path d="M5.5 1.5 1.5 6l4 4.5M12.5 1.5l4 4.5-4 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </div>
     <p class="ba-hint" id="baHint"><svg width="34" height="10" viewBox="0 0 34 10" fill="none" aria-hidden="true"><path d="M5 1 1 5l4 4M29 1l4 4-4 4M1 5h32" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Ведіть пальцем по фото</p>
-    <div class="ba-bar">
-      <div class="ba-tabs" role="tablist" aria-label="Вид робіт">
+    </div>
+    <div class="ba-tabs fd" style="--d:.2s" role="tablist" aria-label="Вид робіт">
       <button class="ba-tab" role="tab" id="ba-tab-polish" aria-selected="true" aria-controls="baStage" data-i="0">Полірування</button>
       <button class="ba-tab" role="tab" id="ba-tab-interior" aria-selected="false" aria-controls="baStage" data-i="1" tabindex="-1">Хімчистка салону</button>
       <button class="ba-tab" role="tab" id="ba-tab-lights" aria-selected="false" aria-controls="baStage" data-i="2" tabindex="-1">Відновлення фар</button>
       <button class="ba-tab" role="tab" id="ba-tab-complex" aria-selected="false" aria-controls="baStage" data-i="3" tabindex="-1">Комплексний детейлінг</button>
-      </div>
-      <div class="ba-caps" id="baCaps">
+    </div>
+    <div class="ba-caps fd" id="baCaps" style="--d:.25s">
         <p class="ba-cap"><b>До</b><span>Тьмяний лак, павутинка подряпин і сліди від мийок.</span></p>
         <p class="ba-cap"><b>Після</b><span>Глибокий колір і чисті, дзеркальні відблиски на кузові.</span></p>
-      </div>
     </div>
   </div>
 </section>
@@ -947,7 +987,6 @@
   const hint = document.getElementById('baHint');
   const CAPS = [["Тьмяний лак, павутинка подряпин і сліди від мийок.", "Глибокий колір і чисті, дзеркальні відблиски на кузові."], ["Плями, пил у стиках і затерта, засалена шкіра.", "Чисті сидіння, пластик і стики, без різкого запаху хімії."], ["Помутніння й жовтизна, світло розсіюється.", "Прозора оптика й свіжий вигляд передньої частини авто."], ["Втомлений вигляд і кузова, і салону, і дрібних деталей.", "Авто доглянуте повністю, від лаку до стиків у салоні."]];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const fine = matchMedia('(pointer:fine)').matches;
   let x = 50, target = 50, raf = null, anim = null, cur = 0, sceneT = null;
 
   function set(v) {
@@ -976,9 +1015,16 @@
   }
   const pct = cx => { const r = stage.getBoundingClientRect(); return (cx - r.left) / r.width * 100; };
 
-  // миша: лампа йде за курсором
-  stage.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') goTo(pct(e.clientX)); });
-  stage.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse') goTo(pct(e.clientX)); });
+  // миша: клік ставить лампу, затиснута кнопка — тягне
+  let dragging = false;
+  stage.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    dragging = true; stage.classList.add('drag'); stage.setPointerCapture(e.pointerId);
+    goTo(pct(e.clientX)); e.preventDefault();
+  });
+  stage.addEventListener('pointermove', e => { if (dragging) { cancelAnimationFrame(raf); raf = null; target = pct(e.clientX); set(target); } });
+  const stop = () => { dragging = false; stage.classList.remove('drag'); };
+  stage.addEventListener('pointerup', stop); stage.addEventListener('pointercancel', stop);
   // палець: горизонтальний рух веде лампу, вертикальний — гортає сторінку
   let sx = 0, sy = 0, lock = null;
   stage.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; lock = null; }, { passive: true });
