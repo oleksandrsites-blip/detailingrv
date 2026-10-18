@@ -593,6 +593,45 @@
     .ba-scene.enter,.ba-scene.enter .ba-after img,.js .ba.lit .ba-line{animation:none}
   }
 
+  /* ================= БЛОК 5: як ми працюємо ================= */
+  .st-row{list-style:none;display:grid;grid-template-columns:repeat(5, minmax(0,1fr));gap:clamp(20px, 2.4vw, 40px);border-top:1px solid var(--hair);counter-reset:none}
+  .st{position:relative;padding-top:clamp(30px, 4.5vh, 44px)}
+  .st-tube{ /* лампа над кроком: спершу вимкнена */
+    position:absolute;left:0;right:12%;top:-2px;height:3px;border-radius:3px;
+    background:#2A2B2F;
+  }
+  .st-tube::after{
+    content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;
+    background:var(--tube);box-shadow:0 0 12px 1px var(--tube),0 0 46px 6px rgba(228,246,242,.35);
+  }
+  .st-n{display:block;font-size:clamp(44px, 4.4vw, 72px);font-weight:300;letter-spacing:-.05em;line-height:1;color:#3A3B3F;margin-bottom:clamp(18px, 3vh, 28px);transition:color .5s ease}
+  .st h3{font-size:clamp(18px, 1.45vw, 21px);font-weight:700;letter-spacing:-.02em;line-height:1.3;margin-bottom:12px}
+  .st p{font-size:15px;line-height:1.6;color:var(--grey)}
+  .st.lit .st-tube::after{animation:sttube .9s var(--d,0s) steps(1,end) forwards}
+  .st.lit .st-n{color:var(--white);transition-delay:calc(var(--d,0s) + .35s)}
+  @keyframes sttube{0%{opacity:0}10%{opacity:1}18%{opacity:.1}28%{opacity:.9}36%{opacity:0}46%{opacity:1}100%{opacity:1}}
+  .st-foot{display:flex;align-items:center;justify-content:space-between;gap:20px 40px;flex-wrap:wrap;margin-top:clamp(40px, 6vh, 64px);padding-top:28px;border-top:1px solid var(--hair)}
+  .st-foot p{font-size:16px;line-height:1.6;color:var(--grey);max-width:56ch}
+  .st-foot p strong{color:var(--white);font-weight:600}
+
+  @media (max-width:1100px){
+    .st-row{grid-template-columns:repeat(2, minmax(0,1fr));row-gap:44px;border-top:0}
+    .st{border-top:1px solid var(--hair)}
+  }
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .st-row{grid-template-columns:1fr;row-gap:0}
+    .st{display:grid;grid-template-columns:58px minmax(0,1fr);column-gap:14px;padding:26px 0 30px}
+    .st-n{grid-row:1 / 3;font-size:40px;margin:0;line-height:.95}
+    .st h3{font-size:19px;margin-bottom:8px}
+    .st-tube{right:30%}
+    .st-foot{flex-direction:column;align-items:stretch;margin-top:12px}
+    .st-foot .btn{width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .st.lit .st-tube::after{animation:none;opacity:1}
+    .st-n{transition:none}
+  }
+
   @media (prefers-reduced-motion:reduce){
     .js .dark{animation:none;opacity:0}
     .js .tube{animation:none;opacity:.32}
@@ -835,6 +874,50 @@
         <p class="ba-cap"><b>До</b><span>Тьмяний лак, павутинка подряпин і сліди від мийок.</span></p>
         <p class="ba-cap"><b>Після</b><span>Глибокий колір і чисті, дзеркальні відблиски на кузові.</span></p>
     </div>
+  </div>
+</section>
+
+
+<section class="sec" id="process" aria-labelledby="process-h">
+  <div class="pr-head">
+    <h2 class="h2 rv" id="process-h"><span class="ln"><span>5 простих кроків</span></span><span class="ln"><span class="soft">від оцінки до готового авто</span></span></h2>
+    <p class="pr-lead fd" style="--d:.15s">Спочатку оцінюємо стан автомобіля, погоджуємо роботи, вартість і термін. До роботи приступаємо тільки після вашого підтвердження.</p>
+  </div>
+  <ol class="st-row" id="stRow" aria-label="Кроки роботи">
+    <li class="st" style="--d:0.00s">
+      <span class="st-tube" aria-hidden="true"></span>
+      <span class="st-n" aria-hidden="true">01</span>
+      <h3>Надсилаєте фото або записуєтесь на огляд</h3>
+      <p>Надішліть фото авто в Telegram або залиште номер телефону. Якщо фото замало, домовимось про огляд у студії.</p>
+    </li>
+    <li class="st" style="--d:0.28s">
+      <span class="st-tube" aria-hidden="true"></span>
+      <span class="st-n" aria-hidden="true">02</span>
+      <h3>Оцінюємо стан автомобіля</h3>
+      <p>Перевіряємо кузов, салон чи конкретну зону й кажемо, які роботи справді потрібні, а які у вашому випадку зайві.</p>
+    </li>
+    <li class="st" style="--d:0.56s">
+      <span class="st-tube" aria-hidden="true"></span>
+      <span class="st-n" aria-hidden="true">03</span>
+      <h3>Погоджуємо роботи, ціну й термін</h3>
+      <p>До старту ви знаєте перелік послуг, очікуваний результат, фінальну вартість і термін. Без вашої згоди нічого не додаємо.</p>
+    </li>
+    <li class="st" style="--d:0.84s">
+      <span class="st-tube" aria-hidden="true"></span>
+      <span class="st-n" aria-hidden="true">04</span>
+      <h3>Виконуємо детейлінг</h3>
+      <p>Робимо погоджений комплекс робіт: кузов, салон або захисні покриття.</p>
+    </li>
+    <li class="st" style="--d:1.12s">
+      <span class="st-tube" aria-hidden="true"></span>
+      <span class="st-n" aria-hidden="true">05</span>
+      <h3>Перевіряємо й передаємо авто</h3>
+      <p>Перевіряємо результат під лампами, показуємо вам і віддаємо авто. За домовленістю пригонимо його в межах Рівного.</p>
+    </li>
+  </ol>
+  <div class="st-foot fd">
+    <p>Почнімо з першого кроку: <strong>надішліть кілька фото авто</strong>, і ми підкажемо, що варто зробити й скільки це коштуватиме.</p>
+    <a class="btn" href="#estimate">Надіслати фото авто <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 4l1.2-2h3.6L12 4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></a>
   </div>
 </section>
 
@@ -1142,6 +1225,29 @@
     stage.classList.add('lit');
     setTimeout(() => sweep(100, 50, 1700), reduce ? 0 : 450);
   }, { threshold: .4 }).observe(stage);
+})();
+</script>
+
+<script>
+/* як ми працюємо: лампи над кроками вмикаються по черзі */
+(() => {
+  const row = document.getElementById('stRow');
+  const steps = [...row.querySelectorAll('.st')];
+  const stacked = matchMedia('(max-width:760px), (max-width:1100px) and (orientation:portrait)');
+  if (!('IntersectionObserver' in window)) { steps.forEach(s => s.classList.add('lit')); return; }
+  if (stacked.matches) {
+    // телефон: кожна лампа вмикається, коли крок з'являється на екрані
+    steps.forEach(s => s.style.setProperty('--d', '0s'));
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('lit'); io.unobserve(e.target); }
+    }), { threshold: .6 });
+    steps.forEach(s => io.observe(s));
+  } else {
+    new IntersectionObserver(([en], ob) => {
+      if (!en.isIntersecting) return;
+      steps.forEach(s => s.classList.add('lit')); ob.disconnect();
+    }, { threshold: .45 }).observe(row);
+  }
 })();
 </script>
 </body>
