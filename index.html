@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <script>document.documentElement.classList.add('js')</script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>detailingrv — детейлінг авто в Рівному</title>
 <meta name="description" content="Детейлінг авто в Рівному під стан саме вашої машини: полірування, кераміка, хімчистка салону, PPF-плівка. Оцінка авто за фото.">
 <meta name="theme-color" content="#000000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --black:#000;
     --white:#F3F3F1;
-    --grey:#8E8E8B;
+    --grey:#9A9A96;
     --hair:rgba(243,243,241,.14);
     --tube:#E4F6F2;          /* холодне світло ламп у боксі */
     --gut:56px;
@@ -24,8 +24,7 @@
   html,body{background:var(--black)}
   body{
     color:var(--white);
-    font-family:"Roboto Flex",system-ui,sans-serif;
-    font-variation-settings:"wdth" 100,"opsz" 16;
+    font-family:"Manrope",system-ui,sans-serif;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
@@ -35,71 +34,68 @@
   /* ================= ПЕРШИЙ ЕКРАН ================= */
   .hero{
     position:relative;width:100%;
-    min-height:100vh;min-height:100svh;
+    height:100vh;height:100svh;min-height:600px;
     display:grid;
     grid-template-columns:minmax(0,1fr) minmax(0,46%);
-    grid-template-rows:auto 1fr;
+    grid-template-rows:auto minmax(0,1fr);
+    overflow:hidden;
   }
 
   /* --- шапка --- */
   .top{
     grid-column:1 / -1;grid-row:1;
     position:relative;z-index:5;
-    display:flex;align-items:center;gap:44px;
-    padding:30px var(--gut) 0;
+    display:flex;align-items:center;gap:40px;
+    padding:28px var(--gut) 0;
   }
-  .logo{
-    font-variation-settings:"wdth" 151,"wght" 800,"opsz" 20;
-    font-size:19px;letter-spacing:-.01em;
-  }
-  .nav{display:flex;gap:30px;margin-left:auto;font-size:14px;color:var(--grey)}
+  .logo{font-size:20px;font-weight:800;letter-spacing:-.04em}
+  .nav{display:flex;gap:30px;margin-left:auto;font-size:14px;font-weight:500;color:var(--grey)}
   .nav a{transition:color .2s}
   .nav a:hover{color:var(--white)}
-  .tel{font-size:14px;font-variation-settings:"wdth" 100,"wght" 600;white-space:nowrap}
+  .tel{font-size:14px;font-weight:700;white-space:nowrap}
 
   /* --- текстова колонка --- */
   .copy{
     grid-column:1;grid-row:2;
     position:relative;z-index:3;
     display:flex;flex-direction:column;justify-content:flex-end;
-    padding:40px 0 48px var(--gut);
+    padding:0 var(--gut) clamp(32px, 5.5svh, 56px);
+    min-height:0;
   }
   h1{
-    font-weight:normal;
-    font-size:clamp(64px, 10.4vw, 176px);
-    line-height:.84;
-    letter-spacing:-.005em;
-    text-transform:uppercase;
-    margin-bottom:44px;
-    /* заголовок трохи заходить на фото */
-    margin-right:-12vw;
+    font-weight:800;
+    font-size:clamp(48px, min(6.9vw, 10.6svh), 148px);
+    line-height:1;
+    letter-spacing:-.045em;
+    margin-bottom:clamp(24px, 4.4svh, 44px);
   }
-  h1 .ln{display:block;overflow:hidden;padding-top:.04em}
+  h1 .ln{display:block;overflow:hidden;padding:.02em 0 .06em;margin-bottom:-.08em}
   h1 .ln > span{display:inline-block}
-  h1 .heavy{font-variation-settings:"wdth" 25,"wght" 900,"opsz" 144}
-  h1 .light{font-variation-settings:"wdth" 25,"wght" 160,"opsz" 144}
+  h1 .soft{font-weight:300;color:#CFCFCB;letter-spacing:-.04em}
 
   .row{
-    display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px 48px;align-items:end;
-    padding-top:28px;border-top:1px solid var(--hair);
-    max-width:860px;margin-right:var(--gut);
+    max-width:640px;
+    padding-top:clamp(20px, 3svh, 28px);border-top:1px solid var(--hair);
   }
-  .lead{font-size:16px;line-height:1.6;color:var(--grey);font-variation-settings:"wdth" 100,"wght" 380}
-  .lead strong{color:var(--white);font-variation-settings:"wdth" 100,"wght" 520;font-weight:normal}
-  .acts{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+  .lead{
+    font-size:clamp(15px, 1.15vw, 17px);line-height:1.6;color:var(--grey);font-weight:400;
+    max-width:52ch;margin-bottom:clamp(20px, 3svh, 28px);
+  }
+  .lead strong{color:var(--white);font-weight:600}
+  .acts{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
   .btn{
-    display:inline-flex;align-items:center;gap:14px;
+    display:inline-flex;align-items:center;justify-content:center;gap:14px;
     background:var(--white);color:var(--black);
-    padding:19px 26px;border-radius:4px;
-    font-size:15px;font-variation-settings:"wdth" 112,"wght" 700;
+    padding:18px 26px;border-radius:6px;
+    font-size:15px;font-weight:700;letter-spacing:-.01em;
     transition:background .25s, box-shadow .25s;
     white-space:nowrap;
   }
   .btn:hover{background:#fff;box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(228,246,242,.35)}
   .btn svg{flex:none}
-  .link{font-size:15px;font-variation-settings:"wdth" 100,"wght" 500;border-bottom:1px solid rgba(243,243,241,.4);padding-bottom:3px;transition:border-color .2s;white-space:nowrap}
+  .link{font-size:15px;font-weight:600;border-bottom:1px solid rgba(243,243,241,.4);padding-bottom:3px;transition:border-color .2s;white-space:nowrap}
   .link:hover{border-color:var(--white)}
-  .meta{display:flex;gap:28px;margin-top:26px;font-size:13px;color:var(--grey);flex-wrap:wrap}
+  .meta{font-size:13px;color:var(--grey);white-space:nowrap}
 
   /* --- фото-бокс --- */
   .bay{
@@ -112,12 +108,12 @@
     position:absolute;left:50%;bottom:0;
     width:max(100%, calc(100cqh * 1400 / 2101));
     aspect-ratio:1400 / 2101;
-    transform:translate(-50%, 0);
+    transform:translate(-50%, 6%);
     will-change:transform;
   }
   .frame img{position:absolute;inset:0;width:100%;height:100%;display:block}
   .dark{position:absolute;inset:0;background:#000;pointer-events:none}
-  /* світіння ламп і фар — точно поверх фото */
+  /* світіння ламп і ходових вогнів — точно поверх фото */
   .tube,.drl{position:absolute;pointer-events:none;mix-blend-mode:screen;opacity:0}
   .tube{
     height:.9%;border-radius:50%;
@@ -132,22 +128,22 @@
   .drl{height:1.3%;border-radius:50%;background:#fff;filter:blur(5px);box-shadow:0 0 30px 10px rgba(255,255,255,.45)}
   .d1{left:13%;width:15%;top:69.2%;transform:rotate(6deg)}
   .d2{left:70%;width:15%;top:69.2%;transform:rotate(-6deg)}
-  .bay::after{ /* м'який перехід фото в чорне зліва і знизу */
+  .bay::after{ /* фото м'яко переходить у чорне */
     content:"";position:absolute;inset:0;pointer-events:none;
     background:
       linear-gradient(90deg, #000 0%, rgba(0,0,0,0) 22%),
-      linear-gradient(0deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 18%);
+      linear-gradient(0deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 16%);
   }
 
   /* ================= ВСТУП: у боксі вмикається світло ================= */
   .js .dark{animation:lights 2.1s .25s steps(1,end) forwards}
   @keyframes lights{
     0%{opacity:1}
-    6%{opacity:.82} 9%{opacity:1} 13%{opacity:.7}             /* лампа 1 */
+    6%{opacity:.82} 9%{opacity:1} 13%{opacity:.7}
     20%{opacity:.62}
-    30%{opacity:.5} 33%{opacity:.66} 36%{opacity:.4}           /* лампа 2 */
-    50%{opacity:.3} 53%{opacity:.42} 56%{opacity:.2}           /* лампа 3 */
-    68%{opacity:.12} 71%{opacity:.2} 74%{opacity:.06}          /* лампа 4 */
+    30%{opacity:.5} 33%{opacity:.66} 36%{opacity:.4}
+    50%{opacity:.3} 53%{opacity:.42} 56%{opacity:.2}
+    68%{opacity:.12} 71%{opacity:.2} 74%{opacity:.06}
     100%{opacity:0}
   }
   .js .t1{animation:tube 1.4s .3s steps(1,end) forwards}
@@ -161,45 +157,79 @@
   .js .drl{animation:drl .9s 2.05s cubic-bezier(.2,.7,.2,1) forwards}
   @keyframes drl{0%{opacity:0}35%{opacity:1}100%{opacity:.5}}
 
-  .js h1 .ln > span{transform:translateY(135%);animation:up 1.1s cubic-bezier(.16,.84,.2,1) forwards}
+  .js h1 .ln > span{transform:translateY(120%);animation:up 1.1s cubic-bezier(.16,.84,.2,1) forwards}
   .js h1 .ln:nth-child(1) > span{animation-delay:1.55s}
   .js h1 .ln:nth-child(2) > span{animation-delay:1.65s}
   .js h1 .ln:nth-child(3) > span{animation-delay:1.75s}
   .js h1 .ln:nth-child(4) > span{animation-delay:1.85s}
   @keyframes up{to{transform:none}}
-  .js .top,.js .row,.js .meta{opacity:0;animation:fade 1s forwards}
+  .js .top,.js .row{opacity:0;animation:fade 1s forwards}
   .js .top{animation-delay:1.9s}
   .js .row{animation-delay:2.15s}
-  .js .meta{animation-delay:2.3s}
   @keyframes fade{to{opacity:1}}
 
-  /* ================= адаптив ================= */
+  /* ================= планшет ================= */
   @media (max-width:1100px){
     :root{--gut:36px}
     .nav{display:none}
     .tel{margin-left:auto}
-    .row{grid-template-columns:1fr}
+    .meta{display:none}
+    .hero{grid-template-columns:minmax(0,1fr) minmax(0,42%)}
   }
-  @media (max-width:760px){
+
+  /* ================= телефон і планшет вертикально ================= */
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
     :root{--gut:20px}
-    .hero{grid-template-columns:1fr;grid-template-rows:auto auto auto}
-    .top{grid-row:1;padding-top:20px}
-    .logo{font-size:17px}
-    .bay{grid-column:1;grid-row:1 / 3;height:66svh;min-height:480px}
-    .bay::after{background:linear-gradient(0deg, #000 4%, rgba(0,0,0,.55) 30%, rgba(0,0,0,0) 55%)}
-    .copy{grid-row:2 / 4;padding:0 var(--gut) 36px;margin-top:calc(66svh - 200px)}
-    h1{font-size:clamp(58px, 21vw, 110px);margin-right:0;margin-bottom:30px}
-    .row{margin-right:0;padding-top:22px}
-    .acts{flex-direction:column;align-items:stretch;gap:18px}
-    .btn{justify-content:center}
-    .link{align-self:center}
+    .hero{
+      display:flex;flex-direction:column;
+      height:auto;min-height:100vh;min-height:100svh;
+    }
+    .top{
+      position:absolute;left:0;right:0;top:0;
+      padding:calc(18px + env(safe-area-inset-top)) var(--gut) 0;
+    }
+    .logo{font-size:18px}
+    .tel{
+      font-size:13px;font-weight:600;padding:9px 14px;border-radius:40px;
+      background:rgba(0,0,0,.45);border:1px solid var(--hair);
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    }
+    /* фото займає весь вільний простір над текстом */
+    .bay{flex:1 1 auto;min-height:210px;order:0}
+    .frame{transform:translate(-50%, 20%)}
+    .bay::after{
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.4) 12%, rgba(0,0,0,0) 26%),
+        linear-gradient(0deg, #000 0%, rgba(0,0,0,.7) 14%, rgba(0,0,0,0) 40%);
+    }
+    .copy{
+      flex:none;order:1;
+      margin-top:-28px;
+      padding:0 var(--gut) calc(22px + env(safe-area-inset-bottom));
+    }
+    h1{
+      font-size:clamp(38px, min(13.4vw, 6.5svh), 96px);
+      letter-spacing:-.05em;
+      margin-bottom:16px;
+    }
+    .row{border-top:0;padding-top:0;max-width:none}
+    .lead{font-size:15px;line-height:1.5;margin-bottom:20px}
+    .acts{flex-direction:column;align-items:stretch;gap:16px;max-width:440px}
+    .btn{width:100%;padding:18px 20px}
+    .link{align-self:center;font-size:14px}
   }
+  @media (max-width:760px) and (max-height:700px){
+    .lead strong{display:none}
+    .lead{margin-bottom:16px}
+    .acts{gap:12px}
+  }
+
   @media (prefers-reduced-motion:reduce){
     .js .dark{animation:none;opacity:0}
     .js .tube{animation:none;opacity:.32}
     .js .drl{animation:none;opacity:.5}
     .js h1 .ln > span{animation:none;transform:none}
-    .js .top,.js .row,.js .meta{animation:none;opacity:1}
+    .js .top,.js .row{animation:none;opacity:1}
   }
 </style>
 </head>
@@ -214,15 +244,16 @@
       <a href="#results">До і після</a>
       <a href="#faq">Питання</a>
     </nav>
+    <span class="meta">Рівне, щодня 9:00–20:00</span>
     <a class="tel" href="tel:+380670002407">067 000 24 07</a>
   </header>
 
   <div class="copy">
     <h1>
-      <span class="ln"><span class="heavy">Детейлінг</span></span>
-      <span class="ln"><span class="heavy">у&nbsp;Рівному</span></span>
-      <span class="ln"><span class="light">під стан</span></span>
-      <span class="ln"><span class="light">вашого авто</span></span>
+      <span class="ln"><span>Детейлінг</span></span>
+      <span class="ln"><span>у&nbsp;Рівному</span></span>
+      <span class="ln"><span class="soft">під стан</span></span>
+      <span class="ln"><span class="soft">вашого авто</span></span>
     </h1>
     <div class="row">
       <p class="lead">Спершу дивимось на кузов, салон і проблемні місця, а потім пропонуємо роботи. <strong>Ще до старту ви знаєте, що зробимо з авто і яким буде результат.</strong></p>
@@ -233,10 +264,6 @@
         <a class="link" href="#problems">Підібрати послуги</a>
       </div>
     </div>
-    <div class="meta">
-      <span>Рівне, щодня з 9:00 до 20:00</span>
-      <span>Відповідаємо в Telegram протягом години</span>
-    </div>
   </div>
 
   <div class="bay" aria-hidden="true">
@@ -245,7 +272,7 @@
            srcset="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=800&q=75&auto=format 800w,
                    https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=1400&q=78&auto=format 1400w,
                    https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=2000&q=78&auto=format 2000w"
-           sizes="(max-width:760px) 140vw, 50vw" alt="" fetchpriority="high">
+           sizes="(max-width:760px) 120vw, 50vw" alt="" fetchpriority="high">
       <span class="tube t1"></span><span class="tube t2"></span><span class="tube t3"></span><span class="tube t4"></span>
       <span class="drl d1"></span><span class="drl d2"></span>
       <span class="dark"></span>
@@ -254,9 +281,9 @@
 </section>
 
 <script>
-/* легкий паралакс фото за курсором */
+/* легкий паралакс фото за курсором (тільки мишка, тільки десктоп) */
 (() => {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !matchMedia('(pointer:fine)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !matchMedia('(pointer:fine) and (min-width:761px) and (orientation:landscape)').matches) return;
   const f = document.getElementById('frame');
   let tx = 0, ty = 0, x = 0, y = 0, raf = null;
   addEventListener('pointermove', e => {
@@ -266,7 +293,7 @@
   });
   function loop() {
     x += (tx - x) * .06; y += (ty - y) * .06;
-    f.style.transform = `translate(calc(-50% + ${x}px), ${y}px) scale(1.03)`;
+    f.style.transform = 'translate(calc(-50% + ' + x + 'px), calc(6% + ' + y + 'px)) scale(1.03)';
     raf = Math.abs(tx - x) + Math.abs(ty - y) > .05 ? requestAnimationFrame(loop) : null;
   }
 })();
