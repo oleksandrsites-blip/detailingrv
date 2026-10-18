@@ -301,15 +301,22 @@
   .pr-photos{position:absolute;left:0;right:0;top:0;height:58%;overflow:hidden}
   .pr-ph{position:absolute;inset:0;opacity:0;z-index:0}
   .pr-ph.on{opacity:1;z-index:1}
-  .pr-ph.enter{z-index:2;animation:prwipe .75s cubic-bezier(.6,0,.2,1) forwards}
+  .pr-ph.enter{opacity:1;z-index:2;animation:prwipe .95s cubic-bezier(.65,0,.25,1) forwards}
   @keyframes prwipe{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+  .pr-ph.enter img{animation:prsettle 1.5s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes prsettle{
+    0%{transform:scale(1.07);filter:grayscale(1) contrast(1.15) brightness(1.75)}
+    100%{transform:scale(1);filter:grayscale(1) contrast(1.08) brightness(.88)}
+  }
+  .pr-ph.leave img{animation:prdim .95s ease forwards}
+  @keyframes prdim{to{filter:grayscale(1) contrast(1.08) brightness(.35)}}
   .pr-ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.08) brightness(.88)}
   .pr-sweep{
     position:absolute;left:-5%;right:-5%;top:0;height:3px;z-index:3;pointer-events:none;opacity:0;
     background:var(--tube);border-radius:3px;
     box-shadow:0 0 14px 2px var(--tube),0 0 60px 10px rgba(228,246,242,.45);
   }
-  .pr-sweep.go{animation:prsweep .75s cubic-bezier(.6,0,.2,1)}
+  .pr-sweep.go{animation:prsweep .95s cubic-bezier(.65,0,.25,1)}
   @keyframes prsweep{0%{top:0;opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
   .pr-photos::after{
     content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
@@ -364,7 +371,7 @@
   @media (prefers-reduced-motion:reduce){
     .js .rv .ln > span,.js .fd{transform:none;opacity:1;transition:none}
     .js .pr-stage .pr-dark{animation:none;opacity:0}
-    .pr-ph.enter,.pr-sweep.go{animation:none}
+    .pr-ph.enter,.pr-ph.enter img,.pr-ph.leave img,.pr-sweep.go{animation:none}
     .pr-btn,.pr-btn::before,.pr-d{transition:none}
   }
 
@@ -546,7 +553,7 @@
   const sweep = stage.querySelector('.pr-sweep');
   const mq = matchMedia('(max-width:760px), (max-width:1100px) and (orientation:portrait)');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let cur = 0, solT = null;
+  let cur = 0, solT = null, photoT = null;
 
   // фото «вмикається», коли блок з'являється на екрані; заразом підвантажуємо всі фото
   new IntersectionObserver(([en], ob) => {
@@ -568,14 +575,24 @@
     stage.setAttribute('aria-labelledby', btns[i].id);
 
     // фото: нове проявляється під смугою світла
-    phs.forEach(p => p.classList.remove('enter'));
     const next = phs[i];
+    clearTimeout(photoT);
+    // якщо попередня анімація ще йде — одразу фіксуємо її кінцевий стан
+    phs.forEach(p => {
+      if (p.classList.contains('enter')) { phs.forEach(q => q.classList.remove('on')); p.classList.add('on'); }
+      p.classList.remove('enter', 'leave');
+    });
     if (reduce) { phs.forEach(p => p.classList.toggle('on', p === next)); }
     else {
+      const old = phs.find(p => p.classList.contains('on'));
+      if (old && old !== next) old.classList.add('leave');
+      void next.offsetWidth;
       next.classList.add('enter');
       sweep.classList.remove('go'); void sweep.offsetWidth; sweep.classList.add('go');
-      clearTimeout(next._t);
-      next._t = setTimeout(() => { phs.forEach(p => p.classList.toggle('on', p === next)); next.classList.remove('enter'); }, 760);
+      photoT = setTimeout(() => {
+        phs.forEach(p => { p.classList.toggle('on', p === next); p.classList.remove('leave'); });
+        next.classList.remove('enter');
+      }, 1520);
     }
 
     // текст рішення
