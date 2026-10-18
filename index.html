@@ -103,6 +103,8 @@
   .btn svg{flex:none}
   .link{font-size:15px;font-weight:600;border-bottom:1px solid rgba(243,243,241,.4);padding-bottom:3px;transition:border-color .2s;white-space:nowrap}
   .link:hover{border-color:var(--white)}
+  .link{position:relative}
+  .link::after{content:"";position:absolute;inset:-12px -10px}  /* більша зона натискання на телефоні */
   .meta{font-size:13px;color:var(--grey);white-space:nowrap}
 
   /* --- фото-бокс --- */
@@ -544,7 +546,7 @@
   const sweep = stage.querySelector('.pr-sweep');
   const mq = matchMedia('(max-width:760px), (max-width:1100px) and (orientation:portrait)');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let cur = 0, hoverT = null, solT = null;
+  let cur = 0, solT = null;
 
   // фото «вмикається», коли блок з'являється на екрані; заразом підвантажуємо всі фото
   new IntersectionObserver(([en], ob) => {
@@ -601,11 +603,6 @@
 
   btns.forEach((b, i) => {
     b.addEventListener('click', () => select(i));
-    b.addEventListener('mouseenter', () => {
-      if (mq.matches || !matchMedia('(pointer:fine)').matches) return;
-      clearTimeout(hoverT); hoverT = setTimeout(() => select(i), 140);
-    });
-    b.addEventListener('mouseleave', () => clearTimeout(hoverT));
     b.addEventListener('keydown', e => {
       if (e.key === 'ArrowDown') { e.preventDefault(); select((cur + 1) % btns.length, { focus: true }); }
       if (e.key === 'ArrowUp') { e.preventDefault(); select((cur - 1 + btns.length) % btns.length, { focus: true }); }
