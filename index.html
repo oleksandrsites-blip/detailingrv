@@ -6,907 +6,269 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>detailingrv — детейлінг авто в Рівному</title>
 <meta name="description" content="Детейлінг авто в Рівному під стан саме вашої машини: полірування, кераміка, хімчистка салону, PPF-плівка. Оцінка авто за фото.">
-<meta name="theme-color" content="#050B1A">
+<meta name="theme-color" content="#000000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap" rel="stylesheet">
 <style>
   :root{
-    --lacquer:#050B1A;      /* глибокий ультрамарин, база лаку */
-    --lacquer-2:#0C1A3A;
-    --led:#EEF3FF;          /* світло LED-стелі 5500K */
-    --pearl:#A9B6D6;        /* приглушений текст */
-    --haze:#5D6680;         /* матовий серпанок */
-    --line:rgba(238,243,255,.14);
-    --pad:56px;
+    --black:#000;
+    --white:#F3F3F1;
+    --grey:#8E8E8B;
+    --hair:rgba(243,243,241,.14);
+    --tube:#E4F6F2;          /* холодне світло ламп у боксі */
+    --gut:56px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
+  html,body{background:var(--black)}
   body{
-    background:var(--lacquer);
-    color:var(--led);
-    font-family:"Geologica",system-ui,sans-serif;
-    font-weight:400;
+    color:var(--white);
+    font-family:"Roboto Flex",system-ui,sans-serif;
+    font-variation-settings:"wdth" 100,"opsz" 16;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
   a{color:inherit;text-decoration:none}
-  :focus-visible{outline:2px solid var(--led);outline-offset:4px;border-radius:4px}
+  :focus-visible{outline:2px solid var(--white);outline-offset:4px}
 
+  /* ================= ПЕРШИЙ ЕКРАН ================= */
   .hero{
-    position:relative;
-    min-height:100vh;
-    min-height:100svh;
+    position:relative;width:100%;
+    min-height:100vh;min-height:100svh;
     display:grid;
-    grid-template-rows:auto 1fr auto;
-    isolation:isolate;
-    overflow:hidden;
-    touch-action:pan-y;
-  }
-  #paint{
-    position:absolute;inset:0;width:100%;height:100%;
-    z-index:-2;display:block;
-    background:
-      radial-gradient(120% 90% at 85% 10%, #1B2D5C 0%, transparent 55%),
-      linear-gradient(180deg,#0C1A3A,#050B1A);
-  }
-  /* читабельність тексту зліва — ніби тінь від стійки */
-  .hero::before{
-    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-    background:linear-gradient(90deg, rgba(5,11,26,.82) 0%, rgba(5,11,26,.55) 34%, rgba(5,11,26,0) 62%);
+    grid-template-columns:minmax(0,1fr) minmax(0,46%);
+    grid-template-rows:auto 1fr;
   }
 
-  /* ---------- шапка ---------- */
+  /* --- шапка --- */
   .top{
-    display:flex;align-items:center;gap:40px;
-    padding:28px var(--pad) 0;
+    grid-column:1 / -1;grid-row:1;
+    position:relative;z-index:5;
+    display:flex;align-items:center;gap:44px;
+    padding:30px var(--gut) 0;
   }
-  .brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:21px;letter-spacing:-.02em}
-  .brand svg{width:26px;height:26px}
-  .nav{display:flex;gap:32px;margin-left:auto;font-size:15px;color:var(--pearl)}
-  .nav a{position:relative;padding:6px 0;transition:color .2s}
-  .nav a:hover{color:var(--led)}
-  .phone{font-size:15px;font-weight:500;padding:11px 18px;border:1px solid var(--line);border-radius:40px;transition:border-color .2s,background .2s;white-space:nowrap}
-  .phone:hover{border-color:rgba(238,243,255,.5);background:rgba(238,243,255,.06)}
+  .logo{
+    font-variation-settings:"wdth" 151,"wght" 800,"opsz" 20;
+    font-size:19px;letter-spacing:-.01em;
+  }
+  .nav{display:flex;gap:30px;margin-left:auto;font-size:14px;color:var(--grey)}
+  .nav a{transition:color .2s}
+  .nav a:hover{color:var(--white)}
+  .tel{font-size:14px;font-variation-settings:"wdth" 100,"wght" 600;white-space:nowrap}
 
-  /* ---------- основний текст ---------- */
+  /* --- текстова колонка --- */
   .copy{
-    align-self:center;
-    padding:0 var(--pad);
-    max-width:1040px;
-    position:relative;
-    pointer-events:none;
+    grid-column:1;grid-row:2;
+    position:relative;z-index:3;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:40px 0 48px var(--gut);
   }
-  .copy > *{pointer-events:auto}
   h1{
-    font-weight:800;
-    font-size:clamp(38px, 5.4vw, 88px);
-    line-height:.94;
-    letter-spacing:-.045em;
-    margin-bottom:34px;
+    font-weight:normal;
+    font-size:clamp(64px, 10.4vw, 176px);
+    line-height:.84;
+    letter-spacing:-.005em;
+    text-transform:uppercase;
+    margin-bottom:44px;
+    /* заголовок трохи заходить на фото */
+    margin-right:-12vw;
   }
-  h1 .row{display:block;overflow:hidden;padding-bottom:.06em}
-  h1 .row span{display:inline-block;transform:translateY(105%);animation:rise 1.1s cubic-bezier(.2,.8,.1,1) forwards}
-  h1 .row:nth-child(2) span{animation-delay:.12s}
-  h1 .thin{font-weight:300;color:var(--pearl)}
-  @keyframes rise{to{transform:none}}
-  .lead{
-    max-width:46ch;
-    font-size:clamp(16px,1.25vw,19px);
-    line-height:1.6;
-    color:var(--pearl);
-    font-weight:300;
-    margin-bottom:40px;
-    opacity:0;animation:fade .9s .5s forwards;
+  h1 .ln{display:block;overflow:hidden;padding-top:.04em}
+  h1 .ln > span{display:inline-block}
+  h1 .heavy{font-variation-settings:"wdth" 25,"wght" 900,"opsz" 144}
+  h1 .light{font-variation-settings:"wdth" 25,"wght" 160,"opsz" 144}
+
+  .row{
+    display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px 48px;align-items:end;
+    padding-top:28px;border-top:1px solid var(--hair);
+    max-width:860px;margin-right:var(--gut);
   }
-  .lead b{color:var(--led);font-weight:500}
-  .actions{display:flex;align-items:center;gap:32px;flex-wrap:wrap;opacity:0;animation:fade .9s .7s forwards}
+  .lead{font-size:16px;line-height:1.6;color:var(--grey);font-variation-settings:"wdth" 100,"wght" 380}
+  .lead strong{color:var(--white);font-variation-settings:"wdth" 100,"wght" 520;font-weight:normal}
+  .acts{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:14px;
+    background:var(--white);color:var(--black);
+    padding:19px 26px;border-radius:4px;
+    font-size:15px;font-variation-settings:"wdth" 112,"wght" 700;
+    transition:background .25s, box-shadow .25s;
+    white-space:nowrap;
+  }
+  .btn:hover{background:#fff;box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(228,246,242,.35)}
+  .btn svg{flex:none}
+  .link{font-size:15px;font-variation-settings:"wdth" 100,"wght" 500;border-bottom:1px solid rgba(243,243,241,.4);padding-bottom:3px;transition:border-color .2s;white-space:nowrap}
+  .link:hover{border-color:var(--white)}
+  .meta{display:flex;gap:28px;margin-top:26px;font-size:13px;color:var(--grey);flex-wrap:wrap}
+
+  /* --- фото-бокс --- */
+  .bay{
+    grid-column:2;grid-row:1 / -1;
+    position:relative;overflow:hidden;
+    container-type:size;
+    background:#000;
+  }
+  .frame{
+    position:absolute;left:50%;bottom:0;
+    width:max(100%, calc(100cqh * 1400 / 2101));
+    aspect-ratio:1400 / 2101;
+    transform:translate(-50%, 0);
+    will-change:transform;
+  }
+  .frame img{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .dark{position:absolute;inset:0;background:#000;pointer-events:none}
+  /* світіння ламп і фар — точно поверх фото */
+  .tube,.drl{position:absolute;pointer-events:none;mix-blend-mode:screen;opacity:0}
+  .tube{
+    height:.9%;border-radius:50%;
+    background:var(--tube);
+    filter:blur(4px);
+    box-shadow:0 0 34px 10px rgba(228,246,242,.5);
+  }
+  .t1{left:17%;right:19%;top:18.2%}
+  .t2{left:26.6%;right:24.5%;top:35.4%}
+  .t3{left:34.7%;right:32.6%;top:45%}
+  .t4{left:36.9%;right:38%;top:50.4%}
+  .drl{height:1.3%;border-radius:50%;background:#fff;filter:blur(5px);box-shadow:0 0 30px 10px rgba(255,255,255,.45)}
+  .d1{left:13%;width:15%;top:69.2%;transform:rotate(6deg)}
+  .d2{left:70%;width:15%;top:69.2%;transform:rotate(-6deg)}
+  .bay::after{ /* м'який перехід фото в чорне зліва і знизу */
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      linear-gradient(90deg, #000 0%, rgba(0,0,0,0) 22%),
+      linear-gradient(0deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 18%);
+  }
+
+  /* ================= ВСТУП: у боксі вмикається світло ================= */
+  .js .dark{animation:lights 2.1s .25s steps(1,end) forwards}
+  @keyframes lights{
+    0%{opacity:1}
+    6%{opacity:.82} 9%{opacity:1} 13%{opacity:.7}             /* лампа 1 */
+    20%{opacity:.62}
+    30%{opacity:.5} 33%{opacity:.66} 36%{opacity:.4}           /* лампа 2 */
+    50%{opacity:.3} 53%{opacity:.42} 56%{opacity:.2}           /* лампа 3 */
+    68%{opacity:.12} 71%{opacity:.2} 74%{opacity:.06}          /* лампа 4 */
+    100%{opacity:0}
+  }
+  .js .t1{animation:tube 1.4s .3s steps(1,end) forwards}
+  .js .t2{animation:tube 1.2s .82s steps(1,end) forwards}
+  .js .t3{animation:tube 1.1s 1.22s steps(1,end) forwards}
+  .js .t4{animation:tube 1s 1.5s steps(1,end) forwards}
+  @keyframes tube{
+    0%{opacity:0} 8%{opacity:1} 14%{opacity:.1} 22%{opacity:.9} 30%{opacity:0} 38%{opacity:1}
+    60%{opacity:.7} 100%{opacity:.32}
+  }
+  .js .drl{animation:drl .9s 2.05s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes drl{0%{opacity:0}35%{opacity:1}100%{opacity:.5}}
+
+  .js h1 .ln > span{transform:translateY(135%);animation:up 1.1s cubic-bezier(.16,.84,.2,1) forwards}
+  .js h1 .ln:nth-child(1) > span{animation-delay:1.55s}
+  .js h1 .ln:nth-child(2) > span{animation-delay:1.65s}
+  .js h1 .ln:nth-child(3) > span{animation-delay:1.75s}
+  .js h1 .ln:nth-child(4) > span{animation-delay:1.85s}
+  @keyframes up{to{transform:none}}
+  .js .top,.js .row,.js .meta{opacity:0;animation:fade 1s forwards}
+  .js .top{animation-delay:1.9s}
+  .js .row{animation-delay:2.15s}
+  .js .meta{animation-delay:2.3s}
   @keyframes fade{to{opacity:1}}
-  .cta{
-    display:inline-flex;flex-direction:column;gap:3px;
-    padding:18px 30px 16px;
-    background:var(--led);color:var(--lacquer);
-    border-radius:16px;
-    font-weight:700;font-size:17px;letter-spacing:-.01em;
-    box-shadow:0 0 0 0 rgba(238,243,255,.0), 0 18px 50px -12px rgba(160,190,255,.55);
-    transition:transform .25s, box-shadow .25s;
-  }
-  .cta small{font-weight:400;font-size:13px;color:#3A4767}
-  .cta:hover{transform:translateY(-2px);box-shadow:0 0 0 6px rgba(238,243,255,.12), 0 24px 60px -12px rgba(160,190,255,.7)}
-  .ghost{font-size:16px;font-weight:500;border-bottom:1px solid rgba(238,243,255,.35);padding-bottom:4px;transition:border-color .2s}
-  .ghost:hover{border-color:var(--led)}
 
-  /* ---------- нижня смуга: підказка + лічильник ---------- */
-  .bottom{
-    display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
-    padding:0 var(--pad) 34px;
-    font-size:14px;color:var(--pearl);
-    pointer-events:none;
-  }
-  .hint{display:flex;align-items:center;gap:14px;opacity:0;transition:opacity .8s}
-  .hint.show{opacity:1}
-  .hint i{
-    width:34px;height:34px;border-radius:50%;flex:none;
-    border:1px dashed rgba(238,243,255,.55);
-    animation:spin 2.4s linear infinite;
-  }
-  .meter{min-width:240px;text-align:right}
-  .meter .val{display:flex;justify-content:space-between;gap:20px;margin-bottom:10px}
-  .meter .val strong{color:var(--led);font-weight:500;font-variant-numeric:tabular-nums}
-  .bar{height:2px;background:rgba(238,243,255,.14);border-radius:2px;overflow:hidden}
-  .bar div{height:100%;width:0;background:var(--led);transition:width .4s ease;box-shadow:0 0 12px var(--led)}
-  .meter.done .val span{color:var(--led)}
-
-  /* ---------- полірувальна машинка під курсором ---------- */
-  .pad{
-    position:absolute;left:0;top:0;z-index:20;
-    width:132px;height:132px;margin:-66px 0 0 -66px;
-    pointer-events:none;opacity:0;transition:opacity .35s;
-  }
-  .pad.on{opacity:1}
-  .pad .orbit{width:100%;height:100%;animation:orbit .18s linear infinite paused}
-  .pad.spin .orbit{animation-play-state:running}
-  .pad .disc{
-    width:100%;height:100%;border-radius:50%;
-    border:1.5px solid rgba(238,243,255,.75);
-    background:
-      repeating-conic-gradient(rgba(238,243,255,.22) 0 4deg, transparent 4deg 18deg);
-    -webkit-mask:radial-gradient(circle, transparent 0 38%, #000 39% 100%);
-            mask:radial-gradient(circle, transparent 0 38%, #000 39% 100%);
-    animation:spin 1.6s linear infinite paused;
-  }
-  .pad.spin .disc{animation-duration:.35s;animation-play-state:running}
-  .pad .dot{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:var(--led)}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @keyframes orbit{
-    0%{transform:translate(3px,0)}25%{transform:translate(0,3px)}
-    50%{transform:translate(-3px,0)}75%{transform:translate(0,-3px)}100%{transform:translate(3px,0)}
-  }
-  @media (hover:hover) and (pointer:fine){ .hero{cursor:none} .hero a{cursor:pointer} }
-
-  /* ---------- адаптив ---------- */
-  @media (max-width:980px){
-    :root{--pad:28px}
+  /* ================= адаптив ================= */
+  @media (max-width:1100px){
+    :root{--gut:36px}
     .nav{display:none}
-    .phone{margin-left:auto}
+    .tel{margin-left:auto}
+    .row{grid-template-columns:1fr}
   }
-  @media (max-width:640px){
-    :root{--pad:20px}
-    .top{padding-top:20px}
-    .brand{font-size:19px}
-    .phone{font-size:14px;padding:9px 14px}
-    .hero::before{background:linear-gradient(0deg, rgba(5,11,26,.92) 0%, rgba(5,11,26,.75) 48%, rgba(5,11,26,0) 75%)}
-    .copy{align-self:end;padding-bottom:28px}
-    h1{margin-bottom:22px}
-    .lead{margin-bottom:28px}
-    .actions{gap:22px}
-    .cta{width:100%;align-items:center;text-align:center}
-    .bottom{flex-direction:column;align-items:stretch;padding-bottom:24px}
-    .meter{min-width:0;text-align:left}
-    .pad{width:96px;height:96px;margin:-48px 0 0 -48px}
-  }
-  @media (prefers-reduced-motion:reduce){
-    h1 .row span{animation:none;transform:none}
-    .lead,.actions{animation:none;opacity:1}
-    .hint i,.pad .disc,.pad .orbit{animation:none}
-  }
-
-  /* ================= БЛОК 2: проблема → рішення ================= */
-  .sec{padding:150px var(--pad) 150px;position:relative}
-  .sec-head{max-width:760px;margin-bottom:72px}
-  h2{
-    font-weight:800;font-size:clamp(34px,4.2vw,64px);
-    line-height:1;letter-spacing:-.04em;margin-bottom:24px;
-  }
-  h2 .thin{font-weight:300;color:var(--pearl)}
-  .sec-lead{max-width:52ch;font-size:clamp(16px,1.2vw,18px);line-height:1.6;font-weight:300;color:var(--pearl)}
-
-  .pr{position:relative;min-height:560px}
-  .pr-list{list-style:none;width:44%;padding-left:28px;border-left:1px solid var(--line)}
-  .led{
-    position:absolute;left:-1px;top:0;width:3px;border-radius:3px;
-    background:var(--led);
-    box-shadow:0 0 10px var(--led),0 0 28px rgba(160,190,255,.8);
-  }
-  .led.flick{animation:flick .9s steps(1) 1}
-  @keyframes flick{0%{opacity:0}10%{opacity:1}16%{opacity:.15}24%{opacity:1}30%{opacity:.4}38%,100%{opacity:1}}
-  .prob{
-    all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;
-    padding:20px 0;
-  }
-  .prob-t{
-    display:block;font-size:clamp(20px,1.9vw,28px);font-weight:500;letter-spacing:-.02em;line-height:1.2;
-    color:rgba(238,243,255,.38);transition:color .3s;
-  }
-  .prob:hover .prob-t{color:rgba(238,243,255,.7)}
-  .prob[aria-expanded="true"] .prob-t{color:var(--led)}
-  .prob-d{
-    display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s ease, opacity .45s;opacity:0;
-    font-size:15px;line-height:1.55;color:var(--pearl);font-weight:300;max-width:42ch;
-  }
-  .prob-d > span{overflow:hidden}
-  .prob[aria-expanded="true"] .prob-d{grid-template-rows:1fr;opacity:1}
-  .prob[aria-expanded="true"] .prob-d > span{padding-top:10px}
-
-  .sol{
-    position:absolute;left:52%;right:0;top:0;
-    padding:44px 48px 46px;border-radius:28px;
-    background:
-      radial-gradient(90% 70% at 100% 0%, rgba(120,150,255,.16), transparent 60%),
-      linear-gradient(160deg, rgba(27,45,92,.55), rgba(8,16,36,.6));
-    border:1px solid rgba(238,243,255,.09);
-    overflow:hidden;
-    visibility:hidden;opacity:0;
-  }
-  .sol.show{visibility:visible;opacity:1;animation:reveal .85s cubic-bezier(.6,0,.2,1)}
-  @keyframes reveal{from{clip-path:inset(0 100% 0 0 round 28px)}to{clip-path:inset(0 0 0 0 round 28px)}}
-  .sol .sweep{
-    position:absolute;top:-10%;bottom:-10%;left:0;width:90px;pointer-events:none;
-    background:linear-gradient(90deg,transparent,rgba(238,243,255,.35) 45%,rgba(255,255,255,.9) 50%,rgba(238,243,255,.35) 55%,transparent);
-    filter:blur(6px);transform:translateX(-120px);opacity:0;
-  }
-  .sol.show .sweep{animation:sweep .85s cubic-bezier(.6,0,.2,1)}
-  @keyframes sweep{0%{transform:translateX(-120px);opacity:1}90%{opacity:1}100%{transform:translateX(calc(var(--w,600px) + 40px));opacity:0}}
-  .sol-for{font-size:15px;color:var(--pearl);margin-bottom:14px;font-weight:300}
-  .sol h3{font-size:clamp(30px,3vw,46px);font-weight:700;letter-spacing:-.035em;line-height:1.02;margin-bottom:22px}
-  .sol-text{font-size:17px;line-height:1.6;color:#C9D2EA;font-weight:300;max-width:46ch;margin-bottom:34px}
-  .sol dl{display:flex;gap:48px;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:28px}
-  .sol dt{font-size:13px;color:var(--pearl);margin-bottom:6px;font-weight:300}
-  .sol dd{font-size:20px;font-weight:500;letter-spacing:-.01em}
-  .sol-tip{font-size:15px;line-height:1.55;color:var(--pearl);font-weight:300;margin-bottom:30px;max-width:48ch}
-  .sol-tip b{color:var(--led);font-weight:500}
-  .sol .ghost{font-size:16px}
-
-
-  @media (max-width:900px){
-    .sec{padding:100px var(--pad)}
-    .sec-head{margin-bottom:44px}
-    .pr{min-height:0}
-    .pr-list{width:100%;padding-left:20px}
-    .sol{position:relative;left:auto;right:auto;display:none;padding:28px 24px 30px;border-radius:22px;margin:4px 0 18px}
-    .sol.show{display:block}
-    .sol dl{gap:28px}
+  @media (max-width:760px){
+    :root{--gut:20px}
+    .hero{grid-template-columns:1fr;grid-template-rows:auto auto auto}
+    .top{grid-row:1;padding-top:20px}
+    .logo{font-size:17px}
+    .bay{grid-column:1;grid-row:1 / 3;height:66svh;min-height:480px}
+    .bay::after{background:linear-gradient(0deg, #000 4%, rgba(0,0,0,.55) 30%, rgba(0,0,0,0) 55%)}
+    .copy{grid-row:2 / 4;padding:0 var(--gut) 36px;margin-top:calc(66svh - 200px)}
+    h1{font-size:clamp(58px, 21vw, 110px);margin-right:0;margin-bottom:30px}
+    .row{margin-right:0;padding-top:22px}
+    .acts{flex-direction:column;align-items:stretch;gap:18px}
+    .btn{justify-content:center}
+    .link{align-self:center}
   }
   @media (prefers-reduced-motion:reduce){
-    .sol.show,.sol.show .sweep,.led.flick{animation:none}
-    .led{transition:none}
-  }
-
-  /* ================= БЛОК 3: комплекси ================= */
-  .pk-cards{display:grid;grid-template-columns:1fr 1.06fr 1fr;gap:20px;align-items:stretch;padding-top:24px}
-  .pkc{
-    position:relative;display:flex;flex-direction:column;border-radius:28px;overflow:hidden;
-    background:linear-gradient(180deg, rgba(22,38,80,.55), rgba(8,15,34,.9) 60%);
-    border:1px solid rgba(238,243,255,.08);
-    transition:border-color .35s;
-  }
-  .pkc:hover{border-color:rgba(238,243,255,.22)}
-  .pkc.featured{
-    margin-top:-24px;
-    border-color:rgba(238,243,255,.32);
-    box-shadow:0 40px 90px -40px rgba(120,150,255,.65);
-  }
-  .pkc.featured::before{
-    content:"";position:absolute;z-index:2;left:14%;right:14%;top:0;height:2px;border-radius:2px;
-    background:var(--led);box-shadow:0 0 12px var(--led),0 0 40px rgba(160,190,255,.9);
-  }
-  .pkc-body{display:flex;flex-direction:column;flex:1;padding:44px 34px 34px}
-  .pkc.featured{background:radial-gradient(70% 40% at 50% 0%, rgba(160,190,255,.22), transparent 70%),linear-gradient(180deg, rgba(30,50,105,.6), rgba(8,15,34,.92) 65%)}
-  .pkc-name{font-size:clamp(30px,2.6vw,40px);font-weight:800;letter-spacing:-.04em;line-height:1;margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-  .pk-badge{font-size:12px;font-weight:500;letter-spacing:0;padding:6px 11px;border-radius:30px;background:var(--led);color:var(--lacquer)}
-  .pkc-goal{font-size:17px;font-weight:400;line-height:1.4;color:#C9D2EA;margin-bottom:26px;max-width:28ch}
-  .pkc ul{list-style:none;display:grid;gap:12px;margin-bottom:30px;padding-top:24px;border-top:1px solid var(--line)}
-  .pkc li{position:relative;padding-left:22px;font-size:15px;line-height:1.45;color:var(--pearl);font-weight:300}
-  .pkc li::before{
-    content:"";position:absolute;left:0;top:.42em;width:9px;height:10px;background:rgba(238,243,255,.45);
-    clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
-  }
-  .pkc.featured li::before{background:var(--led)}
-  .pk-gift{margin-top:auto;font-size:14px;line-height:1.5;color:var(--led);margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
-  .pk-gift svg{flex:none;margin-top:2px}
-  .pkc-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  .pk-gift + .pkc-foot{margin-top:0}
-  .pk-price{display:flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums;white-space:nowrap}
-  .pk-price small{font-size:14px;color:var(--pearl);font-weight:300}
-  .pk-price strong{font-size:clamp(28px,2.3vw,36px);font-weight:700;letter-spacing:-.035em}
-  .pkc-btn{
-    font-size:15px;font-weight:500;padding:13px 20px;border-radius:14px;white-space:nowrap;
-    border:1px solid rgba(238,243,255,.25);transition:background .25s,border-color .25s,color .25s;
-  }
-  .pkc-btn:hover{border-color:var(--led);background:rgba(238,243,255,.08)}
-  .pkc.featured .pkc-btn{background:var(--led);color:var(--lacquer);border-color:var(--led);font-weight:700}
-  .pkc.featured .pkc-btn:hover{box-shadow:0 0 0 5px rgba(238,243,255,.14)}
-  .pk-note{margin-top:40px;font-size:15px;line-height:1.6;color:var(--pearl);font-weight:300;max-width:80ch}
-  .pk-note a{color:var(--led);border-bottom:1px solid rgba(238,243,255,.4)}
-  .pk-note a:hover{border-color:var(--led)}
-
-  @media (max-width:1100px) and (min-width:901px){
-    .pkc-body{padding:36px 24px 28px}
-  }
-  @media (max-width:900px){
-    .pk-cards{
-      display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;
-      margin:0 calc(var(--pad) * -1);padding:34px var(--pad) 10px;scrollbar-width:none;
-    }
-    .pk-cards::-webkit-scrollbar{display:none}
-    .pkc{flex:0 0 min(84%,360px);scroll-snap-align:center}
-    .pkc.featured{margin-top:-14px}
-    .pkc-body{padding:32px 22px 26px}
-    .pk-note{margin-top:24px;font-size:14px}
-  }
-
-  /* ================= м'які анімації появи ================= */
-  .js [data-reveal]{
-    opacity:0;transform:translateY(26px);
-    transition:opacity .9s cubic-bezier(.2,.7,.2,1) var(--d,0s), transform .9s cubic-bezier(.2,.7,.2,1) var(--d,0s);
-  }
-  .js [data-reveal].in{opacity:1;transform:none}
-  .js [data-reveal-group] > *{
-    opacity:0;transform:translateY(34px);
-    transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1);
-  }
-  .js [data-reveal-group] > :nth-child(2){transition-delay:.12s}
-  .js [data-reveal-group] > :nth-child(3){transition-delay:.24s}
-  .js [data-reveal-group].in > *{opacity:1;transform:none}
-  .js h2[data-reveal]{transform:translateY(40px);filter:blur(6px);transition-property:opacity,transform,filter}
-  .js h2[data-reveal].in{filter:none}
-  @media (prefers-reduced-motion:reduce){
-    .js [data-reveal],.js [data-reveal-group] > *{opacity:1;transform:none;filter:none;transition:none}
+    .js .dark{animation:none;opacity:0}
+    .js .tube{animation:none;opacity:.32}
+    .js .drl{animation:none;opacity:.5}
+    .js h1 .ln > span{animation:none;transform:none}
+    .js .top,.js .row,.js .meta{animation:none;opacity:1}
   }
 </style>
 </head>
 <body>
 
-<section class="hero" id="hero">
-  <canvas id="paint" aria-hidden="true"></canvas>
-
+<section class="hero" id="top">
   <header class="top">
-    <a class="brand" href="#" aria-label="detailingrv, на головну">
-      <svg viewBox="0 0 26 26" fill="none" aria-hidden="true">
-        <path d="M13 1.5 23 7.25v11.5L13 24.5 3 18.75V7.25L13 1.5Z" stroke="#EEF3FF" stroke-width="1.6"/>
-        <path d="M13 7.5 18 10.4v5.2L13 18.5 8 15.6v-5.2L13 7.5Z" fill="#EEF3FF"/>
-      </svg>
-      detailingrv
-    </a>
+    <a class="logo" href="#top" aria-label="detailingrv, на початок">detailingrv</a>
     <nav class="nav" aria-label="Розділи">
       <a href="#problems">Послуги</a>
       <a href="#packages">Комплекси</a>
       <a href="#results">До і після</a>
       <a href="#faq">Питання</a>
     </nav>
-    <a class="phone" href="tel:+380670002407">067 000 24 07</a>
+    <a class="tel" href="tel:+380670002407">067 000 24 07</a>
   </header>
 
   <div class="copy">
     <h1>
-      <span class="row"><span>Детейлінг у&nbsp;Рівному</span></span>
-      <span class="row"><span class="thin">під стан саме вашого&nbsp;авто</span></span>
+      <span class="ln"><span class="heavy">Детейлінг</span></span>
+      <span class="ln"><span class="heavy">у&nbsp;Рівному</span></span>
+      <span class="ln"><span class="light">під стан</span></span>
+      <span class="ln"><span class="light">вашого авто</span></span>
     </h1>
-    <p class="lead">
-      Спершу дивимось на кузов, салон і проблемні місця, а&nbsp;потім пропонуємо роботи.
-      <b>Ще до старту ви знаєте, що зробимо з авто і яким буде результат.</b>
-    </p>
-    <div class="actions">
-      <a class="cta" href="#estimate">Оцінити авто за фото<small>3–5 фото, і назвемо орієнтовну ціну</small></a>
-      <a class="ghost" href="#problems">Підібрати послуги</a>
+    <div class="row">
+      <p class="lead">Спершу дивимось на кузов, салон і проблемні місця, а потім пропонуємо роботи. <strong>Ще до старту ви знаєте, що зробимо з авто і яким буде результат.</strong></p>
+      <div class="acts">
+        <a class="btn" href="#estimate">Оцінити авто за фото
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 4l1.2-2h3.6L12 4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="link" href="#problems">Підібрати послуги</a>
+      </div>
+    </div>
+    <div class="meta">
+      <span>Рівне, щодня з 9:00 до 20:00</span>
+      <span>Відповідаємо в Telegram протягом години</span>
     </div>
   </div>
 
-  <div class="bottom">
-    <div class="hint" id="hint"><i aria-hidden="true"></i><span id="hintText">Поведіть курсором по капоту — це і є полірування</span></div>
-    <div class="meter" id="meter" aria-live="polite">
-      <div class="val"><span id="meterLabel">Відполіровано</span><strong id="meterVal">0%</strong></div>
-      <div class="bar"><div id="meterBar"></div></div>
+  <div class="bay" aria-hidden="true">
+    <div class="frame" id="frame">
+      <img src="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=1400&q=78&auto=format"
+           srcset="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=800&q=75&auto=format 800w,
+                   https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=1400&q=78&auto=format 1400w,
+                   https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=2000&q=78&auto=format 2000w"
+           sizes="(max-width:760px) 140vw, 50vw" alt="" fetchpriority="high">
+      <span class="tube t1"></span><span class="tube t2"></span><span class="tube t3"></span><span class="tube t4"></span>
+      <span class="drl d1"></span><span class="drl d2"></span>
+      <span class="dark"></span>
     </div>
   </div>
 </section>
 
-<section class="sec" id="problems" aria-labelledby="problems-h">
-  <div class="sec-head">
-    <h2 id="problems-h" data-reveal>Не знаєте, яка послуга потрібна? <span class="thin">Почніть із проблеми</span></h2>
-    <p class="sec-lead" data-reveal style="--d:.12s">Розбиратися в детейлінгу не обов'язково. Оберіть, що вас не влаштовує, і подивіться, як ми це вирішуємо. Точний обсяг робіт визначимо після оцінки авто.</p>
-  </div>
-  <div class="pr">
-    <span class="led" id="led" aria-hidden="true"></span>
-    <ul class="pr-list" id="prList">
-      <li>
-        <button class="prob" id="prob-0" data-reveal style="--d:0.00s" aria-expanded="true" aria-controls="sol-0">
-          <span class="prob-t">Кузов втратив блиск</span>
-          <span class="prob-d"><span>Фарба потьмяніла, на сонці видно подряпини, потертості й сліди від мийок.</span></span>
-        </button>
-        <div class="sol show" id="sol-0" role="region" aria-labelledby="prob-0">
-          <span class="sweep" aria-hidden="true"></span>
-          <p class="sol-for">Що зробимо</p>
-          <h3>Полірування кузова</h3>
-          <p class="sol-text">Знімаємо мікрошар пошкодженого лаку разом із павутинкою та подряпинами. Повертаються глибина кольору й дзеркальний блиск.</p>
-          <dl><div><dt>Скільки часу</dt><dd>1–2 дні</dd></div><div><dt>Вартість</dt><dd>від 6 000 грн</dd></div></dl>
-          <p class="sol-tip">Щоб блиск тримався роками, після полірування радимо <b>керамічне покриття</b>.</p>
-          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
-        </div>
-      </li>
-      <li>
-        <button class="prob" id="prob-1" data-reveal style="--d:0.08s" aria-expanded="false" aria-controls="sol-1">
-          <span class="prob-t">У салоні плями або запах</span>
-          <span class="prob-d"><span>Сидіння, текстиль, пластик чи стеля брудні, а звичайного прибирання вже не вистачає.</span></span>
-        </button>
-        <div class="sol" id="sol-1" role="region" aria-labelledby="prob-1">
-          <span class="sweep" aria-hidden="true"></span>
-          <p class="sol-for">Що зробимо</p>
-          <h3>Хімчистка салону</h3>
-          <p class="sol-text">Глибоко чистимо сидіння, стелю, килими, пластик і стики. Запах прибираємо, а не маскуємо ароматизатором.</p>
-          <dl><div><dt>Скільки часу</dt><dd>1 день</dd></div><div><dt>Вартість</dt><dd>від 3 500 грн</dd></div></dl>
-          <p class="sol-tip">Після чистки шкіру живимо й захищаємо, щоб вона не тріскалась.</p>
-          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
-        </div>
-      </li>
-      <li>
-        <button class="prob" id="prob-2" data-reveal style="--d:0.16s" aria-expanded="false" aria-controls="sol-2">
-          <span class="prob-t">Хочете захистити кузов</span>
-          <span class="prob-d"><span>Нове або щойно відполіроване авто, і не хочеться, щоб з'являлися сколи та подряпини.</span></span>
-        </button>
-        <div class="sol" id="sol-2" role="region" aria-labelledby="prob-2">
-          <span class="sweep" aria-hidden="true"></span>
-          <p class="sol-for">Що зробимо</p>
-          <h3>PPF-плівка або кераміка</h3>
-          <p class="sol-text">Плівка Llumar чи STEK бере на себе камінці й подряпини на капоті, бампері, дзеркалах або на всьому кузові. Кераміка — коли головне блиск і легка мийка.</p>
-          <dl><div><dt>Скільки часу</dt><dd>2–5 днів</dd></div><div><dt>Вартість</dt><dd>від 9 000 грн</dd></div></dl>
-          <p class="sol-tip">Що обрати, підкажемо після огляду: це залежить від того, як і де ви їздите.</p>
-          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
-        </div>
-      </li>
-      <li>
-        <button class="prob" id="prob-3" data-reveal style="--d:0.24s" aria-expanded="false" aria-controls="sol-3">
-          <span class="prob-t">Фари стали мутними</span>
-          <span class="prob-d"><span>Помутніння й жовтизна: світить гірше, а перед авто виглядає старшим, ніж є.</span></span>
-        </button>
-        <div class="sol" id="sol-3" role="region" aria-labelledby="prob-3">
-          <span class="sweep" aria-hidden="true"></span>
-          <p class="sol-for">Що зробимо</p>
-          <h3>Відновлення фар</h3>
-          <p class="sol-text">Шліфуємо й полірумо пластик фар до прозорості, а зверху наносимо захист, щоб жовтизна не повернулась за сезон.</p>
-          <dl><div><dt>Скільки часу</dt><dd>2–3 години</dd></div><div><dt>Вартість</dt><dd>від 1 200 грн</dd></div></dl>
-          <p class="sol-tip">Можна поєднати з мийкою, і авто заберете того ж дня.</p>
-          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
-        </div>
-      </li>
-      <li>
-        <button class="prob" id="prob-4" data-reveal style="--d:0.32s" aria-expanded="false" aria-controls="sol-4">
-          <span class="prob-t">Потрібне комплексне оновлення</span>
-          <span class="prob-d"><span>Є питання і до кузова, і до салону, і до скла та дрібних деталей.</span></span>
-        </button>
-        <div class="sol" id="sol-4" role="region" aria-labelledby="prob-4">
-          <span class="sweep" aria-hidden="true"></span>
-          <p class="sol-for">Що зробимо</p>
-          <h3>Комплексний детейлінг</h3>
-          <p class="sol-text">Кузов, салон, диски, скло й стики — одним комплексом за планом, який погоджуємо до початку робіт.</p>
-          <dl><div><dt>Скільки часу</dt><dd>3–5 днів</dd></div><div><dt>Вартість</dt><dd>від 18 000 грн</dd></div></dl>
-          <p class="sol-tip">Окремі послуги в комплексі обходяться дешевше, ніж якщо робити їх по черзі.</p>
-          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
-        </div>
-      </li>
-      <li>
-        <button class="prob" id="prob-5" data-reveal style="--d:0.40s" aria-expanded="false" aria-controls="sol-5">
-          <span class="prob-t">Готуєте авто до продажу</span>
-          <span class="prob-d"><span>Хочеться, щоб авто виглядало доглянутим на фото й на огляді, але без зайвих витрат.</span></span>
-        </button>
-        <div class="sol" id="sol-5" role="region" aria-labelledby="prob-5">
-          <span class="sweep" aria-hidden="true"></span>
-          <p class="sol-for">Що зробимо</p>
-          <h3>Передпродажна підготовка</h3>
-          <p class="sol-text">Мийка, легке полірування, чистка салону й фар — тільки те, що реально впливає на перше враження покупця.</p>
-          <dl><div><dt>Скільки часу</dt><dd>1 день</dd></div><div><dt>Вартість</dt><dd>від 4 500 грн</dd></div></dl>
-          <p class="sol-tip">Покажемо, на чому можна заощадити, бо покупець цього не помітить.</p>
-          <a class="ghost" href="#estimate">Оцінити своє авто за фото</a>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<section class="sec" id="packages" aria-labelledby="packages-h">
-  <div class="sec-head">
-    <h2 id="packages-h" data-reveal>Готові комплекси <span class="thin">під типові задачі</span></h2>
-    <p class="sec-lead" data-reveal style="--d:.12s">Не потрібно збирати послуги самостійно. Оберіть комплекс під свою задачу, а точний обсяг робіт і вартість визначимо після оцінки авто.</p>
-  </div>
-  <div class="pk-cards" id="pkCards" data-reveal-group>
-      <article class="pkc" aria-labelledby="pk-basic">
-        <div class="pkc-body">
-          <h3 class="pkc-name" id="pk-basic">Basic</h3>
-          <p class="pkc-goal">Щоб підтримувати авто чистим і доглянутим</p>
-          <ul>
-            <li>Детейлінг-мийка кузова</li>
-            <li>Очищення дисків і важкодоступних зон</li>
-            <li>Прибирання й чистка салону</li>
-            <li>Догляд за пластиком і поверхнями</li>
-          </ul>
-          <div class="pkc-foot">
-            <p class="pk-price"><small>від</small><strong>2 500</strong><small>грн</small></p>
-            <a class="pkc-btn" href="#estimate">Обрати Basic</a>
-          </div>
-        </div>
-      </article>
-      <article class="pkc featured" aria-labelledby="pk-premium">
-        <div class="pkc-body">
-          <h3 class="pkc-name" id="pk-premium">Premium <span class="pk-badge">Найчастіше обирають</span></h3>
-          <p class="pkc-goal">Щоб повернути кузову блиск і зберегти його надовго</p>
-          <ul>
-            <li>Підготовка й очищення кузова</li>
-            <li>Полірування лакофарбового покриття</li>
-            <li>Керамічний захист</li>
-            <li>Фінальна перевірка під лампами</li>
-          </ul>
-          <p class="pk-gift"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="6" width="12" height="8" rx="1.5" stroke="#EEF3FF" stroke-width="1.3"/><path d="M1.5 6h13M8 6v8M8 6S6.8 2 4.9 2.6C3.5 3 4.6 6 8 6Zm0 0s1.2-4 3.1-3.4C12.5 3 11.4 6 8 6Z" stroke="#EEF3FF" stroke-width="1.3"/></svg><span>Зараз антидощ на скло в подарунок</span></p>
-          <div class="pkc-foot">
-            <p class="pk-price"><small>від</small><strong>12 000</strong><small>грн</small></p>
-            <a class="pkc-btn" href="#estimate">Обрати Premium</a>
-          </div>
-        </div>
-      </article>
-      <article class="pkc" aria-labelledby="pk-full">
-        <div class="pkc-body">
-          <h3 class="pkc-name" id="pk-full">Full Detailing</h3>
-          <p class="pkc-goal">Комплексне відновлення кузова й салону</p>
-          <ul>
-            <li>Детейлінг кузова й полірування</li>
-            <li>Хімчистка та детейлінг салону</li>
-            <li>Захисні покриття кузова й поверхонь</li>
-            <li>Чистка стиків, пластику й важкодоступних зон</li>
-          </ul>
-          <div class="pkc-foot">
-            <p class="pk-price"><small>від</small><strong>18 000</strong><small>грн</small></p>
-            <a class="pkc-btn" href="#estimate">Обрати Full</a>
-          </div>
-        </div>
-      </article>
-  </div>
-  <p class="pk-note" data-reveal>Фінальна вартість залежить від моделі, розміру та стану авто. Не знаєте, який комплекс підійде? <a href="#estimate">Надішліть фото</a>, і ми підкажемо.</p>
-</section>
-
-<div class="pad" id="pad" aria-hidden="true"><div class="orbit"><div class="disc"></div></div><span class="dot"></span></div>
-
 <script>
+/* легкий паралакс фото за курсором */
 (() => {
-  const hero = document.getElementById('hero');
-  const cv = document.getElementById('paint');
-  const pad = document.getElementById('pad');
-  const hint = document.getElementById('hint');
-  const hintText = document.getElementById('hintText');
-  const meter = document.getElementById('meter');
-  const meterVal = document.getElementById('meterVal');
-  const meterBar = document.getElementById('meterBar');
-  const meterLabel = document.getElementById('meterLabel');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const coarse = matchMedia('(pointer: coarse)').matches;
-  if (coarse) hintText.textContent = 'Проведіть пальцем по капоту — це і є полірування';
-
-  /* ---------- маска «відполірованості» ---------- */
-  const mask = document.createElement('canvas');
-  const mctx = mask.getContext('2d', { willReadFrequently: true });
-  function sizeMask() {
-    const r = hero.getBoundingClientRect();
-    const w = 384, h = Math.max(120, Math.round(384 * r.height / r.width));
-    const old = mask.width ? mctx.getImageData(0, 0, mask.width, mask.height) : null;
-    const tmp = old ? Object.assign(document.createElement('canvas'), { width: mask.width, height: mask.height }) : null;
-    if (tmp) tmp.getContext('2d').putImageData(old, 0, 0);
-    mask.width = w; mask.height = h;
-    mctx.fillStyle = '#000'; mctx.fillRect(0, 0, w, h);
-    if (tmp) mctx.drawImage(tmp, 0, 0, w, h);
-    maskDirty = true;
-  }
-  let maskDirty = true;
-
-  function dab(x, y, rCss) {
-    const r = hero.getBoundingClientRect();
-    const sx = mask.width / r.width;
-    const mx = x * sx, my = y * sx, rad = rCss * sx;
-    const g = mctx.createRadialGradient(mx, my, 0, mx, my, rad);
-    g.addColorStop(0, 'rgba(255,255,255,.22)');
-    g.addColorStop(.6, 'rgba(255,255,255,.12)');
-    g.addColorStop(1, 'rgba(255,255,255,0)');
-    mctx.fillStyle = g;
-    mctx.beginPath(); mctx.arc(mx, my, rad, 0, Math.PI * 2); mctx.fill();
-    maskDirty = true;
-  }
-  function stroke(x0, y0, x1, y1, rCss) {
-    const d = Math.hypot(x1 - x0, y1 - y0);
-    const n = Math.max(1, Math.ceil(d / (rCss * .25)));
-    for (let i = 1; i <= n; i++) dab(x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n, rCss);
-  }
-  const brush = () => (innerWidth < 640 ? 52 : 70);
-
-  /* ---------- лічильник ---------- */
-  let finished = false;
-  function measure() {
-    const d = mctx.getImageData(0, 0, mask.width, mask.height).data;
-    let s = 0, n = 0;
-    for (let i = 0; i < d.length; i += 16) { s += d[i] / 255; n++; }
-    const pct = Math.min(100, Math.round((s / n) / .7 * 100));
-    meterVal.textContent = pct + '%';
-    meterBar.style.width = pct + '%';
-    if (pct >= 100 && !finished) {
-      finished = true;
-      meter.classList.add('done');
-      meterLabel.textContent = 'Отак виглядає лак після нас';
-      hintText.textContent = 'Надішліть фото — підкажемо, що потрібно саме вашому авто';
-    }
-  }
-  setInterval(() => { if (maskDirty) measure(); }, 350);
-
-  /* ---------- курсор-машинка ---------- */
-  let last = null, spinT;
-  function movePad(x, y, abs) {
-    pad.style.transform = abs ? `translate(${x}px, ${y}px)` : `translate(${x}px, ${y + scrollY}px)`;
-    pad.classList.add('on', 'spin');
-    clearTimeout(spinT);
-    spinT = setTimeout(() => pad.classList.remove('spin'), 220);
-  }
-  let parX = 0, parY = 0, tParX = 0, tParY = 0, intro = true;
-
-  hero.addEventListener('pointermove', e => {
-    if (intro) return;
-    const r = hero.getBoundingClientRect();
-    const x = e.clientX - r.left, y = e.clientY - r.top;
-    tParX = x / r.width - .5; tParY = y / r.height - .5;
-    const overLink = e.target.closest('a');
-    if (e.pointerType === 'mouse') {
-      pad.style.opacity = overLink ? '0' : '';
-      movePad(e.clientX, e.clientY);
-    } else if (e.pointerType !== 'mouse') {
-      movePad(e.clientX, e.clientY);
-    }
-    if (!overLink && (e.pointerType === 'mouse' || e.buttons || e.pressure > 0)) {
-      if (last) stroke(last.x, last.y, x, y, brush()); else dab(x, y, brush());
-      last = { x, y };
-    } else last = null;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !matchMedia('(pointer:fine)').matches) return;
+  const f = document.getElementById('frame');
+  let tx = 0, ty = 0, x = 0, y = 0, raf = null;
+  addEventListener('pointermove', e => {
+    tx = (e.clientX / innerWidth - .5) * -14;
+    ty = (e.clientY / innerHeight - .5) * -10;
+    if (!raf) raf = requestAnimationFrame(loop);
   });
-  hero.addEventListener('pointerleave', () => { last = null; pad.classList.remove('on'); });
-  hero.addEventListener('pointerup', e => { last = null; if (e.pointerType !== 'mouse') pad.classList.remove('on'); });
-
-  /* ---------- вступ: машинка сама робить «50/50» ---------- */
-  function runIntro() {
-    const r = hero.getBoundingClientRect();
-    const mobile = r.width < 640;
-    const x0 = mobile ? r.width * .1 : r.width * .62, x1 = mobile ? r.width * .9 : r.width * .94;
-    const y0 = mobile ? r.height * .1 : r.height * .14, y1 = mobile ? r.height * .32 : r.height * .58;
-    const rows = mobile ? 3 : 4;
-    const pts = [];
-    for (let i = 0; i < rows; i++) {
-      const y = y0 + (y1 - y0) * i / (rows - 1);
-      pts.push(i % 2 ? [x1, y] : [x0, y], i % 2 ? [x0, y] : [x1, y]);
-    }
-    if (reduce) {
-      for (let i = 1; i < pts.length; i++) stroke(...pts[i - 1], ...pts[i], brush());
-      for (let i = 1; i < pts.length; i++) stroke(...pts[i - 1], ...pts[i], brush());
-      endIntro(); return;
-    }
-    const dur = 2600, t0 = performance.now() + 700;
-    let prev = null;
-    function step(now) {
-      const t = Math.min(1, Math.max(0, (now - t0) / dur));
-      if (now < t0) return requestAnimationFrame(step);
-      const f = t * (pts.length - 1), i = Math.min(pts.length - 2, Math.floor(f)), k = f - i;
-      const e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-      const x = pts[i][0] + (pts[i + 1][0] - pts[i][0]) * e;
-      const y = pts[i][1] + (pts[i + 1][1] - pts[i][1]) * e + Math.sin(now / 90) * 6;
-      if (prev) { stroke(prev[0], prev[1], x, y, brush()); stroke(prev[0], prev[1], x, y, brush()); }
-      prev = [x, y];
-      movePad(x + hero.offsetLeft, y + hero.offsetTop, true);
-      if (t < 1) requestAnimationFrame(step);
-      else { pad.classList.remove('on'); endIntro(); }
-    }
-    requestAnimationFrame(step);
+  function loop() {
+    x += (tx - x) * .06; y += (ty - y) * .06;
+    f.style.transform = `translate(calc(-50% + ${x}px), ${y}px) scale(1.03)`;
+    raf = Math.abs(tx - x) + Math.abs(ty - y) > .05 ? requestAnimationFrame(loop) : null;
   }
-  function endIntro() { intro = false; hint.classList.add('show'); }
-
-  /* ---------- WebGL: відображення LED-стелі в лаку ---------- */
-  const gl = cv.getContext('webgl', { antialias: false, premultipliedAlpha: false });
-  sizeMask();
-  addEventListener('resize', () => { sizeMask(); resize(); });
-
-  if (!gl) { runIntro(); return; }
-
-  const vs = `attribute vec2 a;varying vec2 vUv;void main(){vUv=a*.5+.5;gl_Position=vec4(a,0.,1.);}`;
-  const fs = `
-  precision highp float;
-  varying vec2 vUv;
-  uniform vec2 uRes; uniform float uTime; uniform vec2 uPar; uniform float uPortrait;
-  uniform sampler2D uMask;
-
-  float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
-  float h1(float n){return fract(sin(n)*43758.5453);}
-  float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
-    return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+1.),f.x),f.y);}
-
-  float hexEdge(vec2 p){
-    const vec2 s=vec2(1.,1.7320508);
-    vec4 hc=floor(vec4(p,p-vec2(.5,1.))/s.xyxy)+.5;
-    vec4 h=vec4(p-hc.xy*s,p-(hc.zw+.5)*s);
-    vec2 g=dot(h.xy,h.xy)<dot(h.zw,h.zw)?h.xy:h.zw;
-    g=abs(g);
-    return .5-max(dot(g,s*.5),g.x);
-  }
-
-  float swirls(vec2 p, vec2 c, float seed){
-    vec2 d=p-c; float r=length(d); float a=atan(d.y,d.x);
-    float t=r*300.; float k=floor(t);
-    float seg=noise(vec2(a*(3.+h1(k+seed)*7.)+h1(k*1.3+seed)*20.,k*.37));
-    float vis=smoothstep(.58,.72,seg);
-    float ln=pow(1.-abs(fract(t)-.5)*2.,8.);
-    return vis*ln*(.4+.6*h1(k+seed*3.))*smoothstep(.9,.05,r);
-  }
-
-  void main(){
-    vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;
-    float m=texture2D(uMask,vUv).r;
-
-    // лак: дзеркальна поверхня капота, у ній — шестикутна LED-стеля
-    vec2 pp=p+uPar*vec2(.03,.02);
-    float y=mix(pp.y, pp.y*.85+.08, uPortrait);
-    float depth=1./(.66-y*.95);
-    float bend=pp.x*pp.x;
-    vec2 q=vec2(pp.x*depth*(1.15+.25*bend), depth*1.7 + bend*1.2);
-    q+= (vec2(noise(p*55.),noise(p*55.+7.))-.5)*.012*depth;   // апельсинова кірка лаку
-    q+= vec2(uTime*.035+uPar.x*.5, uPar.y*.25);
-    q*=1.25;
-
-    float e=hexEdge(q);
-    float far=smoothstep(7.,2.2,depth);
-    float diag=dot(p,vec2(.78,.62));
-    float region=mix(smoothstep(-.45,.35,diag+.05), smoothstep(-.2,.35,p.y), uPortrait)*far;
-
-    float w=.022+.003*depth;
-    float lineSharp=1.-smoothstep(w*.55,w,e);
-    float glowSharp=exp(-e*14.)*.35;
-    float lightClean=(lineSharp*1.15+glowSharp)*region;
-    float lightDirty=(exp(-e*4.5)*.42+.05)*region;
-
-    vec3 paint=mix(vec3(.012,.025,.07),vec3(.05,.10,.24),smoothstep(-.6,.6,p.y+.35*p.x));
-    float sheen=exp(-pow((p.y-.05-.28*p.x*p.x+.1*p.x)*3.2,2.))*.22;
-    vec3 sheenC=vec3(.35,.5,.95)*sheen;
-
-    float fl=pow(hash(floor(gl_FragCoord.xy*.7)+floor(uTime*3.)),90.)*.6*(.15+region);
-    vec3 led=vec3(.93,.96,1.);
-
-    vec3 clean=paint+sheenC+led*lightClean+vec3(.6,.7,1.)*fl;
-
-    float sw=swirls(p,vec2(.42,.22),1.)+swirls(p,vec2(-.1,.36),5.)*.7+swirls(p,vec2(.75,-.15),9.)*.6;
-    vec3 dull=paint*1.1+vec3(.022,.027,.04);
-    vec3 dirty=dull+sheenC*.45+led*lightDirty*.55+vec3(.85,.9,1.)*sw*(lightDirty*2.4+.04);
-    dirty+=vec3(.03,.033,.042)*(noise(p*3.+uTime*.02)*.5+.5);
-
-    vec3 col=mix(dirty,clean,smoothstep(.05,.95,m));
-    float residue=smoothstep(.02,.35,m)*smoothstep(.95,.45,m);
-    col+=vec3(.12,.13,.16)*residue*(.4+lightDirty);
-
-    col*=1.-.35*dot(vUv-.5,vUv-.5)*2.;
-    col=col/(1.+col*.25);
-    gl_FragColor=vec4(pow(col,vec3(.92)),1.);
-  }`;
-  function sh(t, s) { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o);
-    if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(o)); return o; }
-  const pr = gl.createProgram();
-  gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs));
-  gl.linkProgram(pr); gl.useProgram(pr);
-  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
-  const aLoc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(aLoc); gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
-  const U = n => gl.getUniformLocation(pr, n);
-  const uRes = U('uRes'), uTime = U('uTime'), uPar = U('uPar'), uPortrait = U('uPortrait');
-  const tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
-  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
-  function resize() {
-    const dpr = Math.min(devicePixelRatio || 1, 1.75);
-    const r = hero.getBoundingClientRect();
-    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
-    gl.viewport(0, 0, cv.width, cv.height);
-    gl.uniform2f(uRes, cv.width, cv.height);
-    gl.uniform1f(uPortrait, r.width / r.height < .9 ? 1 : 0);
-  }
-  resize();
-
-  let visible = true;
-  new IntersectionObserver(([en]) => visible = en.isIntersecting).observe(hero);
-  const start = performance.now();
-  function frame(now) {
-    requestAnimationFrame(frame);
-    if (!visible) return;
-    if (maskDirty) { gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, gl.LUMINANCE, gl.UNSIGNED_BYTE, mask); maskDirty = false; }
-    parX += (tParX - parX) * .05; parY += (tParY - parY) * .05;
-    gl.uniform1f(uTime, reduce ? 0 : (now - start) / 1000);
-    gl.uniform2f(uPar, parX, -parY);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-  }
-  requestAnimationFrame(frame);
-  runIntro();
-})();
-</script>
-
-<script>
-(() => {
-  const list = document.getElementById('prList');
-  const led = document.getElementById('led');
-  const btns = [...list.querySelectorAll('.prob')];
-  const mq = matchMedia('(max-width:900px)');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let cur = 0;
-  const pr = list.parentElement;
-  let ly = null, lh = 0, followUntil = 0;
-  function target() {
-    const t = btns[cur].querySelector('.prob-t').getBoundingClientRect();
-    const p = pr.getBoundingClientRect();
-    return [t.top - p.top, t.height];
-  }
-  function draw() {
-    const [ty, th] = target();
-    if (ly === null || reduce || performance.now() >= followUntil - 16) { ly = ty; lh = th; }
-    else { ly += (ty - ly) * .18; lh += (th - lh) * .18; }
-    led.style.transform = `translateY(${ly}px)`;
-    led.style.height = lh + 'px';
-    if (performance.now() < followUntil) requestAnimationFrame(draw);
-  }
-  function placeLed() { const go = performance.now() >= followUntil; followUntil = performance.now() + 1100; if (go) requestAnimationFrame(draw); }
-  function open(i, focus) {
-    if (i === cur && !mq.matches) return;
-    const wasOpen = btns[i].getAttribute('aria-expanded') === 'true';
-    btns.forEach((b, k) => {
-      b.setAttribute('aria-expanded', 'false');
-      document.getElementById(b.getAttribute('aria-controls')).classList.remove('show');
-    });
-    if (mq.matches && wasOpen) { cur = i; placeLed(); return; }
-    cur = i;
-    btns[i].setAttribute('aria-expanded', 'true');
-    const sol = document.getElementById(btns[i].getAttribute('aria-controls'));
-    sol.style.setProperty('--w', sol.offsetWidth + 'px');
-    void sol.offsetWidth; sol.classList.add('show');
-    sol.style.setProperty('--w', sol.offsetWidth + 'px');
-    if (focus) btns[i].focus();
-    placeLed();
-  }
-  btns.forEach((b, i) => {
-    b.addEventListener('click', () => open(i));
-    b.addEventListener('keydown', e => {
-      if (e.key === 'ArrowDown') { e.preventDefault(); open((cur + 1) % btns.length, true); }
-      if (e.key === 'ArrowUp') { e.preventDefault(); open((cur - 1 + btns.length) % btns.length, true); }
-    });
-  });
-  placeLed();
-  addEventListener('resize', placeLed);
-  new ResizeObserver(placeLed).observe(list);
-  // LED «вмикається», коли блок з'являється на екрані
-  led.style.opacity = 0;
-  new IntersectionObserver(([en], ob) => {
-    if (!en.isIntersecting) return;
-    led.style.opacity = '';
-    if (!reduce) led.classList.add('flick');
-    setTimeout(placeLed, 600); setTimeout(placeLed, 1500);
-    ob.disconnect();
-  }, { threshold: .35 }).observe(list);
-})();
-</script>
-
-<script>
-/* ---------- м'які анімації появи ---------- */
-(() => {
-  const els = document.querySelectorAll('[data-reveal],[data-reveal-group]');
-  if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
-  const io = new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-  }), { threshold: .15, rootMargin: '0px 0px -8% 0px' });
-  els.forEach(e => io.observe(e));
-})();
-
-/* ---------- комплекси ---------- */
-(() => {
-  // на телефоні одразу показуємо Premium по центру
-  const wrap = document.getElementById('pkCards');
-  const feat = wrap.querySelector('.featured');
-  if (matchMedia('(max-width:900px)').matches && feat)
-    wrap.scrollLeft = feat.offsetLeft - (wrap.clientWidth - feat.offsetWidth) / 2;
 })();
 </script>
 </body>
