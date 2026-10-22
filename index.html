@@ -2,11 +2,18 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<script>document.documentElement.classList.add('js')</script>
+<script>document.documentElement.classList.add('js');addEventListener('DOMContentLoaded',()=>{if(scrollY>80||location.hash)document.documentElement.classList.add('no-intro')})</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>detailingrv — детейлінг авто в Рівному</title>
 <meta name="description" content="Детейлінг авто в Рівному під стан саме вашої машини: полірування, кераміка, хімчистка салону, PPF-плівка. Оцінка авто за фото.">
 <meta name="theme-color" content="#0B0C0E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B0C0E'/%3E%3Crect x='14' y='22' width='36' height='4' rx='2' fill='%23E4F6F2'/%3E%3Crect x='20' y='32' width='24' height='3' rx='1.5' fill='%23E4F6F2' opacity='.7'/%3E%3Crect x='25' y='41' width='14' height='2.5' rx='1.25' fill='%23E4F6F2' opacity='.45'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="detailingrv — детейлінг авто в Рівному">
+<meta property="og:description" content="Детейлінг під стан саме вашого авто: полірування, кераміка, хімчистка, PPF-плівка. Оцінка авто за фото.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=1200&h=630&fit=crop&crop=bottom&q=80&auto=format">
+<meta property="og:locale" content="uk_UA">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
@@ -51,6 +58,12 @@
     transition:height .35s ease, background .35s ease, border-color .35s ease;
     border-bottom:1px solid transparent;
   }
+  .top::before{ /* м’яке затемнення під меню над першим екраном */
+    content:"";position:absolute;left:0;right:0;top:0;bottom:-48px;z-index:-1;pointer-events:none;
+    background:linear-gradient(180deg, rgba(11,12,14,.86) 0%, rgba(11,12,14,.55) 50%, rgba(11,12,14,0) 100%);
+    transition:opacity .35s ease;
+  }
+  .top.scrolled::before{opacity:0}
   .top.scrolled{
     height:64px;
     background:rgba(11,12,14,.74);
@@ -58,10 +71,21 @@
     border-bottom-color:var(--hair);
   }
   .logo{font-size:20px;font-weight:800;letter-spacing:-.04em}
-  .nav{display:flex;gap:30px;margin-left:auto;font-size:14px;font-weight:500;color:var(--grey)}
+  .nav{display:flex;gap:30px;margin-left:auto;font-size:14px;font-weight:500;color:#C9C9C5;text-shadow:0 1px 14px rgba(11,12,14,.8)}
   .nav a{transition:color .2s}
   .nav a:hover{color:var(--white)}
-  .tel{font-size:14px;font-weight:700;white-space:nowrap}
+  .tel{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:700;white-space:nowrap;transition:opacity .2s}
+  .tel{text-shadow:0 1px 14px rgba(11,12,14,.8)}
+  .tel svg{color:#C9C9C5}
+  .tel:hover{opacity:.75}
+  .top-cta{
+    display:inline-flex;align-items:center;gap:10px;margin-left:-14px;
+    padding:11px 16px;border-radius:6px;background:var(--white);color:var(--black);
+    font-size:14px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;
+    transition:box-shadow .25s, transform .25s;
+  }
+  .top-cta:hover{box-shadow:0 0 0 5px rgba(243,243,241,.12), 0 0 30px rgba(228,246,242,.35)}
+  .top-cta .short{display:none}
 
   /* --- текстова колонка --- */
   .copy{
@@ -106,7 +130,6 @@
   .link:hover{border-color:var(--white)}
   .link{position:relative}
   .link::after{content:"";position:absolute;inset:-12px -10px}  /* більша зона натискання на телефоні */
-  .meta{font-size:13px;color:var(--grey);white-space:nowrap}
 
   /* --- фото-бокс --- */
   .bay{
@@ -144,6 +167,7 @@
     content:"";position:absolute;inset:0;pointer-events:none;
     background:
       linear-gradient(90deg, var(--black) 0%, rgba(11,12,14,0) 22%),
+      linear-gradient(180deg, rgba(11,12,14,.78) 0%, rgba(11,12,14,.35) 10%, rgba(11,12,14,0) 20%),
       linear-gradient(0deg, rgba(11,12,14,.6) 0%, rgba(11,12,14,0) 16%);
   }
 
@@ -185,7 +209,6 @@
     :root{--gut:36px}
     .nav{display:none}
     .tel{margin-left:auto}
-    .meta{display:none}
     .hero{grid-template-columns:minmax(0,1fr) minmax(0,42%)}
   }
 
@@ -203,11 +226,17 @@
     }
     .top.scrolled{height:calc(58px + env(safe-area-inset-top))}
     .logo{font-size:18px}
+    .top{gap:10px}
     .tel{
-      font-size:13px;font-weight:600;padding:9px 14px;border-radius:40px;
+      width:40px;height:40px;justify-content:center;border-radius:50%;
       background:rgba(11,12,14,.5);border:1px solid var(--hair);
       backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
     }
+    .tel span{display:none}
+    .tel svg{color:var(--white)}
+    .top-cta{margin-left:0;padding:11px 14px;font-size:13px;gap:8px}
+    .top-cta .full{display:none}
+    .top-cta .short{display:inline}
     /* фото займає весь вільний простір над текстом */
     .bay{flex:1 1 auto;min-height:210px;order:0}
     .frame{transform:translate(-50%, 20%)}
@@ -240,7 +269,8 @@
 
 
   /* ================= загальне для секцій ================= */
-  html{scroll-padding-top:72px}
+  html{scroll-padding-top:72px;scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   .sec{position:relative;padding:clamp(96px, 13vh, 150px) var(--gut)}
   .h2{
     font-weight:800;font-size:clamp(38px, 5vw, 80px);line-height:1;letter-spacing:-.045em;
@@ -670,6 +700,281 @@
     .rv-dots button[aria-current="true"]{background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 20px rgba(228,246,242,.55)}
   }
 
+  /* ================= БЛОК 7: часті питання ================= */
+  .fq{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.3fr);gap:clamp(40px, 6vw, 110px);align-items:start}
+  .fq-side{position:sticky;top:96px}
+  .fq-lead{font-size:16px;line-height:1.65;color:var(--grey);max-width:38ch;margin:22px 0 clamp(28px, 4vh, 40px)}
+
+  /* картка студії з живим статусом */
+  .fq-card{border:1px solid var(--hair);border-radius:8px;overflow:hidden;background:var(--surface)}
+  .fq-ph{position:relative;aspect-ratio:16 / 8;overflow:hidden}
+  .fq-ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.1) brightness(.8)}
+  .fq-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg, var(--surface) 0%, rgba(19,20,23,0) 60%)}
+  .fq-body{padding:4px clamp(20px, 2vw, 28px) clamp(20px, 2vw, 28px)}
+  .fq-status{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:700;letter-spacing:-.015em;margin-bottom:6px}
+  .fq-dot{position:relative;width:9px;height:9px;border-radius:50%;background:#4A4B50;flex:none}
+  .fq-card.is-open .fq-dot{background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 18px rgba(228,246,242,.7)}
+  .fq-card.is-open .fq-dot::after{
+    content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(228,246,242,.6);
+    animation:fqpulse 2.2s ease-out infinite;
+  }
+  @keyframes fqpulse{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.6);opacity:0}}
+  .fq-note{font-size:14px;line-height:1.55;color:var(--grey);margin-bottom:20px}
+  .fq-acts{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px 22px}
+  .btn-o{
+    display:inline-flex;align-items:center;justify-content:center;gap:12px;
+    padding:16px 20px;border-radius:6px;font-size:15px;font-weight:700;white-space:nowrap;
+    background:var(--white);color:var(--black);transition:box-shadow .25s;
+  }
+  .btn-o:hover{box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(228,246,242,.35)}
+
+  /* питання */
+  .fq-list{list-style:none;display:grid;gap:6px}
+  .fq-item{
+    position:relative;border-radius:8px;border:1px solid transparent;
+    padding:0 clamp(18px, 1.8vw, 26px);margin:0 calc(clamp(18px, 1.8vw, 26px) * -1);
+    transition:background .45s ease, border-color .45s ease;
+  }
+  .fq-item::after{ /* роздільник між питаннями */
+    content:"";position:absolute;left:clamp(18px, 1.8vw, 26px);right:clamp(18px, 1.8vw, 26px);bottom:-4px;height:1px;background:var(--hair);
+    transition:opacity .3s;
+  }
+  .fq-item:last-child::after{display:none}
+  .fq-item.open{background:var(--surface);border-color:var(--hair)}
+  .fq-item.open::after,.fq-item:has(+ .fq-item.open)::after{opacity:0}
+  .fq-item::before{ /* лампа над відкритим питанням */
+    content:"";position:absolute;left:clamp(18px, 1.8vw, 26px);top:-1px;height:2px;width:0;border-radius:2px;
+    background:var(--tube);box-shadow:0 0 12px var(--tube),0 0 30px rgba(228,246,242,.5);
+    transition:width .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .fq-item.open::before{width:72px;animation:fqflick .7s steps(1,end)}
+  @keyframes fqflick{0%{opacity:.2}15%{opacity:1}25%{opacity:.3}40%,100%{opacity:1}}
+  .fq-q{
+    all:unset;box-sizing:border-box;cursor:pointer;width:100%;
+    display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;
+    padding:clamp(20px, 2.6vh, 26px) 0;
+  }
+  .fq-q:focus-visible{outline:2px solid var(--white);outline-offset:4px;border-radius:4px}
+  .fq-q span{font-size:clamp(18px, 1.55vw, 22px);font-weight:600;letter-spacing:-.025em;line-height:1.3;color:#A9A9A5;transition:color .3s}
+  .fq-q:hover span,.fq-item.open .fq-q span{color:var(--white)}
+  .fq-ic{
+    position:relative;width:38px;height:38px;border-radius:50%;flex:none;
+    border:1px solid rgba(243,243,241,.25);transition:background .35s, border-color .35s, transform .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .fq-ic::before,.fq-ic::after{
+    content:"";position:absolute;left:50%;top:50%;width:13px;height:1.6px;margin:-.8px 0 0 -6.5px;border-radius:2px;
+    background:var(--white);transition:background .35s;
+  }
+  .fq-ic::after{transform:rotate(90deg)}
+  .fq-q:hover .fq-ic{border-color:var(--white)}
+  .fq-item.open .fq-ic{background:var(--white);border-color:var(--white);transform:rotate(135deg)}
+  .fq-item.open .fq-ic::before,.fq-item.open .fq-ic::after{background:var(--black)}
+  .fq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.2,.7,.2,1)}
+  .fq-item.open .fq-a{grid-template-rows:1fr}
+  .fq-a > div{overflow:hidden}
+  .fq-in{padding:0 62px 26px 0;opacity:0;transform:translateY(-6px);transition:opacity .35s ease, transform .45s ease}
+  .fq-item.open .fq-in{opacity:1;transform:none;transition-delay:.12s}
+  .fq-in p{font-size:16px;line-height:1.7;color:var(--grey);max-width:60ch}
+  .fq-in p strong{color:var(--white);font-weight:600}
+  .fq-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .fq-chips span{
+    display:inline-flex;align-items:baseline;gap:7px;
+    font-size:13px;font-weight:600;line-height:1;padding:9px 13px;border-radius:30px;
+    border:1px solid var(--hair);color:#CFCFCB;background:rgba(243,243,241,.03);
+  }
+  .fq-chips b{font-weight:500;color:var(--grey)}
+
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .fq{display:flex;flex-direction:column;align-items:stretch;gap:32px}
+    .fq-side{position:static;display:contents}
+    .fq-side .h2{order:0}
+    .fq-lead{order:1;margin:-12px 0 0}
+    .fq-list{order:2}
+    .fq-card{order:3;margin-top:8px}
+    .fq-item{padding:0 16px;margin:0 -16px}
+    .fq-item::after{left:16px;right:16px}
+    .fq-item::before{left:16px}
+    .fq-q{gap:16px;padding:20px 0}
+    .fq-q span{font-size:18px}
+    .fq-ic{width:34px;height:34px}
+    .fq-in{padding-right:0}
+    .fq-in p{font-size:15px}
+    .fq-acts{grid-template-columns:1fr;justify-items:stretch}
+    .fq-acts .link{justify-self:center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .fq-a,.fq-in,.fq-ic,.fq-item,.fq-item::before{transition:none}
+    .fq-item.open::before,.fq-card.is-open .fq-dot::after{animation:none}
+  }
+
+  /* ================= ФІНАЛ: оцінка за фото + контакти ================= */
+  #estimate{overflow:hidden}
+  #estimate::before{ /* м'яке світло від лампи над формою */
+    content:"";position:absolute;right:-10%;top:-6%;width:70%;height:90%;pointer-events:none;
+    background:radial-gradient(50% 50% at 60% 30%, rgba(228,246,242,.07), rgba(228,246,242,0) 70%);
+  }
+  .es{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr);gap:clamp(48px, 7vw, 130px);align-items:center}
+  .es-lead{font-size:17px;line-height:1.65;color:var(--grey);max-width:40ch;margin:26px 0 clamp(40px, 7vh, 72px)}
+  .es-links{list-style:none;max-width:480px;border-top:1px solid var(--hair);margin-bottom:20px}
+  .es-links li{border-bottom:1px solid var(--hair)}
+  .es-links a{
+    display:grid;grid-template-columns:96px minmax(0,1fr) auto;align-items:center;gap:16px;
+    padding:16px 0;
+  }
+  .es-links .k{font-size:13px;color:var(--grey)}
+  .es-links .v{font-size:18px;font-weight:600;letter-spacing:-.02em;color:#D8D8D4;transition:color .25s}
+  .es-links .i{
+    width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:var(--white);
+    border:1px solid rgba(243,243,241,.2);transition:background .25s, color .25s, border-color .25s;
+  }
+  .es-links a:hover .v{color:var(--white)}
+  .es-links a:hover .i{background:var(--white);color:var(--black);border-color:var(--white)}
+  .es-links a:focus-visible{outline:2px solid var(--white);outline-offset:4px;border-radius:4px}
+  .es-meta{font-size:14px;line-height:1.6;color:var(--grey)}
+
+  .es-form{
+    position:relative;background:linear-gradient(180deg, rgba(228,246,242,.035), rgba(228,246,242,0) 40%), var(--surface);
+    border:1px solid var(--hair);border-radius:12px;
+    padding:clamp(28px, 3vw, 48px);
+  }
+  .es-form::before{ /* лампа над формою */
+    content:"";position:absolute;left:14%;right:14%;top:-1px;height:2px;border-radius:2px;
+    background:linear-gradient(90deg, rgba(228,246,242,0), var(--tube) 20%, var(--tube) 80%, rgba(228,246,242,0));
+    box-shadow:0 0 14px rgba(228,246,242,.7), 0 0 60px rgba(228,246,242,.3);
+  }
+  .es-form h3{font-size:clamp(22px, 1.8vw, 26px);font-weight:800;letter-spacing:-.035em;margin-bottom:clamp(18px, 3vh, 26px)}
+  .fg{display:grid;grid-template-columns:1fr 1fr;column-gap:24px}
+  .fld{position:relative;min-width:0}
+  .fld.full{grid-column:1 / -1}
+  /* поля-лінії з підписом, що піднімається */
+  .inp{
+    width:100%;font:inherit;font-size:16px;color:var(--white);background:transparent;
+    border:0;border-bottom:1px solid rgba(243,243,241,.16);border-radius:0;
+    padding:26px 0 11px;outline:none;transition:border-color .25s;
+    -webkit-appearance:none;appearance:none;
+  }
+  .inp::placeholder{color:transparent}
+  .fld > label:not(.drop){
+    position:absolute;left:0;top:24px;font-size:16px;color:#7C7D81;pointer-events:none;
+    transform-origin:left top;transition:transform .25s ease, color .25s ease;
+  }
+  .fld > label:not(.drop) i{font-style:normal;color:#55565A}
+  .inp:focus + label,.inp:not(:placeholder-shown) + label{transform:translateY(-17px) scale(.78);color:var(--grey)}
+  .fld::after{ /* лінія світиться при фокусі */
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--tube);
+    box-shadow:0 0 10px rgba(228,246,242,.7);transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .fld:focus-within::after{transform:scaleX(1)}
+  .fld.photos::after{display:none}
+  textarea.inp{min-height:0;height:58px;resize:none;line-height:1.5;overflow:hidden}
+  .fld.err .inp{border-bottom-color:#E06A62}
+  .fld .msg{display:none;position:absolute;right:0;top:28px;font-size:12px;color:#F08A82}
+  .fld.err .msg{display:block}
+
+  .fld.photos{padding-top:20px}
+  .drop{
+    position:relative;display:flex;align-items:center;gap:14px;
+    padding:14px 16px;border:1px dashed rgba(243,243,241,.2);border-radius:8px;cursor:pointer;
+    transition:border-color .2s, background .2s;
+  }
+  .drop:hover,.drop.over{border-color:var(--tube);background:rgba(228,246,242,.03)}
+  .drop:focus-within{border-color:var(--tube);box-shadow:0 0 0 3px rgba(228,246,242,.1)}
+  .drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+  .drop .ic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;background:rgba(243,243,241,.06);color:var(--white)}
+  .drop strong{font-size:15px;font-weight:600}
+  .drop small{margin-left:auto;font-size:13px;color:#7C7D81;white-space:nowrap}
+  .thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .thumbs:empty{display:none}
+  .th{position:relative;width:56px;height:56px;border-radius:6px;overflow:hidden;background:var(--black);border:1px solid var(--hair)}
+  .th img{width:100%;height:100%;object-fit:cover;display:block}
+  .th button{
+    all:unset;position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;cursor:pointer;
+    display:grid;place-items:center;background:rgba(11,12,14,.8);color:var(--white);font-size:13px;line-height:1;
+  }
+  .th button::after{content:"";position:absolute;inset:-8px}
+  .th button:focus-visible{outline:2px solid var(--white)}
+  .es-submit{width:100%;margin-top:28px;border:0;cursor:pointer;font-family:inherit;padding:19px 26px}
+  .es-submit[disabled]{opacity:.6;cursor:progress}
+  .es-note{font-size:13px;line-height:1.55;color:#7C7D81;margin-top:14px;text-align:center}
+  .es-err{display:none;margin-top:14px;font-size:14px;line-height:1.5;color:#F08A82;text-align:center}
+  .es-err.on{display:block}
+  .es-err a{color:var(--white);border-bottom:1px solid rgba(243,243,241,.4)}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+  .es-done{display:none;text-align:center;padding:clamp(28px, 7vh, 64px) 8px}
+  .es-form.sent > :not(.es-done){display:none}
+  .es-form.sent .es-done{display:block}
+  .es-done .lamp{
+    width:84px;height:3px;border-radius:3px;margin:0 auto 34px;background:var(--tube);
+    box-shadow:0 0 14px 2px var(--tube),0 0 60px 10px rgba(228,246,242,.35);
+    animation:sttube .9s steps(1,end) both;
+  }
+  .es-done h3{margin-bottom:12px}
+  .es-done p{font-size:16px;line-height:1.6;color:var(--grey);max-width:34ch;margin:0 auto 26px}
+
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .es{display:flex;flex-direction:column;align-items:stretch;gap:48px}
+    .es-lead{margin-bottom:36px}
+    .es-form{padding:28px 20px 24px}
+    .fg{grid-template-columns:1fr}
+    .es-links{max-width:none}
+    .es-links a{grid-template-columns:84px minmax(0,1fr) auto}
+    .es-links .v{font-size:17px}
+    #estimate::before{right:-30%;width:120%;top:30%;height:70%}
+  }
+  @media (max-width:380px){
+    .drop small{display:none}
+  }
+
+  /* ================= футер ================= */
+  .ft{padding:0 var(--gut) calc(28px + env(safe-area-inset-bottom));overflow:hidden}
+  .ft-row{
+    display:flex;align-items:center;justify-content:space-between;gap:16px 32px;flex-wrap:wrap;
+    padding-top:28px;border-top:1px solid var(--hair);font-size:14px;color:var(--grey);
+  }
+  .ft-row nav{display:flex;gap:24px;flex-wrap:wrap}
+  .ft-soc{display:flex;align-items:center;gap:12px 24px;flex-wrap:wrap}
+  .ft-row a{cursor:pointer}
+  .ft-soc .soc{
+    display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:30px;
+    color:#D8D8D4;border:1px solid rgba(243,243,241,.18);transition:color .2s, border-color .2s, background .2s;
+  }
+  .ft-soc .soc:hover{color:var(--black);background:var(--white);border-color:var(--white)}
+  .ft-row nav a,.ft-soc a:not(.soc){color:#B5B5B1}
+  .ft-row nav a:hover,.ft-soc a:not(.soc):hover{color:var(--white)}
+  .ft-row a{transition:color .2s}
+  .ft-row a:hover{color:var(--white)}
+  .ft-mark{
+    display:block;margin-top:clamp(28px, 5vh, 56px);
+    font-size:clamp(64px, 17.4vw, 300px);font-weight:800;letter-spacing:-.065em;line-height:.8;
+    color:transparent;-webkit-text-stroke:1px rgba(243,243,241,.1);
+    white-space:nowrap;user-select:none;text-align:center;
+  }
+
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .ft-row{flex-direction:column;align-items:flex-start;gap:16px}
+    .ft-mark{-webkit-text-stroke:1px rgba(243,243,241,.13)}
+  }
+
+  /* більші зони натискання на телефоні */
+  @media (max-width:1100px){
+    .logo,.pk-note a,.ft-row a{position:relative}
+    .logo::after,.pk-note a::after,.ft-row a::after{content:"";position:absolute;inset:-12px -8px}
+    .top-cta{padding-top:12px;padding-bottom:12px}
+    .ft-row nav{gap:28px}
+    .ft-soc{gap:10px 16px}
+  }
+
+  /* ритм секцій на телефоні */
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .sec{padding-top:clamp(64px, 9vh, 88px);padding-bottom:clamp(64px, 9vh, 88px)}
+    .pr-head{margin-bottom:36px}
+    .fq-item{padding:0 14px;margin:0 -8px}
+    .fq-item::after,.fq-item::before{left:14px}
+    .fq-item::after{right:14px}
+  }
+  .no-intro .top,.no-intro .row{animation:none!important;opacity:1!important}
+
   @media (prefers-reduced-motion:reduce){
     .js .dark{animation:none;opacity:0}
     .js .tube{animation:none;opacity:.32}
@@ -690,8 +995,8 @@
       <a href="#results">До і після</a>
       <a href="#faq">Питання</a>
     </nav>
-    <span class="meta">Рівне, щодня 9:00–20:00</span>
-    <a class="tel" href="tel:+380670002407">067 000 24 07</a>
+    <a class="tel" href="tel:+380976576609" aria-label="Подзвонити: 097 657 66 09"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11.5 11.5 0 0 0 7.2 7.2l1.4-2.1 4.2 1.6V19a2 2 0 0 1-2 2A16.5 16.5 0 0 1 3 5.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>097 657 66 09</span></a>
+    <a class="top-cta" href="#estimate"><span class="full">Оцінити авто за фото</span><span class="short">Оцінити авто</span><svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 4l1.2-2h3.6L12 4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></a>
   </header>
 
   <div class="copy">
@@ -997,6 +1302,150 @@
     <button type="button" aria-label="Відгук 3"></button>
   </div>
 </section>
+
+
+<section class="sec" id="faq" aria-labelledby="faq-h">
+  <div class="fq">
+    <div class="fq-side">
+      <h2 class="h2 rv" id="faq-h"><span class="ln"><span>Часті питання</span></span><span class="ln"><span class="soft">перед записом</span></span></h2>
+      <p class="fq-lead fd" style="--d:.15s">Зібрали те, що питають найчастіше. Не знайшли свого питання? Напишіть, і майстер відповість особисто.</p>
+      <div class="fq-card fd" id="fqCard" style="--d:.25s">
+        <div class="fq-ph"><img src="https://images.unsplash.com/photo-1694678505383-676d78ea3b96?w=900&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1694678505383-676d78ea3b96?w=600&q=70&auto=format&fit=crop 600w, https://images.unsplash.com/photo-1694678505383-676d78ea3b96?w=900&q=72&auto=format&fit=crop 900w" sizes="(max-width:760px) 100vw, 520px" alt="" style="object-position:50% 40%" loading="lazy" decoding="async"></div>
+        <div class="fq-body">
+          <p class="fq-status"><i class="fq-dot" aria-hidden="true"></i><span id="fqStatus">Працюємо щодня з 9:00 до 20:00</span></p>
+          <p class="fq-note" id="fqNote">У робочий час відповідаємо в Telegram протягом 15 хвилин.</p>
+          <div class="fq-acts">
+            <a class="btn-o" href="https://t.me/torropp" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.5 3.5 2.8 10.7c-.9.4-.9 1.6.1 1.9l4.6 1.5 1.8 5.6c.3.8 1.3 1 1.9.4l2.6-2.5 4.7 3.5c.7.5 1.7.1 1.9-.7l3-15.1c.2-1-.8-1.8-1.7-1.3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8 14 9-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Написати в Telegram</a>
+            <a class="link" href="tel:+380976576609">097 657 66 09</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="fq-list">
+      <li class="fq-item fd open" style="--d:0.00s">
+        <button class="fq-q" id="fq-q-0" aria-expanded="true" aria-controls="fq-a-0"><span>Скільки коштує детейлінг?</span><i class="fq-ic" aria-hidden="true"></i></button>
+        <div class="fq-a" id="fq-a-0" role="region" aria-labelledby="fq-q-0"><div><div class="fq-in">
+          <p>Попередню вартість назвемо <strong>за фото</strong>. Точну ціну погоджуємо після огляду авто, коли зрозуміло, який обсяг робіт справді потрібен.</p>
+          <p class="fq-chips"><span>Оцінка за фото безкоштовна</span><span>Ціна фіксується до старту</span></p>
+        </div></div></div>
+      </li>
+      <li class="fq-item fd" style="--d:0.06s">
+        <button class="fq-q" id="fq-q-1" aria-expanded="false" aria-controls="fq-a-1"><span>Скільки часу займає детейлінг?</span><i class="fq-ic" aria-hidden="true"></i></button>
+        <div class="fq-a" id="fq-a-1" role="region" aria-labelledby="fq-q-1"><div><div class="fq-in">
+          <p>Невеликі роботи займають кілька годин, комплексні — кілька днів. Перед початком одразу скажемо, <strong>коли авто буде готове</strong>.</p>
+          <p class="fq-chips"><span><b>Фари</b>2–3 години</span><span><b>Хімчистка</b>1 день</span><span><b>Полірування</b>1–2 дні</span><span><b>Комплекс</b>3–5 днів</span></p>
+        </div></div></div>
+      </li>
+      <li class="fq-item fd" style="--d:0.12s">
+        <button class="fq-q" id="fq-q-2" aria-expanded="false" aria-controls="fq-a-2"><span>Чи безпечне полірування для кузова?</span><i class="fq-ic" aria-hidden="true"></i></button>
+        <div class="fq-a" id="fq-a-2" role="region" aria-labelledby="fq-q-2"><div><div class="fq-in">
+          <p>Так. Перед поліруванням міряємо товщину лаку й підбираємо рівень обробки, щоб <strong>не знімати зайвого шару</strong>.</p>
+          <p class="fq-chips"><span>Товщиномір на кожній деталі</span><span>Не беремось, якщо лаку замало</span></p>
+        </div></div></div>
+      </li>
+      <li class="fq-item fd" style="--d:0.18s">
+        <button class="fq-q" id="fq-q-3" aria-expanded="false" aria-controls="fq-a-3"><span>Чи можете доставити авто після завершення?</span><i class="fq-ic" aria-hidden="true"></i></button>
+        <div class="fq-a" id="fq-a-3" role="region" aria-labelledby="fq-q-3"><div><div class="fq-in">
+          <p>Так, за попередньою домовленістю <strong>пригонимо готове авто</strong> в межах Рівного.</p>
+          <p class="fq-chips"><span>У межах Рівного</span><span>Час узгоджуємо заздалегідь</span></p>
+        </div></div></div>
+      </li>
+      <li class="fq-item fd" style="--d:0.24s">
+        <button class="fq-q" id="fq-q-4" aria-expanded="false" aria-controls="fq-a-4"><span>Що робити, якщо я не знаю, яку послугу обрати?</span><i class="fq-ic" aria-hidden="true"></i></button>
+        <div class="fq-a" id="fq-a-4" role="region" aria-labelledby="fq-q-4"><div><div class="fq-in">
+          <p>Просто покажіть, що вас не влаштовує. Після фото або огляду підкажемо, які роботи мають сенс, а за які <strong>не варто переплачувати</strong>.</p>
+          <p class="fq-chips"><span>Достатньо 3–5 фото</span><span>Огляд у студії 20 хвилин</span></p>
+        </div></div></div>
+      </li>
+      <li class="fq-item fd" style="--d:0.30s">
+        <button class="fq-q" id="fq-q-5" aria-expanded="false" aria-controls="fq-a-5"><span>Чи потрібно готувати авто перед візитом?</span><i class="fq-ic" aria-hidden="true"></i></button>
+        <div class="fq-a" id="fq-a-5" role="region" aria-labelledby="fq-q-5"><div><div class="fq-in">
+          <p>Ні. Приїжджайте як є: стан авто <strong>краще оцінювати без попередньої мийки</strong>, так видно всі проблемні місця.</p>
+          <p class="fq-chips"><span>Без мийки</span><span>Без підготовки</span></p>
+        </div></div></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+
+<section class="sec" id="estimate" aria-labelledby="estimate-h">
+  <div class="es">
+    <div class="es-side">
+      <h2 class="h2 rv" id="estimate-h"><span class="ln"><span>Не знаєте, що потрібно авто?</span></span><span class="ln"><span class="soft">Почніть із фото</span></span></h2>
+      <p class="es-lead fd" style="--d:.15s">Надішліть кілька фото, і ми попередньо оцінимо стан, підкажемо, які роботи справді потрібні, та зорієнтуємо за вартістю.</p>
+      <ul class="es-links fd" style="--d:.25s">
+        <li><a href="tel:+380976576609"><span class="k">Телефон</span><span class="v">097 657 66 09</span><span class="i"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11.5 11.5 0 0 0 7.2 7.2l1.4-2.1 4.2 1.6V19a2 2 0 0 1-2 2A16.5 16.5 0 0 1 3 5.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span></a></li>
+        <li><a href="https://t.me/torropp" target="_blank" rel="noopener"><span class="k">Telegram</span><span class="v">@torropp</span><span class="i"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.5 3.5 2.8 10.7c-.9.4-.9 1.6.1 1.9l4.6 1.5 1.8 5.6c.3.8 1.3 1 1.9.4l2.6-2.5 4.7 3.5c.7.5 1.7.1 1.9-.7l3-15.1c.2-1-.8-1.8-1.7-1.3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8 14 9-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></a></li>
+        <li><a href="https://instagram.com/jj_sasha7" target="_blank" rel="noopener"><span class="k">Instagram</span><span class="v">jj_sasha7</span><span class="i"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor"/></svg></span></a></li>
+      </ul>
+      <p class="es-meta fd" style="--d:.3s">Рівне, вул. Курчатова, 21. Щодня з 9:00 до 20:00.</p>
+    </div>
+
+    <form class="es-form fd" id="esForm" name="estimate" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data" novalidate style="--d:.1s">
+      <input type="hidden" name="form-name" value="estimate">
+      <p class="hp"><label>Не заповнюйте це поле <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <input type="file" name="photo1" accept="image/*" hidden><input type="file" name="photo2" accept="image/*" hidden><input type="file" name="photo3" accept="image/*" hidden><input type="file" name="photo4" accept="image/*" hidden><input type="file" name="photo5" accept="image/*" hidden>
+      <h3>Швидка оцінка авто</h3>
+      <div class="fg">
+        <div class="fld">
+          <input class="inp" id="f-name" name="name" type="text" autocomplete="given-name" placeholder=" " required>
+          <label for="f-name">Ім’я</label>
+          <span class="msg">Вкажіть ім’я</span>
+        </div>
+        <div class="fld">
+          <input class="inp" id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder=" " required>
+          <label for="f-phone">Телефон</label>
+          <span class="msg">Перевірте номер</span>
+        </div>
+        <div class="fld full">
+          <input class="inp" id="f-car" name="car" type="text" placeholder=" " autocomplete="off">
+          <label for="f-car">Марка та модель авто</label>
+        </div>
+        <div class="fld full">
+          <textarea class="inp" id="f-msg" name="message" placeholder=" " rows="1"></textarea>
+          <label for="f-msg">Що вас турбує <i>необов’язково</i></label>
+        </div>
+        <div class="fld full photos">
+          <label class="drop" id="esDrop">
+            <input type="file" id="f-photos" accept="image/*" multiple aria-label="Додати фото авто, до 5 штук">
+            <span class="ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 4l1.2-2h3.6L12 4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+            <strong>Додати фото авто</strong>
+            <small>3–5 фото</small>
+          </label>
+          <div class="thumbs" id="esThumbs"></div>
+        </div>
+      </div>
+      <button class="btn es-submit" type="submit" id="esSubmit">Оцінити авто за фото <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 4l1.2-2h3.6L12 4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+      <p class="es-note">Без зобов’язань. Відповімо протягом години.</p>
+      <p class="es-err" id="esErr" role="alert">Не вдалося надіслати заявку. Спробуйте ще раз або напишіть нам у <a href="https://t.me/torropp" target="_blank" rel="noopener">Telegram</a>.</p>
+      <div class="es-done" aria-live="polite">
+        <div class="lamp" aria-hidden="true"></div>
+        <h3>Заявку надіслано</h3>
+        <p>Дякуємо! Майстер подивиться фото й зв’яжеться з вами протягом години.</p>
+        <a class="link" href="https://t.me/torropp" target="_blank" rel="noopener">Написати нам у Telegram</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer class="ft">
+  <div class="ft-row">
+    <span>© 2026 detailingrv. Детейлінг-студія в Рівному</span>
+    <nav aria-label="Розділи сайту">
+      <a href="#problems">Послуги</a>
+      <a href="#packages">Комплекси</a>
+      <a href="#results">До і після</a>
+      <a href="#faq">Питання</a>
+    </nav>
+    <div class="ft-soc">
+      <a class="soc" href="https://instagram.com/jj_sasha7" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg>Instagram</a>
+      <a class="soc" href="https://t.me/torropp" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.5 3.5 2.8 10.7c-.9.4-.9 1.6.1 1.9l4.6 1.5 1.8 5.6c.3.8 1.3 1 1.9.4l2.6-2.5 4.7 3.5c.7.5 1.7.1 1.9-.7l3-15.1c.2-1-.8-1.8-1.7-1.3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Telegram</a>
+      <a href="#top">Нагору</a>
+    </div>
+  </div>
+  <span class="ft-mark" aria-hidden="true">detailingrv</span>
+</footer>
 
 <script>
 /* легкий паралакс фото за курсором (тільки мишка, тільки десктоп) */
@@ -1348,6 +1797,150 @@
   dots.forEach((d, i) => d.addEventListener('click', () => {
     list.scrollTo({ left: cards[i].offsetLeft - cards[0].offsetLeft, behavior: 'smooth' });
   }));
+})();
+</script>
+
+<script>
+/* картка студії: відкрито чи зачинено зараз (Київ, 9:00–20:00) */
+(() => {
+  const card = document.getElementById('fqCard');
+  const st = document.getElementById('fqStatus'), note = document.getElementById('fqNote');
+  function upd() {
+    let h, m;
+    try {
+      const p = new Intl.DateTimeFormat('uk-UA', { timeZone: 'Europe/Kyiv', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date());
+      h = +p.find(x => x.type === 'hour').value; m = +p.find(x => x.type === 'minute').value;
+    } catch (e) { const d = new Date(); h = d.getHours(); m = d.getMinutes(); }
+    const t = h * 60 + m, open = t >= 540 && t < 1200;
+    card.classList.toggle('is-open', open);
+    if (open) {
+      const left = 1200 - t;
+      st.textContent = left <= 60 ? 'Зараз відкрито, ще ' + left + ' хв' : 'Зараз відкрито, до 20:00';
+      note.textContent = 'Майстер на місці: відповімо в Telegram протягом 15 хвилин.';
+    } else {
+      st.textContent = 'Зараз зачинено, відкриємось о\u00a09:00';
+      note.textContent = 'Напишіть зараз, і ми відповімо першими зранку.';
+    }
+  }
+  upd(); setInterval(upd, 60000);
+})();
+
+/* часті питання: відкрите лише одне */
+(() => {
+  const items = [...document.querySelectorAll('.fq-item')];
+  items.forEach(it => {
+    const q = it.querySelector('.fq-q');
+    q.addEventListener('click', () => {
+      const willOpen = !it.classList.contains('open');
+      items.forEach(o => { o.classList.remove('open'); o.querySelector('.fq-q').setAttribute('aria-expanded', 'false'); });
+      if (willOpen) { it.classList.add('open'); q.setAttribute('aria-expanded', 'true'); }
+    });
+  });
+})();
+</script>
+
+<script>
+/* форма оцінки: фото, телефон, відправка в Netlify Forms */
+(() => {
+  const form = document.getElementById('esForm');
+  const input = document.getElementById('f-photos');
+  const drop = document.getElementById('esDrop');
+  const thumbs = document.getElementById('esThumbs');
+  const btn = document.getElementById('esSubmit');
+  const err = document.getElementById('esErr');
+  const phone = document.getElementById('f-phone');
+  const MAX = 5;
+  let files = [];
+
+  // фото: додаємо, показуємо мініатюри, можна прибрати
+  function render() {
+    thumbs.innerHTML = '';
+    files.forEach((f, i) => {
+      const d = document.createElement('div'); d.className = 'th';
+      const im = document.createElement('img'); im.alt = 'Фото ' + (i + 1); im.src = URL.createObjectURL(f);
+      im.onload = () => URL.revokeObjectURL(im.src);
+      const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Прибрати фото ' + (i + 1)); b.textContent = '×';
+      b.onclick = () => { files.splice(i, 1); render(); };
+      d.append(im, b); thumbs.append(d);
+    });
+    drop.querySelector('strong').textContent = files.length ? 'Додано ' + files.length + ' з ' + MAX + ' фото' : 'Додати фото авто';
+  }
+  function add(list) {
+    [...list].filter(f => f.type.startsWith('image/') || /\.(heic|heif)$/i.test(f.name)).forEach(f => { if (files.length < MAX) files.push(f); });
+    render();
+  }
+  input.addEventListener('change', () => { add(input.files); input.value = ''; });
+  ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => add(e.dataTransfer.files));
+
+  // телефон: +380 XX XXX XX XX
+  function fmt(v) {
+    let d = v.replace(/\D/g, '');
+    if (d.startsWith('380')) d = d.slice(3); else if (d.startsWith('80')) d = d.slice(2);
+    d = d.replace(/^0+/, '');
+    d = d.slice(0, 9);
+    const p = [d.slice(0, 2), d.slice(2, 5), d.slice(5, 7), d.slice(7, 9)].filter(Boolean);
+    return '+380' + (p.length ? ' ' + p.join(' ') : ' ');
+  }
+  phone.addEventListener('focus', () => { if (!phone.value) phone.value = '+380 '; });
+  phone.addEventListener('blur', () => { if (phone.value.replace(/\D/g, '').length <= 3) phone.value = ''; });
+  phone.addEventListener('input', () => { phone.value = fmt(phone.value); });
+
+  const msg = document.getElementById('f-msg');
+  const grow = () => { msg.style.height = 'auto'; msg.style.height = Math.max(58, msg.scrollHeight) + 'px'; };
+  msg.addEventListener('input', grow);
+  const fld = el => el.closest('.fld');
+  form.querySelectorAll('.inp').forEach(el => el.addEventListener('input', () => fld(el).classList.remove('err')));
+  function check() {
+    let ok = true, first = null;
+    const name = form.elements.name;
+    if (!name.value.trim()) { fld(name).classList.add('err'); ok = false; first = first || name; }
+    if (phone.value.replace(/\D/g, '').length !== 12) { fld(phone).classList.add('err'); ok = false; first = first || phone; }
+    if (first) first.focus();
+    return ok;
+  }
+
+  // стискаємо фото, щоб уся заявка вмістилась у ліміт Netlify (8 МБ)
+  function shrink(file) {
+    return new Promise(res => {
+      const url = URL.createObjectURL(file);
+      const im = new Image();
+      im.onload = () => {
+        const k = Math.min(1, 1600 / Math.max(im.width, im.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        c.toBlob(b => res(b ? new File([b], (file.name.replace(/\.\w+$/, '') || 'photo') + '.jpg', { type: 'image/jpeg' }) : (file.size < 1.4e6 ? file : null)), 'image/jpeg', .82);
+      };
+      im.onerror = () => { URL.revokeObjectURL(url); res(file.size < 1.4e6 ? file : null); };
+      im.src = url;
+    });
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    err.classList.remove('on');
+    if (!check()) return;
+    btn.disabled = true;
+    const label = btn.firstChild.nodeValue;
+    btn.firstChild.nodeValue = 'Надсилаємо… ';
+    try {
+      const fd = new FormData(form);
+      for (let i = 1; i <= MAX; i++) fd.delete('photo' + i);
+      const small = (await Promise.all(files.map(shrink))).filter(Boolean);
+      small.forEach((f, i) => fd.append('photo' + (i + 1), f, f.name));
+      const r = await fetch('/', { method: 'POST', body: fd });
+      if (!r.ok) throw new Error(r.status);
+      form.classList.add('sent');
+      form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (x) {
+      err.classList.add('on');
+    } finally {
+      btn.disabled = false; btn.firstChild.nodeValue = label;
+    }
+  });
 })();
 </script>
 </body>
