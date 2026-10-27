@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<script>document.documentElement.classList.add('js');addEventListener('DOMContentLoaded',()=>{if(scrollY>80||location.hash)document.documentElement.classList.add('no-intro')})</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{seo.title}}</title>
+<meta name="description" content="{{seo.description}}">
+<meta name="theme-color" content="#0B0C0E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B0C0E'/%3E%3Crect x='14' y='22' width='36' height='4' rx='2' fill='{{_.accent_url}}'/%3E%3Crect x='20' y='32' width='24' height='3' rx='1.5' fill='{{_.accent_url}}' opacity='.7'/%3E%3Crect x='25' y='41' width='14' height='2.5' rx='1.25' fill='{{_.accent_url}}' opacity='.45'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{seo.title}}">
+<meta property="og:description" content="{{seo.og_description}}">
+<meta property="og:image" content="{{seo.og_image}}">
+<meta property="og:locale" content="uk_UA">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0B0C0E;        /* obsidian graphite — основний фон */
+    --surface:#131417;      /* панелі й картки, на півтону світліші */
+    --white:#F3F3F1;
+    --grey:#9A9A96;
+    --hair:rgba(243,243,241,.14);
+    --tube:{{accent}};          /* світло ламп у боксі, колір бренду */
+    --tube-rgb:{{_.accent_rgb}};
+    --gut:56px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--black)}
+  body{
+    color:var(--white);
+    font-family:"Manrope",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  :focus-visible{outline:2px solid var(--white);outline-offset:4px}
+
+  /* ================= ПЕРШИЙ ЕКРАН ================= */
+  .hero{
+    position:relative;width:100%;
+    height:100vh;height:100svh;min-height:600px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,46%);
+    grid-template-rows:var(--hh) minmax(0,1fr);
+    overflow:hidden;
+  }
+
+  /* --- шапка --- */
+  .hero{--hh:84px}
+  .top{
+    position:fixed;left:0;right:0;top:0;z-index:50;
+    display:flex;align-items:center;gap:40px;
+    height:var(--hh);padding:0 var(--gut);
+    transition:height .35s ease, background .35s ease, border-color .35s ease;
+    border-bottom:1px solid transparent;
+  }
+  .top::before{ /* м’яке затемнення під меню над першим екраном */
+    content:"";position:absolute;left:0;right:0;top:0;bottom:-48px;z-index:-1;pointer-events:none;
+    background:linear-gradient(180deg, rgba(11,12,14,.86) 0%, rgba(11,12,14,.55) 50%, rgba(11,12,14,0) 100%);
+    transition:opacity .35s ease;
+  }
+  .top.scrolled::before{opacity:0}
+  .top.scrolled{
+    height:64px;
+    background:rgba(11,12,14,.74);
+    backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
+    border-bottom-color:var(--hair);
+  }
+  .logo{font-size:20px;font-weight:800;letter-spacing:-.04em}
+  .nav{display:flex;gap:30px;margin-left:auto;font-size:14px;font-weight:500;color:#C9C9C5;text-shadow:0 1px 14px rgba(11,12,14,.8)}
+  .nav a{transition:color .2s}
+  .nav a:hover{color:var(--white)}
+  .tel{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:700;white-space:nowrap;transition:opacity .2s}
+  .tel{text-shadow:0 1px 14px rgba(11,12,14,.8)}
+  .tel svg{color:#C9C9C5}
+  .tel:hover{opacity:.75}
+  .top-cta{
+    display:inline-flex;align-items:center;gap:10px;margin-left:-14px;
+    padding:11px 16px;border-radius:6px;background:var(--white);color:var(--black);
+    font-size:14px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;
+    transition:box-shadow .25s, transform .25s;
+  }
+  .top-cta:hover{box-shadow:0 0 0 5px rgba(243,243,241,.12), 0 0 30px rgba(var(--tube-rgb),.35)}
+  .top-cta .short{display:none}
+
+  /* --- текстова колонка --- */
+  .copy{
+    grid-column:1;grid-row:2;
+    position:relative;z-index:3;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:0 var(--gut) clamp(32px, 5.5svh, 56px);
+    min-height:0;
+  }
+  h1{
+    font-weight:800;
+    font-size:clamp(48px, min(6.9vw, 10.6svh), 148px);
+    line-height:1;
+    letter-spacing:-.045em;
+    margin-bottom:clamp(24px, 4.4svh, 44px);
+  }
+  h1 .ln{display:block;overflow:hidden;padding:.02em 0 .06em;margin-bottom:-.08em}
+  h1 .ln > span{display:inline-block}
+  h1 .soft{font-weight:300;color:#CFCFCB;letter-spacing:-.04em}
+
+  .row{
+    max-width:640px;
+    padding-top:clamp(20px, 3svh, 28px);border-top:1px solid var(--hair);
+  }
+  .lead{
+    font-size:clamp(15px, 1.15vw, 17px);line-height:1.6;color:var(--grey);font-weight:400;
+    max-width:52ch;margin-bottom:clamp(20px, 3svh, 28px);
+  }
+  .lead strong{color:var(--white);font-weight:600}
+  .acts{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:14px;
+    background:var(--white);color:var(--black);
+    padding:18px 26px;border-radius:6px;
+    font-size:15px;font-weight:700;letter-spacing:-.01em;
+    transition:background .25s, box-shadow .25s;
+    white-space:nowrap;
+  }
+  .btn:hover{background:#fff;box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(var(--tube-rgb),.35)}
+  .btn svg{flex:none}
+  .link{font-size:15px;font-weight:600;border-bottom:1px solid rgba(243,243,241,.4);padding-bottom:3px;transition:border-color .2s;white-space:nowrap}
+  .link:hover{border-color:var(--white)}
+  .link{position:relative}
+  .link::after{content:"";position:absolute;inset:-12px -10px}  /* більша зона натискання на телефоні */
+
+  /* --- фото-бокс --- */
+  .bay{
+    grid-column:2;grid-row:1 / -1;
+    position:relative;overflow:hidden;
+    container-type:size;
+    background:var(--black);
+  }
+  .frame{
+    position:absolute;left:50%;bottom:0;
+    width:max(100%, calc(100cqh * 1400 / 2101));
+    aspect-ratio:1400 / 2101;
+    transform:translate(-50%, 6%);
+    will-change:transform;
+  }
+  .frame img{position:absolute;inset:0;width:100%;height:100%;display:block;mix-blend-mode:lighten} /* чорні ділянки фото = колір фону */
+  .frame{background:var(--black)}
+  .dark{position:absolute;inset:0;background:var(--black);pointer-events:none}
+  /* світіння ламп і ходових вогнів — точно поверх фото */
+  .tube,.drl{position:absolute;pointer-events:none;mix-blend-mode:screen;opacity:0}
+  .tube{
+    height:.9%;border-radius:50%;
+    background:var(--tube);
+    filter:blur(4px);
+    box-shadow:0 0 34px 10px rgba(var(--tube-rgb),.5);
+  }
+  .t1{left:17%;right:19%;top:18.2%}
+  .t2{left:26.6%;right:24.5%;top:35.4%}
+  .t3{left:34.7%;right:32.6%;top:45%}
+  .t4{left:36.9%;right:38%;top:50.4%}
+  .drl{height:1.3%;border-radius:50%;background:#fff;filter:blur(5px);box-shadow:0 0 30px 10px rgba(255,255,255,.45)}
+  .d1{left:13%;width:15%;top:69.2%;transform:rotate(6deg)}
+  .d2{left:70%;width:15%;top:69.2%;transform:rotate(-6deg)}
+  .bay::after{ /* фото м’яко переходить у чорне */
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      linear-gradient(90deg, var(--black) 0%, rgba(11,12,14,0) 22%),
+      linear-gradient(180deg, rgba(11,12,14,.78) 0%, rgba(11,12,14,.35) 10%, rgba(11,12,14,0) 20%),
+      linear-gradient(0deg, rgba(11,12,14,.6) 0%, rgba(11,12,14,0) 16%);
+  }
+
+  /* ================= ВСТУП: у боксі вмикається світло ================= */
+  .js .dark{animation:lights 2.1s .25s steps(1,end) forwards}
+  @keyframes lights{
+    0%{opacity:1}
+    6%{opacity:.82} 9%{opacity:1} 13%{opacity:.7}
+    20%{opacity:.62}
+    30%{opacity:.5} 33%{opacity:.66} 36%{opacity:.4}
+    50%{opacity:.3} 53%{opacity:.42} 56%{opacity:.2}
+    68%{opacity:.12} 71%{opacity:.2} 74%{opacity:.06}
+    100%{opacity:0}
+  }
+  .js .t1{animation:tube 1.4s .3s steps(1,end) forwards}
+  .js .t2{animation:tube 1.2s .82s steps(1,end) forwards}
+  .js .t3{animation:tube 1.1s 1.22s steps(1,end) forwards}
+  .js .t4{animation:tube 1s 1.5s steps(1,end) forwards}
+  @keyframes tube{
+    0%{opacity:0} 8%{opacity:1} 14%{opacity:.1} 22%{opacity:.9} 30%{opacity:0} 38%{opacity:1}
+    60%{opacity:.7} 100%{opacity:.32}
+  }
+  .js .drl{animation:drl .9s 2.05s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes drl{0%{opacity:0}35%{opacity:1}100%{opacity:.5}}
+
+  .js h1 .ln > span{transform:translateY(120%);animation:up 1.1s cubic-bezier(.16,.84,.2,1) forwards}
+  .js h1 .ln:nth-child(1) > span{animation-delay:1.55s}
+  .js h1 .ln:nth-child(2) > span{animation-delay:1.65s}
+  .js h1 .ln:nth-child(3) > span{animation-delay:1.75s}
+  .js h1 .ln:nth-child(4) > span{animation-delay:1.85s}
+  @keyframes up{to{transform:none}}
+  .js .top,.js .row{opacity:0;animation:fade 1s forwards}
+  .js .top{animation-delay:1.9s}
+  .js .row{animation-delay:2.15s}
+  @keyframes fade{to{opacity:1}}
+
+  /* ================= планшет ================= */
+  @media (max-width:1100px){
+    :root{--gut:36px}
+    .nav{display:none}
+    .tel{margin-left:auto}
+    .hero{grid-template-columns:minmax(0,1fr) minmax(0,42%)}
+  }
+
+  /* ================= телефон і планшет вертикально ================= */
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    :root{--gut:20px}
+    .hero{
+      display:flex;flex-direction:column;
+      height:auto;min-height:100vh;min-height:100svh;
+    }
+    .hero{--hh:68px}
+    .top{
+      height:calc(var(--hh) + env(safe-area-inset-top));
+      padding:env(safe-area-inset-top) var(--gut) 0;
+    }
+    .top.scrolled{height:calc(58px + env(safe-area-inset-top))}
+    .logo{font-size:18px}
+    .top{gap:10px}
+    .tel{
+      width:40px;height:40px;justify-content:center;border-radius:50%;
+      background:rgba(11,12,14,.5);border:1px solid var(--hair);
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    }
+    .tel span{display:none}
+    .tel svg{color:var(--white)}
+    .top-cta{margin-left:0;padding:11px 14px;font-size:13px;gap:8px}
+    .top-cta .full{display:none}
+    .top-cta .short{display:inline}
+    /* фото займає весь вільний простір над текстом */
+    .bay{flex:1 1 auto;min-height:210px;order:0}
+    .frame{transform:translate(-50%, 20%)}
+    .bay::after{
+      background:
+        linear-gradient(180deg, rgba(11,12,14,.85) 0%, rgba(11,12,14,.4) 12%, rgba(11,12,14,0) 26%),
+        linear-gradient(0deg, var(--black) 0%, rgba(11,12,14,.7) 14%, rgba(11,12,14,0) 40%);
+    }
+    .copy{
+      flex:none;order:1;
+      margin-top:-28px;
+      padding:0 var(--gut) 22px; /* без safe-area: на iPhone вона змінюється, коли ховається панель Safari, і екран смикався */
+    }
+    h1{
+      font-size:clamp(38px, min(13.4vw, 6.5svh), 96px);
+      letter-spacing:-.05em;
+      margin-bottom:16px;
+    }
+    .row{border-top:0;padding-top:0;max-width:none}
+    .lead{font-size:15px;line-height:1.5;margin-bottom:20px}
+    .acts{flex-direction:column;align-items:stretch;gap:16px;max-width:440px}
+    .btn{width:100%;padding:18px 20px}
+    .link{align-self:center;font-size:14px}
+  }
+  @media (max-width:760px) and (max-height:700px){
+    .lead strong{display:none}
+    .lead{margin-bottom:16px}
+    .acts{gap:12px}
+  }
+
+
+  /* ================= загальне для секцій ================= */
+  html{scroll-padding-top:72px;scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .sec{position:relative;padding:clamp(96px, 13vh, 150px) var(--gut)}
+  .h2{
+    font-weight:800;font-size:clamp(38px, 5vw, 80px);line-height:1;letter-spacing:-.045em;
+  }
+  .h2 .ln{display:block;overflow:hidden;padding:.02em 0 .07em;margin-bottom:-.08em}
+  .h2 .ln > span{display:inline-block}
+  .h2 .soft{font-weight:300;color:#CFCFCB;letter-spacing:-.04em}
+  .js .rv .ln > span{transform:translateY(120%);transition:transform 1.1s cubic-bezier(.16,.84,.2,1)}
+  .js .rv .ln:nth-child(2) > span{transition-delay:.1s}
+  .js .rv.in .ln > span{transform:none}
+  .js .fd{opacity:0;transform:translateY(22px);transition:opacity .9s ease var(--d,0s), transform .9s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+  .js .fd.in{opacity:1;transform:none}
+
+  /* ================= БЛОК 2: проблема → рішення ================= */
+  .pr-head{
+    display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px 64px;align-items:end;
+    margin-bottom:clamp(48px, 7vh, 80px);
+  }
+  .pr-lead{font-size:16px;line-height:1.65;color:var(--grey);max-width:46ch;justify-self:end}
+  .pr-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(32px, 5vw, 88px);align-items:start}
+
+  .pr-list{list-style:none;border-top:1px solid var(--hair)}
+  .pr-item{border-bottom:1px solid var(--hair)}
+  .pr-btn{
+    all:unset;box-sizing:border-box;cursor:pointer;display:block;width:100%;
+    position:relative;padding:22px 0 22px 0;
+    transition:padding .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .pr-btn::before{ /* лампа-маркер активного пункту */
+    content:"";position:absolute;left:0;top:calc(22px + .62em);
+    width:0;height:2px;border-radius:2px;background:var(--tube);
+    box-shadow:0 0 10px var(--tube),0 0 22px rgba(var(--tube-rgb),.7);
+    font-size:clamp(21px, 2vw, 30px);
+    transition:width .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .pr-btn:focus-visible{outline:2px solid var(--white);outline-offset:4px}
+  .pr-t{
+    display:block;font-size:clamp(21px, 2vw, 30px);font-weight:600;letter-spacing:-.03em;line-height:1.25;
+    color:#5F5F5C;transition:color .3s;
+  }
+  .pr-btn:hover .pr-t{color:#B5B5B1}
+  .pr-btn[aria-expanded="true"]{padding-left:48px}
+  .pr-btn[aria-expanded="true"]::before{width:30px}
+  .pr-btn[aria-expanded="true"] .pr-t{color:var(--white)}
+  .pr-d{
+    display:grid;grid-template-rows:0fr;opacity:0;
+    transition:grid-template-rows .45s ease, opacity .45s ease;
+    font-size:15px;line-height:1.6;color:var(--grey);max-width:44ch;
+  }
+  .pr-d > span{overflow:hidden}
+  .pr-btn[aria-expanded="true"] .pr-d{grid-template-rows:1fr;opacity:1}
+  .pr-btn[aria-expanded="true"] .pr-d > span{padding-top:10px}
+  .pr-slot:empty{display:none}
+
+  .pr-stage{
+    position:relative;overflow:hidden;border-radius:6px;background:var(--surface);
+    height:clamp(540px, 74vh, 700px);
+    isolation:isolate;
+  }
+  .pr-photos{position:absolute;left:0;right:0;top:0;height:58%;overflow:hidden}
+  .pr-ph{position:absolute;inset:0;opacity:0;z-index:0}
+  .pr-ph.on{opacity:1;z-index:1}
+  .pr-ph.enter{opacity:1;z-index:2;animation:prwipe .95s cubic-bezier(.65,0,.25,1) forwards}
+  @keyframes prwipe{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+  .pr-ph.enter img{animation:prsettle 1.5s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes prsettle{
+    0%{transform:scale(1.07);filter:grayscale(1) contrast(1.15) brightness(1.75)}
+    100%{transform:scale(1);filter:grayscale(1) contrast(1.08) brightness(.88)}
+  }
+  .pr-ph.leave img{animation:prdim .95s ease forwards}
+  @keyframes prdim{to{filter:grayscale(1) contrast(1.08) brightness(.35)}}
+  .pr-ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.08) brightness(.88)}
+  .pr-sweep{
+    position:absolute;left:-5%;right:-5%;top:0;height:3px;z-index:3;pointer-events:none;opacity:0;
+    background:var(--tube);border-radius:3px;
+    box-shadow:0 0 14px 2px var(--tube),0 0 60px 10px rgba(var(--tube-rgb),.45);
+  }
+  .pr-sweep.go{animation:prsweep .95s cubic-bezier(.65,0,.25,1)}
+  @keyframes prsweep{0%{top:0;opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+  .pr-photos::after{
+    content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+    background:linear-gradient(0deg, var(--surface) 0%, rgba(19,20,23,.6) 22%, rgba(19,20,23,0) 50%);
+  }
+  .pr-dark{position:absolute;inset:0;z-index:5;background:var(--black);pointer-events:none;opacity:0}
+  .js .pr-stage:not(.lit) .pr-dark{opacity:1}
+  .js .pr-stage.lit .pr-dark{animation:prlights 1.3s steps(1,end) forwards}
+  @keyframes prlights{0%{opacity:1}10%{opacity:.5}16%{opacity:1}26%{opacity:.35}32%{opacity:.8}46%{opacity:.15}52%{opacity:.4}64%{opacity:0}100%{opacity:0}}
+
+  .pr-sol{
+    position:absolute;left:0;right:0;bottom:0;z-index:4;
+    padding:clamp(28px, 3.4vw, 48px);
+    transition:opacity .25s ease, transform .35s ease;
+  }
+  .pr-sol.out{opacity:0;transform:translateY(8px)}
+  .pr-for{font-size:13px;color:var(--grey);margin-bottom:10px}
+  .pr-sol h3{font-size:clamp(28px, 2.6vw, 42px);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin-bottom:14px}
+  .pr-text{font-size:16px;line-height:1.6;color:#CFCFCB;max-width:48ch;margin-bottom:24px}
+  .pr-facts{display:flex;gap:44px;padding:18px 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);margin-bottom:20px}
+  .pr-facts dt{font-size:12px;color:var(--grey);margin-bottom:4px}
+  .pr-facts dd{font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .pr-foot{display:flex;align-items:center;justify-content:space-between;gap:20px 32px;flex-wrap:wrap}
+  .pr-tip{font-size:14px;line-height:1.55;color:var(--grey);max-width:40ch}
+  .pr-tip b{color:var(--white);font-weight:600}
+
+  @media (max-width:1100px){
+    .pr-head{grid-template-columns:1fr}
+    .pr-lead{justify-self:start}
+    .pr-body{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:32px}
+    .pr-stage{height:clamp(520px, 70vh, 640px)}
+    .pr-facts{gap:28px}
+  }
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .pr-body{display:block}
+    .pr-btn{padding:20px 0}
+    .pr-btn::before{top:calc(20px + .62em)}
+    .pr-btn[aria-expanded="true"]{padding-left:40px}
+    .pr-btn[aria-expanded="true"]::before{width:24px}
+    .pr-t{font-size:clamp(20px, 5.4vw, 28px)}
+    .pr-slot{padding:0 0 26px}
+    .pr-stage{height:auto;border-radius:6px}
+    .pr-photos{position:relative;aspect-ratio:4 / 3}
+    .pr-photos::after{background:linear-gradient(0deg, var(--surface) 0%, rgba(19,20,23,0) 45%)}
+    .pr-photos{height:auto}
+    .pr-sol{position:relative;padding:4px 20px 24px;margin-top:-34px}
+    .pr-sol h3{font-size:clamp(26px, 7vw, 34px)}
+    .pr-text{font-size:15px;margin-bottom:20px}
+    .pr-facts{gap:32px;padding:14px 0}
+    .pr-dark{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .js .rv .ln > span,.js .fd{transform:none;opacity:1;transition:none}
+    .js .pr-stage .pr-dark{animation:none;opacity:0}
+    .pr-ph.enter,.pr-ph.enter img,.pr-ph.leave img,.pr-sweep.go{animation:none}
+    .pr-btn,.pr-btn::before,.pr-d{transition:none}
+  }
+
+  /* ================= БЛОК 3: комплекси ================= */
+  .pk-list{border-top:1px solid var(--hair)}
+  .pk{
+    position:relative;
+    display:grid;grid-template-columns:clamp(220px, 21vw, 320px) minmax(0,1fr) minmax(0,1.05fr) clamp(220px, 17vw, 260px);
+    gap:clamp(28px, 3.4vw, 56px);align-items:start;
+    padding:clamp(28px, 4vh, 44px) 0;
+    border-bottom:1px solid var(--hair);
+  }
+  .pk.featured{
+    background:linear-gradient(180deg, rgba(var(--tube-rgb),.06), rgba(var(--tube-rgb),0) 70%);
+    margin:0 calc(var(--gut) * -1);padding-left:var(--gut);padding-right:var(--gut);
+  }
+  .pk.featured::before{ /* лампа над рекомендованим комплексом */
+    content:"";position:absolute;left:8%;right:8%;top:-1px;height:2px;border-radius:2px;
+    background:linear-gradient(90deg, rgba(var(--tube-rgb),0), var(--tube) 18%, var(--tube) 82%, rgba(var(--tube-rgb),0));
+    box-shadow:0 0 14px rgba(var(--tube-rgb),.8), 0 0 50px rgba(var(--tube-rgb),.35);
+  }
+  .pk-ph{position:relative;aspect-ratio:4 / 3;border-radius:6px;overflow:hidden;background:var(--surface)}
+  .pk-ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.08) brightness(.62);transition:filter .6s ease}
+  .pk.featured .pk-ph img,.pk:hover .pk-ph img{filter:grayscale(1) contrast(1.08) brightness(.92)}
+  .js .pk .pk-ph{clip-path:inset(0 0 100% 0)}
+  .js .pk.lit .pk-ph{animation:prwipe 1s cubic-bezier(.65,0,.25,1) var(--d,0s) forwards}
+  .js .pk.lit .pk-ph img{animation:pkflash 1.6s cubic-bezier(.2,.7,.2,1) var(--d,0s) both}
+  @keyframes pkflash{0%{transform:scale(1.07);filter:grayscale(1) contrast(1.15) brightness(1.75)}}
+  .pk-tag{font-size:12px!important;line-height:1;letter-spacing:0!important}
+  .pk-name{font-size:clamp(32px, 3.2vw, 52px);font-weight:800;letter-spacing:-.045em;line-height:1;margin-bottom:14px}
+  .pk-tag{
+    display:inline-block;vertical-align:middle;margin:0 0 .35em .3em;
+    font-size:12px;font-weight:700;letter-spacing:-.005em;
+    padding:6px 11px;border-radius:30px;background:var(--white);color:var(--black);
+  }
+  .pk-goal{font-size:16px;line-height:1.5;color:#CFCFCB;max-width:30ch}
+  .pk ul{list-style:none;display:grid;gap:12px;padding-top:6px}
+  .pk li{position:relative;padding-left:26px;font-size:15px;line-height:1.5;color:var(--grey)}
+  .pk li::before{content:"";position:absolute;left:0;top:.75em;width:12px;height:1px;background:rgba(243,243,241,.45)}
+  .pk.featured li{color:#CFCFCB}
+  .pk.featured li::before{background:var(--tube);box-shadow:0 0 6px var(--tube)}
+  .pk-gift{display:flex;gap:10px;align-items:center;margin-top:20px;font-size:14px;font-weight:600;color:var(--white)}
+  .pk-gift svg{flex:none}
+  .pk-buy{display:flex;flex-direction:column;align-items:stretch;gap:18px}
+  .pk-price{display:flex;align-items:baseline;gap:8px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .pk-price small{font-size:14px;color:var(--grey)}
+  .pk-price strong{font-size:clamp(30px, 2.6vw, 40px);font-weight:800;letter-spacing:-.04em}
+  .pk-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:16px 20px;border-radius:6px;font-size:15px;font-weight:700;white-space:nowrap;
+    border:1px solid rgba(243,243,241,.3);transition:border-color .25s, background .25s, box-shadow .25s;
+  }
+  .pk-btn:hover{border-color:var(--white);background:rgba(243,243,241,.06)}
+  .pk.featured .pk-btn{background:var(--white);color:var(--black);border-color:var(--white)}
+  .pk.featured .pk-btn:hover{box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(var(--tube-rgb),.35)}
+  .pk-note{margin-top:32px;font-size:15px;line-height:1.6;color:var(--grey);max-width:70ch}
+  .pk-note a{color:var(--white);border-bottom:1px solid rgba(243,243,241,.4);position:relative}
+  .pk-note a:hover{border-color:var(--white)}
+
+  @media (min-width:761px) and (orientation:landscape), (min-width:1101px){
+    .pk.featured .pk-tag{position:absolute;z-index:2;left:calc(var(--gut) + 14px);top:calc(clamp(28px, 4vh, 44px) + 14px);margin:0}
+  }
+  @media (max-width:1180px){
+    .pk{grid-template-columns:clamp(200px, 26vw, 280px) minmax(0,1fr) minmax(0,1fr);row-gap:28px}
+    .pk-buy{grid-column:2 / -1;flex-direction:row;align-items:center;justify-content:space-between;padding-top:24px;border-top:1px solid var(--hair)}
+    .pk-btn{min-width:220px}
+  }
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .pk-list{border-top:0;display:grid;gap:16px}
+    .pk,.pk.featured{
+      display:block;margin:0;padding:0 0 24px;border:1px solid var(--hair);border-radius:8px;overflow:hidden;
+      background:var(--surface);
+    }
+    .pk.featured{border-color:rgba(var(--tube-rgb),.35);background:linear-gradient(180deg, rgba(var(--tube-rgb),.07), rgba(var(--tube-rgb),0) 55%), var(--surface)}
+    .pk.featured::before{left:10%;right:10%;top:0;z-index:3}
+    .pk-tag{margin:0 0 0 .2em;transform:translateY(-.3em)}
+    .pk-ph{aspect-ratio:16 / 10;border-radius:0;margin-bottom:22px}
+    .pk-head,.pk ul,.pk-gift,.pk-buy{margin-left:20px;margin-right:20px}
+    .pk-name{font-size:clamp(30px, 8.5vw, 40px)}
+    .pk-goal{margin-bottom:20px}
+    .pk ul{padding-top:18px;border-top:1px solid var(--hair)}
+    .pk-buy{flex-direction:column;align-items:stretch;margin-top:24px;padding-top:20px;border-top:1px solid var(--hair);gap:16px}
+    .pk-btn{min-width:0;padding:17px 20px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .js .pk .pk-ph{clip-path:none}
+    .js .pk.lit .pk-ph,.js .pk.lit .pk-ph img{animation:none}
+  }
+
+  /* ================= БЛОК 4: до / після ================= */
+  .ba{
+    --x:50%;
+    position:relative;width:100%;aspect-ratio:16 / 8.6;max-height:calc(100svh - 150px);min-height:420px;
+    border-radius:6px;overflow:hidden;background:var(--surface);
+    cursor:ew-resize;user-select:none;-webkit-user-select:none;touch-action:pan-y;
+    isolation:isolate;
+  }
+  .ba-scene{position:absolute;inset:0;z-index:0}
+  .ba-scene.on{z-index:1}
+  .ba-scene:not(.on):not(.enter){visibility:hidden}
+  .ba-scene.enter{z-index:2;animation:prwipe .95s cubic-bezier(.65,0,.25,1) forwards}
+  .ba-scene.enter .ba-after img{animation:pkflash 1.5s cubic-bezier(.2,.7,.2,1) both}
+  .ba-layer{position:absolute;inset:0}
+  .ba-layer img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+  .ba-after img{filter:grayscale(1) contrast(1.14) brightness(.96)}
+  .ba-before{clip-path:inset(0 calc(100% - var(--x)) 0 0)}
+  /* «до»: тьмяний лак, серпанок, туман — залежно від виду робіт */
+  .ba-before img{filter:grayscale(1) contrast(.64) brightness(1.02) blur(.3px)}
+  .t-lights .ba-before img{filter:grayscale(1) contrast(.55) brightness(1.05) blur(1.4px)}
+  .t-interior .ba-before img{filter:grayscale(1) contrast(.7) brightness(.86)}
+  .ba-before .haze{position:absolute;inset:0;mix-blend-mode:screen;background:linear-gradient(160deg, rgba(200,200,196,.16), rgba(160,160,156,.08))}
+  .t-lights .ba-before .haze{background:radial-gradient(48% 42% at 52% 46%, rgba(235,235,230,.38), rgba(235,235,230,0) 72%), linear-gradient(160deg, rgba(200,200,196,.16), rgba(160,160,156,.08))}
+  .ba-before canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+  .ba-line{
+    position:absolute;top:0;bottom:0;left:var(--x);z-index:5;width:2px;margin-left:-1px;pointer-events:none;
+    background:var(--tube);box-shadow:0 0 12px 1px var(--tube),0 0 46px 6px rgba(var(--tube-rgb),.45);
+  }
+  .ba-line::before{ /* світло від лампи на кузові */
+    content:"";position:absolute;top:0;bottom:0;left:-110px;width:220px;
+    background:linear-gradient(90deg, rgba(var(--tube-rgb),0), rgba(var(--tube-rgb),.09) 50%, rgba(var(--tube-rgb),0));
+    mix-blend-mode:screen;
+  }
+  .ba-grip{
+    position:absolute;z-index:6;left:var(--x);top:50%;width:38px;height:62px;margin:-31px 0 0 -19px;
+    display:grid;place-items:center;border-radius:20px;outline:none;color:var(--white);
+    background:rgba(11,12,14,.5);border:1px solid rgba(var(--tube-rgb),.55);
+    box-shadow:0 0 18px rgba(var(--tube-rgb),.35);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    transition:transform .2s ease, background .2s ease;
+  }
+  .ba.drag .ba-grip,.ba-grip:hover{transform:scale(1.08);background:rgba(11,12,14,.7)}
+  .ba-grip:focus-visible{box-shadow:0 0 0 2px var(--white)}
+  .js .ba:not(.lit) .ba-grip{opacity:0}
+  .ba-grip{transition:opacity .4s, transform .2s ease, background .2s ease}
+  .ba-tag{
+    position:absolute;z-index:6;bottom:22px;left:var(--x);
+    font-size:13px;font-weight:700;letter-spacing:-.005em;white-space:nowrap;
+    padding:8px 13px;border-radius:30px;pointer-events:none;
+    background:rgba(11,12,14,.55);border:1px solid rgba(243,243,241,.16);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    transition:opacity .3s;
+  }
+  .ba-tag.b{transform:translateX(calc(-100% - 16px))}
+  .ba-tag.a{transform:translateX(16px);background:rgba(243,243,241,.92);color:var(--black);border-color:transparent}
+  .js .ba:not(.lit) .ba-line,.js .ba:not(.lit) .ba-tag{opacity:0}
+  .js .ba.lit .ba-line{animation:baflick .7s steps(1,end)}
+  @keyframes baflick{0%{opacity:0}15%{opacity:1}25%{opacity:.15}40%{opacity:1}55%{opacity:.4}70%,100%{opacity:1}}
+
+  .ba-wrap{
+    display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.3fr);
+    grid-template-areas:"head media" "tabs media" "caps media";
+    grid-template-rows:auto auto 1fr;column-gap:clamp(40px, 5vw, 88px);align-items:start;
+  }
+  .ba-head{grid-area:head}
+  .ba-media{grid-area:media}
+  .ba-tabs{grid-area:tabs}
+  .ba-caps{grid-area:caps}
+  .ba-h2{font-size:clamp(36px, 3.7vw, 62px)}
+  .ba-lead{font-size:16px;line-height:1.65;color:var(--grey);max-width:40ch;margin-top:22px}
+  .ba{aspect-ratio:auto;height:min(calc(100svh - 190px), 680px);min-height:440px;max-height:none}
+  .ba-tabs{display:flex;flex-wrap:wrap;gap:8px}
+  .ba-tab{
+    all:unset;box-sizing:border-box;cursor:pointer;position:relative;
+    font-size:15px;font-weight:600;letter-spacing:-.01em;color:#6F6F6C;
+    padding:12px 16px;border-radius:6px;border:1px solid var(--hair);
+    transition:color .25s, border-color .25s, background .25s;
+  }
+  .ba-tab:hover{color:#C9C9C5;border-color:rgba(243,243,241,.3)}
+  .ba-tab[aria-selected="true"]{color:var(--black);background:var(--white);border-color:var(--white)}
+  .ba-tab:focus-visible{outline:2px solid var(--white);outline-offset:3px}
+  .ba-caps{display:grid;grid-template-columns:1fr 1fr;gap:28px;transition:opacity .25s}
+  .ba-caps.out{opacity:0}
+  .ba-cap{font-size:15px;line-height:1.55;color:var(--grey)}
+  .ba-cap b{display:block;font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px}
+  .ba-hint{display:none}
+
+
+  @media (min-width:761px) and (orientation:landscape), (min-width:1101px){
+    .ba-tabs{display:block;margin-top:clamp(28px, 4.5vh, 44px);border-top:1px solid var(--hair)}
+    .ba-tab{
+      display:block;width:100%;padding:16px 0;border:0;border-bottom:1px solid var(--hair);border-radius:0;
+      font-size:clamp(18px, 1.5vw, 22px);color:#5F5F5C;background:none;
+      transition:color .3s, padding .45s cubic-bezier(.2,.7,.2,1);
+    }
+    .ba-tab::before{
+      content:"";position:absolute;left:0;top:50%;width:0;height:2px;border-radius:2px;background:var(--tube);
+      box-shadow:0 0 10px var(--tube),0 0 22px rgba(var(--tube-rgb),.7);transition:width .45s cubic-bezier(.2,.7,.2,1);
+    }
+    .ba-tab:hover{color:#B5B5B1;border-color:var(--hair)}
+    .ba-tab[aria-selected="true"]{color:var(--white);background:none;border-color:var(--hair);padding-left:40px}
+    .ba-tab[aria-selected="true"]::before{width:24px}
+    .ba-caps{margin-top:28px}
+  }
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .ba-wrap{display:flex;flex-direction:column;align-items:stretch}
+    .ba-head{margin-bottom:clamp(40px, 6vh, 64px)}
+    .ba-h2{font-size:clamp(38px, 5vw, 80px)}
+    .ba-lead{margin-top:20px}
+    .ba-grip{display:none}
+    .ba{aspect-ratio:4 / 5;height:auto;max-height:none;min-height:0;cursor:auto}
+    .ba-tag{bottom:16px;font-size:12px;padding:7px 11px}
+    .ba-tag.b{transform:translateX(calc(-100% - 12px))}
+    .ba-tag.a{transform:translateX(12px)}
+    .ba-hint{
+      display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;
+      font-size:13px;color:var(--grey);transition:opacity .4s;
+    }
+    .ba-hint.gone{opacity:0}
+    .ba-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:22px}
+    .ba-caps{margin-top:22px}
+    .ba-tab{text-align:center;padding:14px 10px;font-size:14px}
+    .ba-caps{gap:18px}
+    .ba-layer img{object-position:var(--mpos) !important}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ba-scene.enter,.ba-scene.enter .ba-after img,.js .ba.lit .ba-line{animation:none}
+  }
+
+  /* ================= БЛОК 5: як ми працюємо ================= */
+  .st-row{list-style:none;display:grid;grid-template-columns:repeat(5, minmax(0,1fr));gap:clamp(20px, 2.4vw, 40px);border-top:1px solid var(--hair);counter-reset:none}
+  .st{position:relative;padding-top:clamp(30px, 4.5vh, 44px)}
+  .st-tube{ /* лампа над кроком: спершу вимкнена */
+    position:absolute;left:0;right:12%;top:-2px;height:3px;border-radius:3px;
+    background:#2A2B2F;
+  }
+  .st-tube::after{
+    content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;
+    background:var(--tube);box-shadow:0 0 12px 1px var(--tube),0 0 46px 6px rgba(var(--tube-rgb),.35);
+  }
+  .st-n{display:block;font-size:clamp(44px, 4.4vw, 72px);font-weight:300;letter-spacing:-.05em;line-height:1;color:#3A3B3F;margin-bottom:clamp(18px, 3vh, 28px);transition:color .5s ease}
+  .st h3{font-size:clamp(18px, 1.45vw, 21px);font-weight:700;letter-spacing:-.02em;line-height:1.3;margin-bottom:12px}
+  .st p{font-size:15px;line-height:1.6;color:var(--grey)}
+  .st.lit .st-tube::after{animation:sttube .9s var(--d,0s) steps(1,end) forwards}
+  .st.lit .st-n{color:var(--white);transition-delay:calc(var(--d,0s) + .35s)}
+  @keyframes sttube{0%{opacity:0}10%{opacity:1}18%{opacity:.1}28%{opacity:.9}36%{opacity:0}46%{opacity:1}100%{opacity:1}}
+  .st-foot{display:flex;align-items:center;justify-content:space-between;gap:20px 40px;flex-wrap:wrap;margin-top:clamp(40px, 6vh, 64px);padding-top:28px;border-top:1px solid var(--hair)}
+  .st-foot p{font-size:16px;line-height:1.6;color:var(--grey);max-width:56ch}
+  .st-foot p strong{color:var(--white);font-weight:600}
+
+  @media (max-width:1100px){
+    .st-row{grid-template-columns:repeat(2, minmax(0,1fr));row-gap:44px;border-top:0}
+    .st{border-top:1px solid var(--hair)}
+  }
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .st-row{grid-template-columns:1fr;row-gap:0}
+    .st{display:grid;grid-template-columns:58px minmax(0,1fr);column-gap:14px;padding:26px 0 30px}
+    .st-n{grid-row:1 / 3;font-size:40px;margin:0;line-height:.95}
+    .st h3{font-size:19px;margin-bottom:8px}
+    .st-tube{right:30%}
+    .st-foot{flex-direction:column;align-items:stretch;margin-top:12px}
+    .st-foot .btn{width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .st.lit .st-tube::after{animation:none;opacity:1}
+    .st-n{transition:none}
+  }
+
+  /* ================= БЛОК 6: відгуки ================= */
+  .rv-list{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:clamp(16px, 1.6vw, 24px)}
+  .rv-card{
+    display:flex;flex-direction:column;
+    background:var(--surface);border:1px solid var(--hair);border-radius:8px;
+    padding:clamp(24px, 2.4vw, 36px);
+  }
+  .rv-meta{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-bottom:20px;margin-bottom:26px;border-bottom:1px solid var(--hair)}
+  .rv-meta dt{font-size:12px;color:var(--grey);margin-bottom:5px}
+  .rv-meta dd{font-size:15px;font-weight:600;letter-spacing:-.01em;line-height:1.35}
+  .rv-card blockquote{margin:0}
+  .rv-pull{font-size:clamp(21px, 1.75vw, 26px);font-weight:600;letter-spacing:-.03em;line-height:1.25;margin-bottom:18px}
+  .rv-text{font-size:15px;line-height:1.65;color:var(--grey)}
+  .rv-name{display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:28px;font-size:15px;font-weight:700}
+  .rv-name::before{content:"";width:22px;height:2px;border-radius:2px;background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 18px rgba(var(--tube-rgb),.6)}
+  .rv-dots{display:none}
+
+  @media (max-width:1100px) and (orientation:landscape){
+    .rv-pull{font-size:20px}
+  }
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .rv-list{
+      display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;
+      margin:0 calc(var(--gut) * -1);padding:0 var(--gut);scroll-padding:0 var(--gut);
+      scrollbar-width:none;-webkit-overflow-scrolling:touch;
+    }
+    .rv-list::-webkit-scrollbar{display:none}
+    .rv-card{flex:0 0 min(86%, 420px);scroll-snap-align:start;padding:24px 22px}
+    .rv-pull{font-size:21px}
+    .rv-dots{display:flex;justify-content:center;gap:8px;margin-top:22px}
+    .rv-dots button{
+      all:unset;cursor:pointer;width:26px;height:3px;border-radius:3px;background:#2A2B2F;position:relative;
+      transition:background .3s, box-shadow .3s;
+    }
+    .rv-dots button::after{content:"";position:absolute;inset:-12px -4px}
+    .rv-dots button[aria-current="true"]{background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 20px rgba(var(--tube-rgb),.55)}
+  }
+
+  /* ================= БЛОК 7: часті питання ================= */
+  .fq{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.3fr);gap:clamp(40px, 6vw, 110px);align-items:start}
+  .fq-side{position:sticky;top:96px}
+  .fq-lead{font-size:16px;line-height:1.65;color:var(--grey);max-width:38ch;margin:22px 0 clamp(28px, 4vh, 40px)}
+
+  /* картка студії з живим статусом */
+  .fq-card{border:1px solid var(--hair);border-radius:8px;overflow:hidden;background:var(--surface)}
+  .fq-ph{position:relative;aspect-ratio:16 / 8;overflow:hidden}
+  .fq-ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.1) brightness(.8)}
+  .fq-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg, var(--surface) 0%, rgba(19,20,23,0) 60%)}
+  .fq-body{padding:4px clamp(20px, 2vw, 28px) clamp(20px, 2vw, 28px)}
+  .fq-status{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:700;letter-spacing:-.015em;margin-bottom:6px}
+  .fq-dot{position:relative;width:9px;height:9px;border-radius:50%;background:#4A4B50;flex:none}
+  .fq-card.is-open .fq-dot{background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 18px rgba(var(--tube-rgb),.7)}
+  .fq-card.is-open .fq-dot::after{
+    content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(var(--tube-rgb),.6);
+    animation:fqpulse 2.2s ease-out infinite;
+  }
+  @keyframes fqpulse{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.6);opacity:0}}
+  .fq-note{font-size:14px;line-height:1.55;color:var(--grey);margin-bottom:20px}
+  .fq-acts{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px 22px}
+  .btn-o{
+    display:inline-flex;align-items:center;justify-content:center;gap:12px;
+    padding:16px 20px;border-radius:6px;font-size:15px;font-weight:700;white-space:nowrap;
+    background:var(--white);color:var(--black);transition:box-shadow .25s;
+  }
+  .btn-o:hover{box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(var(--tube-rgb),.35)}
+
+  /* питання */
+  .fq-list{list-style:none;display:grid;gap:6px}
+  .fq-item{
+    position:relative;border-radius:8px;border:1px solid transparent;
+    padding:0 clamp(18px, 1.8vw, 26px);margin:0 calc(clamp(18px, 1.8vw, 26px) * -1);
+    transition:background .45s ease, border-color .45s ease;
+  }
+  .fq-item::after{ /* роздільник між питаннями */
+    content:"";position:absolute;left:clamp(18px, 1.8vw, 26px);right:clamp(18px, 1.8vw, 26px);bottom:-4px;height:1px;background:var(--hair);
+    transition:opacity .3s;
+  }
+  .fq-item:last-child::after{display:none}
+  .fq-item.open{background:var(--surface);border-color:var(--hair)}
+  .fq-item.open::after,.fq-item:has(+ .fq-item.open)::after{opacity:0}
+  .fq-item::before{ /* лампа над відкритим питанням */
+    content:"";position:absolute;left:clamp(18px, 1.8vw, 26px);top:-1px;height:2px;width:0;border-radius:2px;
+    background:var(--tube);box-shadow:0 0 12px var(--tube),0 0 30px rgba(var(--tube-rgb),.5);
+    transition:width .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .fq-item.open::before{width:72px;animation:fqflick .7s steps(1,end)}
+  @keyframes fqflick{0%{opacity:.2}15%{opacity:1}25%{opacity:.3}40%,100%{opacity:1}}
+  .fq-q{
+    all:unset;box-sizing:border-box;cursor:pointer;width:100%;
+    display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;
+    padding:clamp(20px, 2.6vh, 26px) 0;
+  }
+  .fq-q:focus-visible{outline:2px solid var(--white);outline-offset:4px;border-radius:4px}
+  .fq-q span{font-size:clamp(18px, 1.55vw, 22px);font-weight:600;letter-spacing:-.025em;line-height:1.3;color:#A9A9A5;transition:color .3s}
+  .fq-q:hover span,.fq-item.open .fq-q span{color:var(--white)}
+  .fq-ic{
+    position:relative;width:38px;height:38px;border-radius:50%;flex:none;
+    border:1px solid rgba(243,243,241,.25);transition:background .35s, border-color .35s, transform .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .fq-ic::before,.fq-ic::after{
+    content:"";position:absolute;left:50%;top:50%;width:13px;height:1.6px;margin:-.8px 0 0 -6.5px;border-radius:2px;
+    background:var(--white);transition:background .35s;
+  }
+  .fq-ic::after{transform:rotate(90deg)}
+  .fq-q:hover .fq-ic{border-color:var(--white)}
+  .fq-item.open .fq-ic{background:var(--white);border-color:var(--white);transform:rotate(135deg)}
+  .fq-item.open .fq-ic::before,.fq-item.open .fq-ic::after{background:var(--black)}
+  .fq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.2,.7,.2,1)}
+  .fq-item.open .fq-a{grid-template-rows:1fr}
+  .fq-a > div{overflow:hidden}
+  .fq-in{padding:0 62px 26px 0;opacity:0;transform:translateY(-6px);transition:opacity .35s ease, transform .45s ease}
+  .fq-item.open .fq-in{opacity:1;transform:none;transition-delay:.12s}
+  .fq-in p{font-size:16px;line-height:1.7;color:var(--grey);max-width:60ch}
+  .fq-in p strong{color:var(--white);font-weight:600}
+  .fq-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .fq-chips span{
+    display:inline-flex;align-items:baseline;gap:7px;
+    font-size:13px;font-weight:600;line-height:1;padding:9px 13px;border-radius:30px;
+    border:1px solid var(--hair);color:#CFCFCB;background:rgba(243,243,241,.03);
+  }
+  .fq-chips b{font-weight:500;color:var(--grey)}
+
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .fq{display:flex;flex-direction:column;align-items:stretch;gap:32px}
+    .fq-side{position:static;display:contents}
+    .fq-side .h2{order:0}
+    .fq-lead{order:1;margin:-12px 0 0}
+    .fq-list{order:2}
+    .fq-card{order:3;margin-top:8px}
+    .fq-item{padding:0 16px;margin:0 -16px}
+    .fq-item::after{left:16px;right:16px}
+    .fq-item::before{left:16px}
+    .fq-q{gap:16px;padding:20px 0}
+    .fq-q span{font-size:18px}
+    .fq-ic{width:34px;height:34px}
+    .fq-in{padding-right:0}
+    .fq-in p{font-size:15px}
+    .fq-acts{grid-template-columns:1fr;justify-items:stretch}
+    .fq-acts .link{justify-self:center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .fq-a,.fq-in,.fq-ic,.fq-item,.fq-item::before{transition:none}
+    .fq-item.open::before,.fq-card.is-open .fq-dot::after{animation:none}
+  }
+
+  /* ================= ФІНАЛ: оцінка за фото + контакти ================= */
+  #estimate{overflow:hidden}
+  #estimate::before{ /* м'яке світло від лампи над формою */
+    content:"";position:absolute;right:-10%;top:-6%;width:70%;height:90%;pointer-events:none;
+    background:radial-gradient(50% 50% at 60% 30%, rgba(var(--tube-rgb),.07), rgba(var(--tube-rgb),0) 70%);
+  }
+  .es{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr);gap:clamp(48px, 7vw, 130px);align-items:center}
+  .es-lead{font-size:17px;line-height:1.65;color:var(--grey);max-width:40ch;margin:26px 0 clamp(40px, 7vh, 72px)}
+  .es-links{list-style:none;max-width:480px;border-top:1px solid var(--hair);margin-bottom:20px}
+  .es-links li{border-bottom:1px solid var(--hair)}
+  .es-links a{
+    display:grid;grid-template-columns:96px minmax(0,1fr) auto;align-items:center;gap:16px;
+    padding:16px 0;
+  }
+  .es-links .k{font-size:13px;color:var(--grey)}
+  .es-links .v{font-size:18px;font-weight:600;letter-spacing:-.02em;color:#D8D8D4;transition:color .25s}
+  .es-links .i{
+    width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:var(--white);
+    border:1px solid rgba(243,243,241,.2);transition:background .25s, color .25s, border-color .25s;
+  }
+  .es-links a:hover .v{color:var(--white)}
+  .es-links a:hover .i{background:var(--white);color:var(--black);border-color:var(--white)}
+  .es-links a:focus-visible{outline:2px solid var(--white);outline-offset:4px;border-radius:4px}
+  .es-meta{font-size:14px;line-height:1.6;color:var(--grey)}
+
+  .es-form{
+    position:relative;background:linear-gradient(180deg, rgba(var(--tube-rgb),.035), rgba(var(--tube-rgb),0) 40%), var(--surface);
+    border:1px solid var(--hair);border-radius:12px;
+    padding:clamp(28px, 3vw, 48px);
+  }
+  .es-form::before{ /* лампа над формою */
+    content:"";position:absolute;left:14%;right:14%;top:-1px;height:2px;border-radius:2px;
+    background:linear-gradient(90deg, rgba(var(--tube-rgb),0), var(--tube) 20%, var(--tube) 80%, rgba(var(--tube-rgb),0));
+    box-shadow:0 0 14px rgba(var(--tube-rgb),.7), 0 0 60px rgba(var(--tube-rgb),.3);
+  }
+  .es-form h3{font-size:clamp(22px, 1.8vw, 26px);font-weight:800;letter-spacing:-.035em;margin-bottom:clamp(18px, 3vh, 26px)}
+  .fg{display:grid;grid-template-columns:1fr 1fr;column-gap:24px}
+  .fld{position:relative;min-width:0}
+  .fld.full{grid-column:1 / -1}
+  /* поля-лінії з підписом, що піднімається */
+  .inp{
+    width:100%;font:inherit;font-size:16px;color:var(--white);background:transparent;
+    border:0;border-bottom:1px solid rgba(243,243,241,.16);border-radius:0;
+    padding:26px 0 11px;outline:none;transition:border-color .25s;
+    -webkit-appearance:none;appearance:none;
+  }
+  .inp::placeholder{color:transparent}
+  .fld > label:not(.drop){
+    position:absolute;left:0;top:24px;font-size:16px;color:#7C7D81;pointer-events:none;
+    transform-origin:left top;transition:transform .25s ease, color .25s ease;
+  }
+  .fld > label:not(.drop) i{font-style:normal;color:#55565A}
+  .inp:focus + label,.inp:not(:placeholder-shown) + label{transform:translateY(-17px) scale(.78);color:var(--grey)}
+  .fld::after{ /* лінія світиться при фокусі */
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--tube);
+    box-shadow:0 0 10px rgba(var(--tube-rgb),.7);transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .fld:focus-within::after{transform:scaleX(1)}
+  .fld.photos::after{display:none}
+  textarea.inp{min-height:0;height:58px;resize:none;line-height:1.5;overflow:hidden}
+  .fld.err .inp{border-bottom-color:#E06A62}
+  .fld .msg{display:none;position:absolute;right:0;top:28px;font-size:12px;color:#F08A82}
+  .fld.err .msg{display:block}
+
+  .fld.photos{padding-top:20px}
+  .drop{
+    position:relative;display:flex;align-items:center;gap:14px;
+    padding:14px 16px;border:1px dashed rgba(243,243,241,.2);border-radius:8px;cursor:pointer;
+    transition:border-color .2s, background .2s;
+  }
+  .drop:hover,.drop.over{border-color:var(--tube);background:rgba(var(--tube-rgb),.03)}
+  .drop:focus-within{border-color:var(--tube);box-shadow:0 0 0 3px rgba(var(--tube-rgb),.1)}
+  .drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+  .drop .ic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;background:rgba(243,243,241,.06);color:var(--white)}
+  .drop strong{font-size:15px;font-weight:600}
+  .drop small{margin-left:auto;font-size:13px;color:#7C7D81;white-space:nowrap}
+  .thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .thumbs:empty{display:none}
+  .th{position:relative;width:56px;height:56px;border-radius:6px;overflow:hidden;background:var(--black);border:1px solid var(--hair)}
+  .th img{width:100%;height:100%;object-fit:cover;display:block}
+  .th button{
+    all:unset;position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;cursor:pointer;
+    display:grid;place-items:center;background:rgba(11,12,14,.8);color:var(--white);font-size:13px;line-height:1;
+  }
+  .th button::after{content:"";position:absolute;inset:-8px}
+  .th button:focus-visible{outline:2px solid var(--white)}
+  .es-submit{width:100%;margin-top:28px;border:0;cursor:pointer;font-family:inherit;padding:19px 26px}
+  .es-submit[disabled]{opacity:.6;cursor:progress}
+  .es-note{font-size:13px;line-height:1.55;color:#7C7D81;margin-top:14px;text-align:center}
+  .es-err{display:none;margin-top:14px;font-size:14px;line-height:1.5;color:#F08A82;text-align:center}
+  .es-err.on{display:block}
+  .es-err a{color:var(--white);border-bottom:1px solid rgba(243,243,241,.4)}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+  .es-done{display:none;text-align:center;padding:clamp(28px, 7vh, 64px) 8px}
+  .es-form.sent > :not(.es-done){display:none}
+  .es-form.sent .es-done{display:block}
+  .es-done .lamp{
+    width:84px;height:3px;border-radius:3px;margin:0 auto 34px;background:var(--tube);
+    box-shadow:0 0 14px 2px var(--tube),0 0 60px 10px rgba(var(--tube-rgb),.35);
+    animation:sttube .9s steps(1,end) both;
+  }
+  .es-done h3{margin-bottom:12px}
+  .es-done p{font-size:16px;line-height:1.6;color:var(--grey);max-width:34ch;margin:0 auto 26px}
+
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .es{display:flex;flex-direction:column;align-items:stretch;gap:48px}
+    .es-lead{margin-bottom:36px}
+    .es-form{padding:28px 20px 24px}
+    .fg{grid-template-columns:1fr}
+    .es-links{max-width:none}
+    .es-links a{grid-template-columns:84px minmax(0,1fr) auto}
+    .es-links .v{font-size:17px}
+    #estimate::before{right:-30%;width:120%;top:30%;height:70%}
+  }
+  @media (max-width:380px){
+    .drop small{display:none}
+    .es-links a{grid-template-columns:74px minmax(0,1fr) auto;gap:12px}
+    .es-links .v{font-size:16px}
+  }
+
+  /* ================= футер ================= */
+  .ft{padding:0 var(--gut) calc(28px + env(safe-area-inset-bottom));overflow:hidden}
+  .ft-row{
+    display:flex;align-items:center;justify-content:space-between;gap:16px 32px;flex-wrap:wrap;
+    padding-top:28px;border-top:1px solid var(--hair);font-size:14px;color:var(--grey);
+  }
+  .ft-row nav{display:flex;gap:24px;flex-wrap:wrap}
+  .ft-soc{display:flex;align-items:center;gap:12px 24px;flex-wrap:wrap}
+  .ft-row a{cursor:pointer}
+  .ft-soc .soc{
+    display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:30px;
+    color:#D8D8D4;border:1px solid rgba(243,243,241,.18);transition:color .2s, border-color .2s, background .2s;
+  }
+  .ft-soc .soc:hover{color:var(--black);background:var(--white);border-color:var(--white)}
+  .ft-row nav a,.ft-soc a:not(.soc){color:#B5B5B1}
+  .ft-row nav a:hover,.ft-soc a:not(.soc):hover{color:var(--white)}
+  .ft-row a{transition:color .2s}
+  .ft-row a:hover{color:var(--white)}
+  .ft-note{margin-top:8px;font-size:12px;line-height:1.5;color:#55565A;text-align:center}
+  .ft-mark{
+    display:block;margin-top:clamp(28px, 5vh, 56px);
+    font-size:clamp(64px, 17.4vw, 300px);font-weight:800;letter-spacing:-.065em;line-height:.8;
+    color:transparent;-webkit-text-stroke:1px rgba(243,243,241,.1);
+    white-space:nowrap;user-select:none;text-align:center;padding-bottom:.2em;
+  }
+
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .ft-row{flex-direction:column;align-items:flex-start;gap:16px}
+    .ft-mark{-webkit-text-stroke:1px rgba(243,243,241,.13)}
+  }
+
+  /* більші зони натискання на телефоні */
+  @media (max-width:1100px){
+    .logo,.pk-note a,.ft-row a{position:relative}
+    .logo::after,.pk-note a::after,.ft-row a::after{content:"";position:absolute;inset:-12px -8px}
+    .top-cta{padding-top:12px;padding-bottom:12px}
+    .ft-row nav{gap:28px}
+    .ft-soc{gap:10px 16px}
+  }
+
+  /* ритм секцій на телефоні */
+  @media (max-width:760px), (max-width:1100px) and (orientation:portrait){
+    .sec{padding-top:clamp(64px, 9vh, 88px);padding-bottom:clamp(64px, 9vh, 88px)}
+    .pr-head{margin-bottom:36px}
+    .fq-item{padding:0 14px;margin:0 -8px}
+    .fq-item::after,.fq-item::before{left:14px}
+    .fq-item::after{right:14px}
+  }
+  .no-intro .top,.no-intro .row{animation:none!important;opacity:1!important}
+
+  @media (prefers-reduced-motion:reduce){
+    .js .dark{animation:none;opacity:0}
+    .js .tube{animation:none;opacity:.32}
+    .js .drl{animation:none;opacity:.5}
+    .js h1 .ln > span{animation:none;transform:none}
+    .js .top,.js .row{animation:none;opacity:1}
+  }
+</style>
+</head>
+<body>
+
+<section class="hero" id="top">
+  <header class="top">
+    <a class="logo" href="#top" aria-label="{{brand}}, на початок">{{brand}}</a>
+    <nav class="nav" aria-label="Розділи">
+      <a href="#problems">Послуги</a>
+      <a href="#packages">Комплекси</a>
+      <a href="#results">До і після</a>
+      <a href="#faq">Питання</a>
+    </nav>
+    <a class="tel" href="tel:{{contacts.phone_tel}}" aria-label="Подзвонити: {{contacts.phone}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11.5 11.5 0 0 0 7.2 7.2l1.4-2.1 4.2 1.6V19a2 2 0 0 1-2 2A16.5 16.5 0 0 1 3 5.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>{{contacts.phone}}</span></a>
+    <a class="top-cta" href="#estimate"><span class="full">Оцінити авто за фото</span><span class="short">Оцінити авто</span><svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 4l1.2-2h3.6L12 4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></a>
+  </header>
+
+  <div class="copy">
+    <h1>
+{{#hero.title}}      <span class="ln"><span{{#soft}} class="soft"{{/soft}}>{{{text}}}</span></span>
+{{/hero.title}}    </h1>
+    <div class="row">
+      <p class="lead">{{{hero.lead}}}</p>
+      <div class="acts">
+        <a class="btn" href="#estimate">Оцінити авто за фото
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 4l1.2-2h3.6L12 4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="link" href="#problems">Підібрати послуги</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="bay" aria-hidden="true">
+    <div class="frame" id="frame">
+      <img src="{{{hero.photo|src:1400,78;nofit}}}"
+           srcset="{{{hero.photo|srcset:800,75;1400,78;2000,78;nofit}}}"
+           sizes="(max-width:760px) 120vw, 50vw" alt="" fetchpriority="high">
+      <span class="tube t1"></span><span class="tube t2"></span><span class="tube t3"></span><span class="tube t4"></span>
+      <span class="drl d1"></span><span class="drl d2"></span>
+      <span class="dark"></span>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="problems" aria-labelledby="problems-h">
+  <div class="pr-head">
+    <h2 class="h2 rv" id="problems-h"><span class="ln"><span>Не знаєте, яка послуга потрібна?</span></span><span class="ln"><span class="soft">Почніть із проблеми</span></span></h2>
+    <p class="pr-lead fd" style="--d:.15s">Розбиратися в детейлінгу не обов’язково. Оберіть, що вас не влаштовує, і подивіться, як ми це вирішуємо. Точний обсяг робіт визначимо після оцінки авто.</p>
+  </div>
+  <div class="pr-body">
+    <ul class="pr-list" id="prList">
+{{#problems}}      <li class="pr-item fd" style="--d:{{@i|step:0.06,2}}s">
+        <button class="pr-btn" id="pr-btn-{{@i}}" aria-expanded="{{#@first}}true{{/@first}}{{^@first}}false{{/@first}}" aria-controls="prStage" data-i="{{@i}}">
+          <span class="pr-t">{{title}}</span>
+          <span class="pr-d"><span>{{desc}}</span></span>
+        </button>
+        <div class="pr-slot"></div>
+      </li>
+{{/problems}}    </ul>
+    <div class="pr-home" id="prHome">
+      <div class="pr-stage fd" id="prStage" role="region" aria-labelledby="pr-btn-0" style="--d:.1s">
+        <div class="pr-photos">
+{{#problems}}        <div class="pr-ph{{#@first}} on{{/@first}}" data-i="{{@i}}"><img src="{{{photo|src:1200,72}}}" srcset="{{{photo|srcset:700,70;1200,72;1700,72}}}" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:{{pos}}" loading="lazy" decoding="async"></div>
+{{/problems}}          <span class="pr-sweep" aria-hidden="true"></span>
+        </div>
+        <div class="pr-sol" id="prSol" aria-live="polite">
+{{#problems.0.solution}}          <p class="pr-for">Що зробимо</p>
+          <h3>{{h}}</h3>
+          <p class="pr-text">{{t}}</p>
+          <dl class="pr-facts"><div><dt>Скільки часу</dt><dd>{{time}}</dd></div><div><dt>Вартість</dt><dd>{{price}}</dd></div></dl>
+          <div class="pr-foot"><p class="pr-tip">{{{tip}}}</p><a class="link" href="#estimate">Оцінити своє авто за фото</a></div>
+{{/problems.0.solution}}        </div>
+        <span class="pr-dark" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="sec" id="packages" aria-labelledby="packages-h">
+  <div class="pr-head">
+    <h2 class="h2 rv" id="packages-h"><span class="ln"><span>Готові комплекси</span></span><span class="ln"><span class="soft">під типові задачі</span></span></h2>
+    <p class="pr-lead fd" style="--d:.15s">Не потрібно збирати послуги самостійно. Оберіть комплекс під свою задачу, а точний обсяг робіт і вартість визначимо після оцінки авто.</p>
+  </div>
+  <div class="pk-list">
+{{#packages}}    <article class="pk{{#featured}} featured{{/featured}} fd" style="--d:{{@i|step:0.1,1}}s" aria-labelledby="pk-{{@i}}">
+      <div class="pk-ph"><img src="{{{photo|src:800,72}}}" srcset="{{{photo|srcset:500,70;800,72;1100,72}}}" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:{{pos}}" loading="lazy" decoding="async"></div>
+      <div class="pk-head">
+        <h3 class="pk-name" id="pk-{{@i}}">{{name}}{{#tag}} <span class="pk-tag">{{tag}}</span>{{/tag}}</h3>
+        <p class="pk-goal">{{goal}}</p>
+      </div>
+      <div>
+        <ul>
+{{#items}}          <li>{{.}}</li>
+{{/items}}        </ul>
+{{#gift}}        <p class="pk-gift"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="6" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M1.5 6h13M8 6v8M8 6S6.8 2 4.9 2.6C3.5 3 4.6 6 8 6Zm0 0s1.2-4 3.1-3.4C12.5 3 11.4 6 8 6Z" stroke="currentColor" stroke-width="1.4"/></svg>{{gift}}</p>
+{{/gift}}      </div>
+      <div class="pk-buy">
+        <p class="pk-price"><small>від</small><strong>{{price}}</strong><small>грн</small></p>
+        <a class="pk-btn" href="#estimate">Обрати {{name}}</a>
+      </div>
+    </article>
+{{/packages}}  </div>
+  <p class="pk-note fd">Фінальна вартість залежить від моделі, розміру та стану авто. Не знаєте, який комплекс підійде? <a href="#estimate">Надішліть фото</a>, і ми підкажемо.</p>
+</section>
+
+
+<section class="sec" id="results" aria-labelledby="results-h">
+  <div class="ba-wrap">
+    <div class="ba-head">
+      <h2 class="h2 ba-h2 rv" id="results-h"><span class="ln"><span>Результат краще бачити,</span></span><span class="ln"><span class="soft">ніж описувати</span></span></h2>
+      <p class="ba-lead fd" style="--d:.15s">Перетягніть лампу по фото й порівняйте: зліва авто до детейлінгу, справа після.</p>
+    </div>
+    <div class="ba-media fd" style="--d:.1s">
+    <div class="ba" id="baStage" role="tabpanel" aria-labelledby="ba-tab-{{results.0.kind}}">
+{{#results}}      <div class="ba-scene t-{{kind}}{{#@first}} on{{/@first}}" data-kind="{{kind}}" style="--pos:{{pos}};--mpos:{{mpos}}">
+        <div class="ba-layer ba-after"><img src="{{{photo|src:1600,74}}}" srcset="{{{photo|srcset:800,72;1600,74;2200,74}}}" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="{{{photo|src:1600,74}}}" srcset="{{{photo|srcset:800,72;1600,74;2200,74}}}" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+      </div>
+{{/results}}      <span class="ba-line" aria-hidden="true"></span>
+      <span class="ba-tag b" aria-hidden="true">До</span><span class="ba-tag a" aria-hidden="true">Після</span>
+      <span class="ba-grip" role="slider" tabindex="0" aria-label="Межа між «до» і «після»" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true"><path d="M5.5 1.5 1.5 6l4 4.5M12.5 1.5l4 4.5-4 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </div>
+    <p class="ba-hint" id="baHint"><svg width="34" height="10" viewBox="0 0 34 10" fill="none" aria-hidden="true"><path d="M5 1 1 5l4 4M29 1l4 4-4 4M1 5h32" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Ведіть пальцем по фото</p>
+    </div>
+    <div class="ba-tabs fd" style="--d:.2s" role="tablist" aria-label="Вид робіт">
+{{#results}}      <button class="ba-tab" role="tab" id="ba-tab-{{kind}}" aria-selected="{{#@first}}true{{/@first}}{{^@first}}false{{/@first}}" aria-controls="baStage" data-i="{{@i}}"{{^@first}} tabindex="-1"{{/@first}}>{{label}}</button>
+{{/results}}    </div>
+    <div class="ba-caps fd" id="baCaps" style="--d:.25s">
+{{#results.0}}        <p class="ba-cap"><b>До</b><span>{{before}}</span></p>
+        <p class="ba-cap"><b>Після</b><span>{{after}}</span></p>
+{{/results.0}}    </div>
+  </div>
+</section>
+
+
+<section class="sec" id="process" aria-labelledby="process-h">
+  <div class="pr-head">
+    <h2 class="h2 rv" id="process-h"><span class="ln"><span>5 простих кроків</span></span><span class="ln"><span class="soft">від оцінки до готового авто</span></span></h2>
+    <p class="pr-lead fd" style="--d:.15s">Спочатку оцінюємо стан автомобіля, погоджуємо роботи, вартість і термін. До роботи приступаємо тільки після вашого підтвердження.</p>
+  </div>
+  <ol class="st-row" id="stRow" aria-label="Кроки роботи">
+{{#steps}}    <li class="st" style="--d:{{@i|step:0.28,2}}s">
+      <span class="st-tube" aria-hidden="true"></span>
+      <span class="st-n" aria-hidden="true">0{{@n}}</span>
+      <h3>{{title}}</h3>
+      <p>{{text}}</p>
+    </li>
+{{/steps}}  </ol>
+  <div class="st-foot fd">
+    <p>Почнімо з першого кроку: <strong>надішліть кілька фото авто</strong>, і ми підкажемо, що варто зробити й скільки це коштуватиме.</p>
+    <a class="btn" href="#estimate">Оцінити авто за фото <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 4l1.2-2h3.6L12 4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></a>
+  </div>
+</section>
+
+
+<section class="sec" id="reviews" aria-labelledby="reviews-h">
+  <div class="pr-head">
+    <h2 class="h2 rv" id="reviews-h"><span class="ln"><span>Що кажуть клієнти</span></span><span class="ln"><span class="soft">після детейлінгу</span></span></h2>
+    <p class="pr-lead fd" style="--d:.15s">{{reviews.lead}}</p>
+  </div>
+  <div class="rv-list" id="rvList">
+{{#reviews.items}}    <article class="rv-card fd" style="--d:{{@i|step:0.1,1}}s" aria-label="Відгук: {{name}}">
+      <dl class="rv-meta">{{#meta}}<div><dt>{{k}}</dt><dd>{{v}}</dd></div>{{/meta}}</dl>
+      <blockquote>
+        <p class="rv-pull">«{{pull}}»</p>
+        <p class="rv-text">{{text}}</p>
+      </blockquote>
+      <p class="rv-name">{{name}}</p>
+    </article>
+{{/reviews.items}}  </div>
+  <div class="rv-dots" id="rvDots" aria-label="Відгуки">
+{{#reviews.items}}    <button type="button" aria-label="Відгук {{@n}}"{{#@first}} aria-current="true"{{/@first}}></button>
+{{/reviews.items}}  </div>
+</section>
+
+
+<section class="sec" id="faq" aria-labelledby="faq-h">
+  <div class="fq">
+    <div class="fq-side">
+      <h2 class="h2 rv" id="faq-h"><span class="ln"><span>Часті питання</span></span><span class="ln"><span class="soft">перед записом</span></span></h2>
+      <p class="fq-lead fd" style="--d:.15s">Зібрали те, що питають найчастіше. Не знайшли свого питання? Напишіть, і майстер відповість особисто.</p>
+      <div class="fq-card fd" id="fqCard" style="--d:.25s">
+        <div class="fq-ph"><img src="{{{faq_photo.photo|src:900,72}}}" srcset="{{{faq_photo.photo|srcset:600,70;900,72}}}" sizes="(max-width:760px) 100vw, 520px" alt="" style="object-position:{{faq_photo.pos}}" loading="lazy" decoding="async"></div>
+        <div class="fq-body">
+          <p class="fq-status"><i class="fq-dot" aria-hidden="true"></i><span id="fqStatus">{{hours.label}}</span></p>
+          <p class="fq-note" id="fqNote">У робочий час відповідаємо в Telegram протягом 15 хвилин.</p>
+          <div class="fq-acts">
+            <a class="btn-o" href="{{contacts.telegram.url}}" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.5 3.5 2.8 10.7c-.9.4-.9 1.6.1 1.9l4.6 1.5 1.8 5.6c.3.8 1.3 1 1.9.4l2.6-2.5 4.7 3.5c.7.5 1.7.1 1.9-.7l3-15.1c.2-1-.8-1.8-1.7-1.3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8 14 9-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Написати в Telegram</a>
+            <a class="link" href="tel:{{contacts.phone_tel}}">{{contacts.phone}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="fq-list">
+{{#faq}}      <li class="fq-item fd{{#@first}} open{{/@first}}" style="--d:{{@i|step:0.06,2}}s">
+        <button class="fq-q" id="fq-q-{{@i}}" aria-expanded="{{#@first}}true{{/@first}}{{^@first}}false{{/@first}}" aria-controls="fq-a-{{@i}}"><span>{{q}}</span><i class="fq-ic" aria-hidden="true"></i></button>
+        <div class="fq-a" id="fq-a-{{@i}}" role="region" aria-labelledby="fq-q-{{@i}}"><div><div class="fq-in">
+          <p>{{{a}}}</p>
+          <p class="fq-chips">{{#chips}}<span>{{{.}}}</span>{{/chips}}</p>
+        </div></div></div>
+      </li>
+{{/faq}}    </ul>
+  </div>
+</section>
+
+
+<section class="sec" id="estimate" aria-labelledby="estimate-h">
+  <div class="es">
+    <div class="es-side">
+      <h2 class="h2 rv" id="estimate-h"><span class="ln"><span>Не знаєте, що потрібно авто?</span></span><span class="ln"><span class="soft">Почніть із фото</span></span></h2>
+      <p class="es-lead fd" style="--d:.15s">Надішліть кілька фото, і ми попередньо оцінимо стан, підкажемо, які роботи справді потрібні, та зорієнтуємо за вартістю.</p>
+      <ul class="es-links fd" style="--d:.25s">
+        <li><a href="tel:{{contacts.phone_tel}}"><span class="k">Телефон</span><span class="v">{{contacts.phone}}</span><span class="i"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11.5 11.5 0 0 0 7.2 7.2l1.4-2.1 4.2 1.6V19a2 2 0 0 1-2 2A16.5 16.5 0 0 1 3 5.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span></a></li>
+        <li><a href="{{contacts.telegram.url}}" target="_blank" rel="noopener"><span class="k">Telegram</span><span class="v">{{contacts.telegram.handle}}</span><span class="i"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.5 3.5 2.8 10.7c-.9.4-.9 1.6.1 1.9l4.6 1.5 1.8 5.6c.3.8 1.3 1 1.9.4l2.6-2.5 4.7 3.5c.7.5 1.7.1 1.9-.7l3-15.1c.2-1-.8-1.8-1.7-1.3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8 14 9-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></a></li>
+        <li><a href="{{contacts.instagram.url}}" target="_blank" rel="noopener"><span class="k">Instagram</span><span class="v">{{contacts.instagram.handle}}</span><span class="i"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor"/></svg></span></a></li>
+      </ul>
+      <p class="es-meta fd" style="--d:.3s">{{contacts.address_line}}</p>
+    </div>
+
+    <form class="es-form fd" id="esForm" name="estimate" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data" novalidate style="--d:.1s">
+      <input type="hidden" name="form-name" value="estimate">
+      <p class="hp"><label>Не заповнюйте це поле <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <input type="file" name="photo1" accept="image/*" hidden><input type="file" name="photo2" accept="image/*" hidden><input type="file" name="photo3" accept="image/*" hidden><input type="file" name="photo4" accept="image/*" hidden><input type="file" name="photo5" accept="image/*" hidden>
+      <h3>Швидка оцінка авто</h3>
+      <div class="fg">
+        <div class="fld">
+          <input class="inp" id="f-name" name="name" type="text" autocomplete="given-name" placeholder=" " required>
+          <label for="f-name">Ім’я</label>
+          <span class="msg">Вкажіть ім’я</span>
+        </div>
+        <div class="fld">
+          <input class="inp" id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder=" " required>
+          <label for="f-phone">Телефон</label>
+          <span class="msg">Перевірте номер</span>
+        </div>
+        <div class="fld full">
+          <input class="inp" id="f-car" name="car" type="text" placeholder=" " autocomplete="off">
+          <label for="f-car">Марка та модель авто</label>
+        </div>
+        <div class="fld full">
+          <textarea class="inp" id="f-msg" name="message" placeholder=" " rows="1"></textarea>
+          <label for="f-msg">Що вас турбує <i>необов’язково</i></label>
+        </div>
+        <div class="fld full photos">
+          <label class="drop" id="esDrop">
+            <input type="file" id="f-photos" accept="image/*" multiple aria-label="Додати фото авто, до 5 штук">
+            <span class="ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 4l1.2-2h3.6L12 4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+            <strong>Додати фото авто</strong>
+            <small>3–5 фото</small>
+          </label>
+          <div class="thumbs" id="esThumbs"></div>
+        </div>
+      </div>
+      <button class="btn es-submit" type="submit" id="esSubmit">Оцінити авто за фото <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 4l1.2-2h3.6L12 4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+      <p class="es-note">Без зобов’язань. Відповімо протягом години.</p>
+      <p class="es-err" id="esErr" role="alert">Не вдалося надіслати заявку. Спробуйте ще раз або напишіть нам у <a href="{{contacts.telegram.url}}" target="_blank" rel="noopener">Telegram</a>.</p>
+      <div class="es-done" aria-live="polite">
+        <div class="lamp" aria-hidden="true"></div>
+        <h3>Заявку надіслано</h3>
+        <p>Дякуємо! Майстер подивиться фото й зв’яжеться з вами протягом години.</p>
+        <a class="link" href="{{contacts.telegram.url}}" target="_blank" rel="noopener">Написати нам у Telegram</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer class="ft">
+  <div class="ft-row">
+    <span>{{footer.copyright}}</span>
+    <nav aria-label="Розділи сайту">
+      <a href="#problems">Послуги</a>
+      <a href="#packages">Комплекси</a>
+      <a href="#results">До і після</a>
+      <a href="#faq">Питання</a>
+    </nav>
+    <div class="ft-soc">
+      <a class="soc" href="{{contacts.instagram.url}}" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></svg>Instagram</a>
+      <a class="soc" href="{{contacts.telegram.url}}" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.5 3.5 2.8 10.7c-.9.4-.9 1.6.1 1.9l4.6 1.5 1.8 5.6c.3.8 1.3 1 1.9.4l2.6-2.5 4.7 3.5c.7.5 1.7.1 1.9-.7l3-15.1c.2-1-.8-1.8-1.7-1.3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Telegram</a>
+      <a href="#top">Нагору</a>
+    </div>
+  </div>
+  <span class="ft-mark" aria-hidden="true">{{brand}}</span>
+{{#footer.note}}  <p class="ft-note">{{footer.note}}</p>
+{{/footer.note}}</footer>
+
+<script>
+/* легкий паралакс фото за курсором (тільки мишка, тільки десктоп) */
+(() => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !matchMedia('(pointer:fine) and (min-width:761px) and (orientation:landscape)').matches) return;
+  const f = document.getElementById('frame');
+  let tx = 0, ty = 0, x = 0, y = 0, raf = null;
+  addEventListener('pointermove', e => {
+    tx = (e.clientX / innerWidth - .5) * -14;
+    ty = (e.clientY / innerHeight - .5) * -10;
+    if (!raf) raf = requestAnimationFrame(loop);
+  });
+  function loop() {
+    x += (tx - x) * .06; y += (ty - y) * .06;
+    f.style.transform = 'translate(calc(-50% + ' + x + 'px), calc(6% + ' + y + 'px)) scale(1.03)';
+    raf = Math.abs(tx - x) + Math.abs(ty - y) > .05 ? requestAnimationFrame(loop) : null;
+  }
+})();
+</script>
+
+<script>
+/* меню: фон з’являється при прокрутці */
+(() => {
+  const top = document.querySelector('.top');
+  const on = () => top.classList.toggle('scrolled', scrollY > 30);
+  on(); addEventListener('scroll', on, { passive: true });
+})();
+
+/* поява блоків */
+(() => {
+  const els = document.querySelectorAll('.rv,.fd');
+  if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+  els.forEach(e => io.observe(e));
+})();
+
+/* проблема → рішення */
+(() => {
+  const DATA = {{{_.solutions}}};
+  const btns = [...document.querySelectorAll('.pr-btn')];
+  const stage = document.getElementById('prStage');
+  const home = document.getElementById('prHome');
+  const sol = document.getElementById('prSol');
+  const phs = [...stage.querySelectorAll('.pr-ph')];
+  const sweep = stage.querySelector('.pr-sweep');
+  const mq = matchMedia('(max-width:760px), (max-width:1100px) and (orientation:portrait)');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cur = 0, solT = null, photoT = null;
+
+  // фото «вмикається», коли блок з’являється на екрані; заразом підвантажуємо всі фото
+  new IntersectionObserver(([en], ob) => {
+    if (!en.isIntersecting) return;
+    stage.classList.add('lit');
+    phs.forEach(p => { const im = p.querySelector('img'); im.loading = 'eager'; });
+    ob.disconnect();
+  }, { threshold: .3 }).observe(stage);
+
+  function place() {
+    if (mq.matches) btns[cur].parentElement.querySelector('.pr-slot').appendChild(stage);
+    else if (stage.parentElement !== home) home.appendChild(stage);
+  }
+
+  function select(i, opts = {}) {
+    if (i === cur) return;
+    const prev = cur; cur = i;
+    btns.forEach((b, k) => b.setAttribute('aria-expanded', k === i ? 'true' : 'false'));
+    stage.setAttribute('aria-labelledby', btns[i].id);
+
+    // фото: нове проявляється під смугою світла
+    const next = phs[i];
+    clearTimeout(photoT);
+    // якщо попередня анімація ще йде — одразу фіксуємо її кінцевий стан
+    phs.forEach(p => {
+      if (p.classList.contains('enter')) { phs.forEach(q => q.classList.remove('on')); p.classList.add('on'); }
+      p.classList.remove('enter', 'leave');
+    });
+    if (reduce) { phs.forEach(p => p.classList.toggle('on', p === next)); }
+    else {
+      const old = phs.find(p => p.classList.contains('on'));
+      if (old && old !== next) old.classList.add('leave');
+      void next.offsetWidth;
+      next.classList.add('enter');
+      sweep.classList.remove('go'); void sweep.offsetWidth; sweep.classList.add('go');
+      photoT = setTimeout(() => {
+        phs.forEach(p => { p.classList.toggle('on', p === next); p.classList.remove('leave'); });
+        next.classList.remove('enter');
+      }, 1520);
+    }
+
+    // текст рішення
+    const d = DATA[i];
+    sol.classList.add('out');
+    clearTimeout(solT);
+    solT = setTimeout(() => {
+      sol.querySelector('h3').textContent = d.h;
+      sol.querySelector('.pr-text').textContent = d.t;
+      const dd = sol.querySelectorAll('.pr-facts dd'); dd[0].textContent = d.time; dd[1].textContent = d.price;
+      sol.querySelector('.pr-tip').innerHTML = d.tip;
+      sol.classList.remove('out');
+    }, reduce ? 0 : 220);
+
+    if (mq.matches) {
+      place();
+      // тримаємо відкритий пункт у полі зору
+      setTimeout(() => {
+        const y = btns[i].getBoundingClientRect().top;
+        if (y < 76 || y > innerHeight * .55) scrollTo({ top: scrollY + y - 84, behavior: reduce ? 'auto' : 'smooth' });
+      }, reduce ? 0 : 470);
+    }
+    if (opts.focus) btns[i].focus();
+  }
+
+  btns.forEach((b, i) => {
+    b.addEventListener('click', () => select(i));
+    b.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); select((cur + 1) % btns.length, { focus: true }); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); select((cur - 1 + btns.length) % btns.length, { focus: true }); }
+    });
+  });
+  place();
+  mq.addEventListener('change', place);
+})();
+</script>
+
+<script>
+/* комплекси: фото «вмикаються», коли рядок з’являється на екрані */
+(() => {
+  const rows = document.querySelectorAll('.pk');
+  if (!('IntersectionObserver' in window)) { rows.forEach(r => r.classList.add('lit')); return; }
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('lit'); io.unobserve(e.target); }
+  }), { threshold: .35 });
+  rows.forEach(r => io.observe(r));
+})();
+</script>
+
+<script>
+/* до / після */
+(() => {
+  const stage = document.getElementById('baStage');
+  const grip = stage.querySelector('.ba-grip');
+  const tagB = stage.querySelector('.ba-tag.b'), tagA = stage.querySelector('.ba-tag.a');
+  const scenes = [...stage.querySelectorAll('.ba-scene')];
+  const tabs = [...document.querySelectorAll('.ba-tab')];
+  const caps = document.getElementById('baCaps');
+  const hint = document.getElementById('baHint');
+  const CAPS = {{{_.caps}}};
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let x = 50, target = 50, raf = null, anim = null, cur = 0, sceneT = null;
+
+  function set(v) {
+    x = Math.max(0, Math.min(100, v));
+    stage.style.setProperty('--x', x + '%');
+    grip.setAttribute('aria-valuenow', Math.round(x));
+    tagB.style.opacity = x < 14 ? 0 : '';
+    tagA.style.opacity = x > 86 ? 0 : '';
+  }
+  // плавне слідування лампи за курсором
+  function follow() {
+    x += (target - x) * .16; set(x);
+    raf = Math.abs(target - x) > .05 ? requestAnimationFrame(follow) : null;
+  }
+  function goTo(v) { cancelAnimationFrame(anim); anim = null; target = Math.max(0, Math.min(100, v)); if (!raf) raf = requestAnimationFrame(follow); }
+  function sweep(from, to, ms) {
+    cancelAnimationFrame(anim); cancelAnimationFrame(raf); raf = null;
+    if (reduce) { target = to; return set(to); }
+    const t0 = performance.now();
+    const step = now => {
+      const t = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - t, 3);
+      set(from + (to - from) * e); target = x;
+      anim = t < 1 ? requestAnimationFrame(step) : null;
+    };
+    anim = requestAnimationFrame(step);
+  }
+  const pct = cx => { const r = stage.getBoundingClientRect(); return (cx - r.left) / r.width * 100; };
+
+  // миша: клік ставить лампу, затиснута кнопка — тягне
+  let dragging = false;
+  stage.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    dragging = true; stage.classList.add('drag'); stage.setPointerCapture(e.pointerId);
+    goTo(pct(e.clientX)); e.preventDefault();
+  });
+  stage.addEventListener('pointermove', e => { if (dragging) { cancelAnimationFrame(raf); raf = null; target = pct(e.clientX); set(target); } });
+  const stop = () => { dragging = false; stage.classList.remove('drag'); };
+  stage.addEventListener('pointerup', stop); stage.addEventListener('pointercancel', stop);
+  // палець: горизонтальний рух веде лампу, вертикальний — гортає сторінку
+  let sx = 0, sy = 0, lock = null;
+  stage.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; lock = null; }, { passive: true });
+  stage.addEventListener('touchmove', e => {
+    const dx = e.touches[0].clientX - sx, dy = e.touches[0].clientY - sy;
+    if (lock === null && Math.abs(dx) + Math.abs(dy) > 6) lock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+    if (lock === 'x') { e.preventDefault(); cancelAnimationFrame(anim); target = pct(e.touches[0].clientX); set(target); hint.classList.add('gone'); }
+  }, { passive: false });
+  grip.addEventListener('keydown', e => {
+    const st = e.shiftKey ? 10 : 4;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(x - st); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); goTo(x + st); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(100); }
+  });
+
+  /* стан «до»: подряпини-павутинка, пил і плями поверх фото */
+  function texture(scene) {
+    const cv = scene.querySelector('canvas');
+    const r = stage.getBoundingClientRect();
+    if (!r.width) return false;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    cv.width = r.width * dpr; cv.height = r.height * dpr;
+    const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const W = r.width, H = r.height, kind = scene.dataset.kind;
+    let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    if (kind === 'polish' || kind === 'complex') {
+      c.globalCompositeOperation = 'screen';
+      [[W * .58, H * .28, .75], [W * .22, H * .6, .5], [W * .85, H * .72, .45]].forEach(([cx, cy, k]) => {
+        const max = Math.max(W, H) * k;
+        for (let rr = 5; rr < max; rr += 2 + rnd() * 2.2) {
+          const n = 1 + Math.floor(rnd() * 3);
+          for (let j = 0; j < n; j++) {
+            const a0 = rnd() * Math.PI * 2, len = .12 + rnd() * .5;
+            c.strokeStyle = `rgba(240,240,236,${(.05 + rnd() * .17) * (1 - rr / max)})`;
+            c.lineWidth = .5 + rnd() * .55;
+            c.beginPath(); c.arc(cx, cy, rr, a0, a0 + len); c.stroke();
+          }
+        }
+      });
+      for (let j = 0; j < 46; j++) {
+        const x0 = rnd() * W, y0 = rnd() * H, l = 30 + rnd() * 130, a = rnd() * Math.PI;
+        c.strokeStyle = `rgba(240,240,236,${.07 + rnd() * .12})`; c.lineWidth = .6;
+        c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo(x0 + Math.cos(a) * l * .5 + 8, y0 + Math.sin(a) * l * .5, x0 + Math.cos(a) * l, y0 + Math.sin(a) * l); c.stroke();
+      }
+    }
+    if (kind === 'interior' || kind === 'complex') {
+      c.globalCompositeOperation = 'source-over';
+      for (let j = 0; j < (kind === 'interior' ? 30 : 12); j++) {
+        const x0 = rnd() * W, y0 = H * .25 + rnd() * H * .75, rad = 10 + rnd() * 50;
+        const g = c.createRadialGradient(x0, y0, 0, x0, y0, rad);
+        g.addColorStop(0, `rgba(150,145,135,${.14 + rnd() * .14})`);
+        g.addColorStop(.7, `rgba(140,135,125,${.06 + rnd() * .06})`);
+        g.addColorStop(1, 'rgba(140,135,125,0)');
+        c.fillStyle = g; c.beginPath(); c.ellipse(x0, y0, rad, rad * (.55 + rnd() * .5), rnd() * 3, 0, Math.PI * 2); c.fill();
+      }
+    }
+    if (kind === 'lights') { // дрібна сітка тріщинок на пластику фари
+      c.globalCompositeOperation = 'screen';
+      for (let j = 0; j < 260; j++) {
+        const x0 = W * (.2 + rnd() * .65), y0 = H * (.15 + rnd() * .65), l = 4 + rnd() * 16, a = rnd() * Math.PI * 2;
+        c.strokeStyle = `rgba(240,240,236,${.06 + rnd() * .12})`; c.lineWidth = .5;
+        c.beginPath(); c.moveTo(x0, y0); c.lineTo(x0 + Math.cos(a) * l, y0 + Math.sin(a) * l); c.stroke();
+      }
+    }
+    c.globalCompositeOperation = 'source-over';
+    const dust = kind === 'interior' ? 2600 : 1500;
+    for (let j = 0; j < dust; j++) {
+      c.fillStyle = `rgba(225,225,220,${.05 + rnd() * .15})`;
+      const sz = rnd() * 1.6 + .3; c.fillRect(rnd() * W, rnd() * H, sz, sz);
+    }
+    return true;
+  }
+  const drawn = new Set();
+  const ensure = i => { if (!drawn.has(i) && texture(scenes[i])) drawn.add(i); };
+  let rw = 0;
+  addEventListener('resize', () => { const w = stage.clientWidth; if (w !== rw) { rw = w; drawn.clear(); ensure(cur); } });
+
+  function show(i, focus) {
+    if (i === cur) return;
+    tabs.forEach((t, k) => { t.setAttribute('aria-selected', k === i ? 'true' : 'false'); t.tabIndex = k === i ? 0 : -1; });
+    stage.setAttribute('aria-labelledby', tabs[i].id);
+    clearTimeout(sceneT);
+    scenes.forEach(sc => { if (sc.classList.contains('enter')) { scenes.forEach(q => q.classList.remove('on')); sc.classList.add('on'); } sc.classList.remove('enter'); });
+    const next = scenes[i];
+    cur = i; ensure(i);
+    if (reduce) scenes.forEach(sc => sc.classList.toggle('on', sc === next));
+    else {
+      void next.offsetWidth; next.classList.add('enter');
+      sceneT = setTimeout(() => { scenes.forEach(sc => sc.classList.toggle('on', sc === next)); next.classList.remove('enter'); }, 1520);
+    }
+    caps.classList.add('out');
+    setTimeout(() => {
+      const p = caps.querySelectorAll('.ba-cap span'); p[0].textContent = CAPS[i][0]; p[1].textContent = CAPS[i][1];
+      caps.classList.remove('out');
+    }, reduce ? 0 : 220);
+    sweep(92, 50, 1300);
+    if (focus) tabs[i].focus();
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => show(i));
+    t.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); show((cur + 1) % tabs.length, true); }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); show((cur - 1 + tabs.length) % tabs.length, true); }
+    });
+  });
+
+  // перший показ: лампа вмикається і проходить по кадру
+  set(reduce ? 50 : 100);
+  new IntersectionObserver(([en], ob) => {
+    if (!en.isIntersecting) return;
+    ob.disconnect();
+    stage.querySelectorAll('img').forEach(im => im.loading = 'eager');
+    rw = stage.clientWidth; ensure(0);
+    stage.classList.add('lit');
+    setTimeout(() => sweep(100, 50, 1700), reduce ? 0 : 450);
+  }, { threshold: .4 }).observe(stage);
+})();
+</script>
+
+<script>
+/* як ми працюємо: лампи над кроками вмикаються по черзі */
+(() => {
+  const row = document.getElementById('stRow');
+  const steps = [...row.querySelectorAll('.st')];
+  const stacked = matchMedia('(max-width:760px), (max-width:1100px) and (orientation:portrait)');
+  if (!('IntersectionObserver' in window)) { steps.forEach(s => s.classList.add('lit')); return; }
+  if (stacked.matches) {
+    // телефон: кожна лампа вмикається, коли крок з’являється на екрані
+    steps.forEach(s => s.style.setProperty('--d', '0s'));
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('lit'); io.unobserve(e.target); }
+    }), { threshold: .6 });
+    steps.forEach(s => io.observe(s));
+  } else {
+    new IntersectionObserver(([en], ob) => {
+      if (!en.isIntersecting) return;
+      steps.forEach(s => s.classList.add('lit')); ob.disconnect();
+    }, { threshold: .45 }).observe(row);
+  }
+})();
+</script>
+
+<script>
+/* відгуки на телефоні: індикатор-лампи під каруселлю */
+(() => {
+  const list = document.getElementById('rvList');
+  const dots = [...document.querySelectorAll('#rvDots button')];
+  const cards = [...list.children];
+  let t = null;
+  list.addEventListener('scroll', () => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      const x = list.scrollLeft;
+      let best = 0, bd = Infinity;
+      cards.forEach((c, i) => { const d = Math.abs(c.offsetLeft - list.offsetLeft - x - parseFloat(getComputedStyle(list).paddingLeft) + parseFloat(getComputedStyle(list).paddingLeft)); if (d < bd) { bd = d; best = i; } });
+      if (list.scrollLeft + list.clientWidth >= list.scrollWidth - 4) best = cards.length - 1;
+      dots.forEach((d, i) => d.setAttribute('aria-current', i === best ? 'true' : 'false'));
+    }, 60);
+  }, { passive: true });
+  dots.forEach((d, i) => d.addEventListener('click', () => {
+    list.scrollTo({ left: cards[i].offsetLeft - cards[0].offsetLeft, behavior: 'smooth' });
+  }));
+})();
+</script>
+
+<script>
+/* картка студії: відкрито чи зачинено зараз (за київським часом) */
+(() => {
+  const H = {{{_.hours}}};
+  const DAYS = ['неділю', 'понеділок', 'вівторок', 'середу', 'четвер', 'пʼятницю', 'суботу'];
+  const card = document.getElementById('fqCard');
+  const st = document.getElementById('fqStatus'), note = document.getElementById('fqNote');
+  function upd() {
+    let h, m, wd;
+    try {
+      const p = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Kyiv', hour: '2-digit', minute: '2-digit', weekday: 'short', hour12: false }).formatToParts(new Date());
+      h = +p.find(x => x.type === 'hour').value % 24; m = +p.find(x => x.type === 'minute').value;
+      wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.find(x => x.type === 'weekday').value);
+    } catch (e) { const d = new Date(); h = d.getHours(); m = d.getMinutes(); wd = d.getDay(); }
+    const t = h * 60 + m, open = H.days.includes(wd) && t >= H.open && t < H.close;
+    card.classList.toggle('is-open', open);
+    if (open) {
+      const left = H.close - t;
+      st.textContent = left <= 60 ? 'Зараз відкрито, ще ' + left + ' хв' : 'Зараз відкрито, до ' + H.closeLabel;
+      note.textContent = 'Майстер на місці: відповімо в Telegram протягом 15 хвилин.';
+    } else {
+      // найближчий робочий день: сьогодні (якщо ще не відкрились), завтра або пізніше
+      let k = H.days.includes(wd) && t < H.open ? 0 : 1;
+      while (k < 7 && !H.days.includes((wd + k) % 7)) k++;
+      const when = k === 0 || H.days.length === 7 ? '' : k === 1 ? 'завтра ' : 'у ' + DAYS[(wd + k) % 7] + ' ';
+      st.textContent = 'Зараз зачинено, відкриємось ' + when + 'о ' + H.openLabel;
+      note.textContent = 'Напишіть зараз, і ми відповімо першими зранку.';
+    }
+  }
+  upd(); setInterval(upd, 60000);
+})();
+
+/* часті питання: відкрите лише одне */
+(() => {
+  const items = [...document.querySelectorAll('.fq-item')];
+  items.forEach(it => {
+    const q = it.querySelector('.fq-q');
+    q.addEventListener('click', () => {
+      const willOpen = !it.classList.contains('open');
+      items.forEach(o => { o.classList.remove('open'); o.querySelector('.fq-q').setAttribute('aria-expanded', 'false'); });
+      if (willOpen) { it.classList.add('open'); q.setAttribute('aria-expanded', 'true'); }
+    });
+  });
+})();
+</script>
+
+<script>
+/* форма оцінки: фото, телефон, відправка в Netlify Forms */
+(() => {
+  const form = document.getElementById('esForm');
+  const input = document.getElementById('f-photos');
+  const drop = document.getElementById('esDrop');
+  const thumbs = document.getElementById('esThumbs');
+  const btn = document.getElementById('esSubmit');
+  const err = document.getElementById('esErr');
+  const phone = document.getElementById('f-phone');
+  const MAX = 5;
+  let files = [];
+
+  // фото: додаємо, показуємо мініатюри, можна прибрати
+  function render() {
+    thumbs.innerHTML = '';
+    files.forEach((f, i) => {
+      const d = document.createElement('div'); d.className = 'th';
+      const im = document.createElement('img'); im.alt = 'Фото ' + (i + 1); im.src = URL.createObjectURL(f);
+      im.onload = () => URL.revokeObjectURL(im.src);
+      const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Прибрати фото ' + (i + 1)); b.textContent = '×';
+      b.onclick = () => { files.splice(i, 1); render(); };
+      d.append(im, b); thumbs.append(d);
+    });
+    drop.querySelector('strong').textContent = files.length ? 'Додано ' + files.length + ' з ' + MAX + ' фото' : 'Додати фото авто';
+  }
+  function add(list) {
+    [...list].filter(f => f.type.startsWith('image/') || /\.(heic|heif)$/i.test(f.name)).forEach(f => { if (files.length < MAX) files.push(f); });
+    render();
+  }
+  input.addEventListener('change', () => { add(input.files); input.value = ''; });
+  ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => add(e.dataTransfer.files));
+
+  // телефон: +380 XX XXX XX XX
+  function fmt(v) {
+    let d = v.replace(/\D/g, '');
+    if (d.startsWith('380')) d = d.slice(3); else if (d.startsWith('80')) d = d.slice(2);
+    d = d.replace(/^0+/, '');
+    d = d.slice(0, 9);
+    const p = [d.slice(0, 2), d.slice(2, 5), d.slice(5, 7), d.slice(7, 9)].filter(Boolean);
+    return '+380' + (p.length ? ' ' + p.join(' ') : ' ');
+  }
+  phone.addEventListener('focus', () => { if (!phone.value) phone.value = '+380 '; });
+  phone.addEventListener('blur', () => { if (phone.value.replace(/\D/g, '').length <= 3) phone.value = ''; });
+  phone.addEventListener('input', () => { phone.value = fmt(phone.value); });
+
+  const msg = document.getElementById('f-msg');
+  const grow = () => { msg.style.height = 'auto'; msg.style.height = Math.max(58, msg.scrollHeight) + 'px'; };
+  msg.addEventListener('input', grow);
+  const fld = el => el.closest('.fld');
+  form.querySelectorAll('.inp').forEach(el => el.addEventListener('input', () => fld(el).classList.remove('err')));
+  function check() {
+    let ok = true, first = null;
+    const name = form.elements.name;
+    if (!name.value.trim()) { fld(name).classList.add('err'); ok = false; first = first || name; }
+    if (phone.value.replace(/\D/g, '').length !== 12) { fld(phone).classList.add('err'); ok = false; first = first || phone; }
+    if (first) first.focus();
+    return ok;
+  }
+
+  // стискаємо фото, щоб уся заявка вмістилась у ліміт Netlify (8 МБ)
+  function shrink(file) {
+    return new Promise(res => {
+      const url = URL.createObjectURL(file);
+      const im = new Image();
+      im.onload = () => {
+        const k = Math.min(1, 1600 / Math.max(im.width, im.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        c.toBlob(b => res(b ? new File([b], (file.name.replace(/\.\w+$/, '') || 'photo') + '.jpg', { type: 'image/jpeg' }) : (file.size < 1.4e6 ? file : null)), 'image/jpeg', .82);
+      };
+      im.onerror = () => { URL.revokeObjectURL(url); res(file.size < 1.4e6 ? file : null); };
+      im.src = url;
+    });
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    err.classList.remove('on');
+    if (!check()) return;
+    btn.disabled = true;
+    const label = btn.firstChild.nodeValue;
+    btn.firstChild.nodeValue = 'Надсилаємо… ';
+    try {
+      const fd = new FormData(form);
+      for (let i = 1; i <= MAX; i++) fd.delete('photo' + i);
+      const small = (await Promise.all(files.map(shrink))).filter(Boolean);
+      small.forEach((f, i) => fd.append('photo' + (i + 1), f, f.name));
+      const r = await fetch('/', { method: 'POST', body: fd });
+      if (!r.ok) throw new Error(r.status);
+      form.classList.add('sent');
+      form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (x) {
+      err.classList.add('on');
+    } finally {
+      btn.disabled = false; btn.firstChild.nodeValue = label;
+    }
+  });
+})();
+</script>
+</body>
+</html>

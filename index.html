@@ -11,7 +11,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="detailingrv — детейлінг авто в Рівному">
 <meta property="og:description" content="Детейлінг під стан саме вашого авто: полірування, кераміка, хімчистка, PPF-плівка. Оцінка авто за фото.">
-<meta property="og:image" content="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=1200&h=630&fit=crop&crop=bottom&q=80&auto=format">
+<meta property="og:image" content="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=1200&amp;h=630&amp;fit=crop&amp;crop=bottom&amp;q=80&amp;auto=format">
 <meta property="og:locale" content="uk_UA">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,8 @@
     --white:#F3F3F1;
     --grey:#9A9A96;
     --hair:rgba(243,243,241,.14);
-    --tube:#E4F6F2;          /* холодне світло ламп у боксі */
+    --tube:#E4F6F2;          /* світло ламп у боксі, колір бренду */
+    --tube-rgb:228,246,242;
     --gut:56px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -84,7 +85,7 @@
     font-size:14px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;
     transition:box-shadow .25s, transform .25s;
   }
-  .top-cta:hover{box-shadow:0 0 0 5px rgba(243,243,241,.12), 0 0 30px rgba(228,246,242,.35)}
+  .top-cta:hover{box-shadow:0 0 0 5px rgba(243,243,241,.12), 0 0 30px rgba(var(--tube-rgb),.35)}
   .top-cta .short{display:none}
 
   /* --- текстова колонка --- */
@@ -124,7 +125,7 @@
     transition:background .25s, box-shadow .25s;
     white-space:nowrap;
   }
-  .btn:hover{background:#fff;box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(228,246,242,.35)}
+  .btn:hover{background:#fff;box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(var(--tube-rgb),.35)}
   .btn svg{flex:none}
   .link{font-size:15px;font-weight:600;border-bottom:1px solid rgba(243,243,241,.4);padding-bottom:3px;transition:border-color .2s;white-space:nowrap}
   .link:hover{border-color:var(--white)}
@@ -154,7 +155,7 @@
     height:.9%;border-radius:50%;
     background:var(--tube);
     filter:blur(4px);
-    box-shadow:0 0 34px 10px rgba(228,246,242,.5);
+    box-shadow:0 0 34px 10px rgba(var(--tube-rgb),.5);
   }
   .t1{left:17%;right:19%;top:18.2%}
   .t2{left:26.6%;right:24.5%;top:35.4%}
@@ -248,7 +249,7 @@
     .copy{
       flex:none;order:1;
       margin-top:-28px;
-      padding:0 var(--gut) calc(22px + env(safe-area-inset-bottom));
+      padding:0 var(--gut) 22px; /* без safe-area: на iPhone вона змінюється, коли ховається панель Safari, і екран смикався */
     }
     h1{
       font-size:clamp(38px, min(13.4vw, 6.5svh), 96px);
@@ -302,7 +303,7 @@
   .pr-btn::before{ /* лампа-маркер активного пункту */
     content:"";position:absolute;left:0;top:calc(22px + .62em);
     width:0;height:2px;border-radius:2px;background:var(--tube);
-    box-shadow:0 0 10px var(--tube),0 0 22px rgba(228,246,242,.7);
+    box-shadow:0 0 10px var(--tube),0 0 22px rgba(var(--tube-rgb),.7);
     font-size:clamp(21px, 2vw, 30px);
     transition:width .45s cubic-bezier(.2,.7,.2,1);
   }
@@ -346,7 +347,7 @@
   .pr-sweep{
     position:absolute;left:-5%;right:-5%;top:0;height:3px;z-index:3;pointer-events:none;opacity:0;
     background:var(--tube);border-radius:3px;
-    box-shadow:0 0 14px 2px var(--tube),0 0 60px 10px rgba(228,246,242,.45);
+    box-shadow:0 0 14px 2px var(--tube),0 0 60px 10px rgba(var(--tube-rgb),.45);
   }
   .pr-sweep.go{animation:prsweep .95s cubic-bezier(.65,0,.25,1)}
   @keyframes prsweep{0%{top:0;opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
@@ -417,13 +418,13 @@
     border-bottom:1px solid var(--hair);
   }
   .pk.featured{
-    background:linear-gradient(180deg, rgba(228,246,242,.06), rgba(228,246,242,0) 70%);
+    background:linear-gradient(180deg, rgba(var(--tube-rgb),.06), rgba(var(--tube-rgb),0) 70%);
     margin:0 calc(var(--gut) * -1);padding-left:var(--gut);padding-right:var(--gut);
   }
   .pk.featured::before{ /* лампа над рекомендованим комплексом */
     content:"";position:absolute;left:8%;right:8%;top:-1px;height:2px;border-radius:2px;
-    background:linear-gradient(90deg, rgba(228,246,242,0), var(--tube) 18%, var(--tube) 82%, rgba(228,246,242,0));
-    box-shadow:0 0 14px rgba(228,246,242,.8), 0 0 50px rgba(228,246,242,.35);
+    background:linear-gradient(90deg, rgba(var(--tube-rgb),0), var(--tube) 18%, var(--tube) 82%, rgba(var(--tube-rgb),0));
+    box-shadow:0 0 14px rgba(var(--tube-rgb),.8), 0 0 50px rgba(var(--tube-rgb),.35);
   }
   .pk-ph{position:relative;aspect-ratio:4 / 3;border-radius:6px;overflow:hidden;background:var(--surface)}
   .pk-ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.08) brightness(.62);transition:filter .6s ease}
@@ -458,7 +459,7 @@
   }
   .pk-btn:hover{border-color:var(--white);background:rgba(243,243,241,.06)}
   .pk.featured .pk-btn{background:var(--white);color:var(--black);border-color:var(--white)}
-  .pk.featured .pk-btn:hover{box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(228,246,242,.35)}
+  .pk.featured .pk-btn:hover{box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(var(--tube-rgb),.35)}
   .pk-note{margin-top:32px;font-size:15px;line-height:1.6;color:var(--grey);max-width:70ch}
   .pk-note a{color:var(--white);border-bottom:1px solid rgba(243,243,241,.4);position:relative}
   .pk-note a:hover{border-color:var(--white)}
@@ -477,7 +478,7 @@
       display:block;margin:0;padding:0 0 24px;border:1px solid var(--hair);border-radius:8px;overflow:hidden;
       background:var(--surface);
     }
-    .pk.featured{border-color:rgba(228,246,242,.35);background:linear-gradient(180deg, rgba(228,246,242,.07), rgba(228,246,242,0) 55%), var(--surface)}
+    .pk.featured{border-color:rgba(var(--tube-rgb),.35);background:linear-gradient(180deg, rgba(var(--tube-rgb),.07), rgba(var(--tube-rgb),0) 55%), var(--surface)}
     .pk.featured::before{left:10%;right:10%;top:0;z-index:3}
     .pk-tag{margin:0 0 0 .2em;transform:translateY(-.3em)}
     .pk-ph{aspect-ratio:16 / 10;border-radius:0;margin-bottom:22px}
@@ -520,18 +521,18 @@
 
   .ba-line{
     position:absolute;top:0;bottom:0;left:var(--x);z-index:5;width:2px;margin-left:-1px;pointer-events:none;
-    background:var(--tube);box-shadow:0 0 12px 1px var(--tube),0 0 46px 6px rgba(228,246,242,.45);
+    background:var(--tube);box-shadow:0 0 12px 1px var(--tube),0 0 46px 6px rgba(var(--tube-rgb),.45);
   }
   .ba-line::before{ /* світло від лампи на кузові */
     content:"";position:absolute;top:0;bottom:0;left:-110px;width:220px;
-    background:linear-gradient(90deg, rgba(228,246,242,0), rgba(228,246,242,.09) 50%, rgba(228,246,242,0));
+    background:linear-gradient(90deg, rgba(var(--tube-rgb),0), rgba(var(--tube-rgb),.09) 50%, rgba(var(--tube-rgb),0));
     mix-blend-mode:screen;
   }
   .ba-grip{
     position:absolute;z-index:6;left:var(--x);top:50%;width:38px;height:62px;margin:-31px 0 0 -19px;
     display:grid;place-items:center;border-radius:20px;outline:none;color:var(--white);
-    background:rgba(11,12,14,.5);border:1px solid rgba(228,246,242,.55);
-    box-shadow:0 0 18px rgba(228,246,242,.35);
+    background:rgba(11,12,14,.5);border:1px solid rgba(var(--tube-rgb),.55);
+    box-shadow:0 0 18px rgba(var(--tube-rgb),.35);
     backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
     transition:transform .2s ease, background .2s ease;
   }
@@ -591,7 +592,7 @@
     }
     .ba-tab::before{
       content:"";position:absolute;left:0;top:50%;width:0;height:2px;border-radius:2px;background:var(--tube);
-      box-shadow:0 0 10px var(--tube),0 0 22px rgba(228,246,242,.7);transition:width .45s cubic-bezier(.2,.7,.2,1);
+      box-shadow:0 0 10px var(--tube),0 0 22px rgba(var(--tube-rgb),.7);transition:width .45s cubic-bezier(.2,.7,.2,1);
     }
     .ba-tab:hover{color:#B5B5B1;border-color:var(--hair)}
     .ba-tab[aria-selected="true"]{color:var(--white);background:none;border-color:var(--hair);padding-left:40px}
@@ -632,7 +633,7 @@
   }
   .st-tube::after{
     content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;
-    background:var(--tube);box-shadow:0 0 12px 1px var(--tube),0 0 46px 6px rgba(228,246,242,.35);
+    background:var(--tube);box-shadow:0 0 12px 1px var(--tube),0 0 46px 6px rgba(var(--tube-rgb),.35);
   }
   .st-n{display:block;font-size:clamp(44px, 4.4vw, 72px);font-weight:300;letter-spacing:-.05em;line-height:1;color:#3A3B3F;margin-bottom:clamp(18px, 3vh, 28px);transition:color .5s ease}
   .st h3{font-size:clamp(18px, 1.45vw, 21px);font-weight:700;letter-spacing:-.02em;line-height:1.3;margin-bottom:12px}
@@ -676,7 +677,7 @@
   .rv-pull{font-size:clamp(21px, 1.75vw, 26px);font-weight:600;letter-spacing:-.03em;line-height:1.25;margin-bottom:18px}
   .rv-text{font-size:15px;line-height:1.65;color:var(--grey)}
   .rv-name{display:flex;align-items:center;gap:12px;margin-top:auto;padding-top:28px;font-size:15px;font-weight:700}
-  .rv-name::before{content:"";width:22px;height:2px;border-radius:2px;background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 18px rgba(228,246,242,.6)}
+  .rv-name::before{content:"";width:22px;height:2px;border-radius:2px;background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 18px rgba(var(--tube-rgb),.6)}
   .rv-dots{display:none}
 
   @media (max-width:1100px) and (orientation:landscape){
@@ -697,7 +698,7 @@
       transition:background .3s, box-shadow .3s;
     }
     .rv-dots button::after{content:"";position:absolute;inset:-12px -4px}
-    .rv-dots button[aria-current="true"]{background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 20px rgba(228,246,242,.55)}
+    .rv-dots button[aria-current="true"]{background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 20px rgba(var(--tube-rgb),.55)}
   }
 
   /* ================= БЛОК 7: часті питання ================= */
@@ -713,9 +714,9 @@
   .fq-body{padding:4px clamp(20px, 2vw, 28px) clamp(20px, 2vw, 28px)}
   .fq-status{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:700;letter-spacing:-.015em;margin-bottom:6px}
   .fq-dot{position:relative;width:9px;height:9px;border-radius:50%;background:#4A4B50;flex:none}
-  .fq-card.is-open .fq-dot{background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 18px rgba(228,246,242,.7)}
+  .fq-card.is-open .fq-dot{background:var(--tube);box-shadow:0 0 8px var(--tube),0 0 18px rgba(var(--tube-rgb),.7)}
   .fq-card.is-open .fq-dot::after{
-    content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(228,246,242,.6);
+    content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(var(--tube-rgb),.6);
     animation:fqpulse 2.2s ease-out infinite;
   }
   @keyframes fqpulse{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.6);opacity:0}}
@@ -726,7 +727,7 @@
     padding:16px 20px;border-radius:6px;font-size:15px;font-weight:700;white-space:nowrap;
     background:var(--white);color:var(--black);transition:box-shadow .25s;
   }
-  .btn-o:hover{box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(228,246,242,.35)}
+  .btn-o:hover{box-shadow:0 0 0 6px rgba(243,243,241,.12), 0 0 40px rgba(var(--tube-rgb),.35)}
 
   /* питання */
   .fq-list{list-style:none;display:grid;gap:6px}
@@ -744,7 +745,7 @@
   .fq-item.open::after,.fq-item:has(+ .fq-item.open)::after{opacity:0}
   .fq-item::before{ /* лампа над відкритим питанням */
     content:"";position:absolute;left:clamp(18px, 1.8vw, 26px);top:-1px;height:2px;width:0;border-radius:2px;
-    background:var(--tube);box-shadow:0 0 12px var(--tube),0 0 30px rgba(228,246,242,.5);
+    background:var(--tube);box-shadow:0 0 12px var(--tube),0 0 30px rgba(var(--tube-rgb),.5);
     transition:width .6s cubic-bezier(.2,.7,.2,1);
   }
   .fq-item.open::before{width:72px;animation:fqflick .7s steps(1,end)}
@@ -811,7 +812,7 @@
   #estimate{overflow:hidden}
   #estimate::before{ /* м'яке світло від лампи над формою */
     content:"";position:absolute;right:-10%;top:-6%;width:70%;height:90%;pointer-events:none;
-    background:radial-gradient(50% 50% at 60% 30%, rgba(228,246,242,.07), rgba(228,246,242,0) 70%);
+    background:radial-gradient(50% 50% at 60% 30%, rgba(var(--tube-rgb),.07), rgba(var(--tube-rgb),0) 70%);
   }
   .es{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr);gap:clamp(48px, 7vw, 130px);align-items:center}
   .es-lead{font-size:17px;line-height:1.65;color:var(--grey);max-width:40ch;margin:26px 0 clamp(40px, 7vh, 72px)}
@@ -833,14 +834,14 @@
   .es-meta{font-size:14px;line-height:1.6;color:var(--grey)}
 
   .es-form{
-    position:relative;background:linear-gradient(180deg, rgba(228,246,242,.035), rgba(228,246,242,0) 40%), var(--surface);
+    position:relative;background:linear-gradient(180deg, rgba(var(--tube-rgb),.035), rgba(var(--tube-rgb),0) 40%), var(--surface);
     border:1px solid var(--hair);border-radius:12px;
     padding:clamp(28px, 3vw, 48px);
   }
   .es-form::before{ /* лампа над формою */
     content:"";position:absolute;left:14%;right:14%;top:-1px;height:2px;border-radius:2px;
-    background:linear-gradient(90deg, rgba(228,246,242,0), var(--tube) 20%, var(--tube) 80%, rgba(228,246,242,0));
-    box-shadow:0 0 14px rgba(228,246,242,.7), 0 0 60px rgba(228,246,242,.3);
+    background:linear-gradient(90deg, rgba(var(--tube-rgb),0), var(--tube) 20%, var(--tube) 80%, rgba(var(--tube-rgb),0));
+    box-shadow:0 0 14px rgba(var(--tube-rgb),.7), 0 0 60px rgba(var(--tube-rgb),.3);
   }
   .es-form h3{font-size:clamp(22px, 1.8vw, 26px);font-weight:800;letter-spacing:-.035em;margin-bottom:clamp(18px, 3vh, 26px)}
   .fg{display:grid;grid-template-columns:1fr 1fr;column-gap:24px}
@@ -862,7 +863,7 @@
   .inp:focus + label,.inp:not(:placeholder-shown) + label{transform:translateY(-17px) scale(.78);color:var(--grey)}
   .fld::after{ /* лінія світиться при фокусі */
     content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--tube);
-    box-shadow:0 0 10px rgba(228,246,242,.7);transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.2,.7,.2,1);
+    box-shadow:0 0 10px rgba(var(--tube-rgb),.7);transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.2,.7,.2,1);
   }
   .fld:focus-within::after{transform:scaleX(1)}
   .fld.photos::after{display:none}
@@ -877,8 +878,8 @@
     padding:14px 16px;border:1px dashed rgba(243,243,241,.2);border-radius:8px;cursor:pointer;
     transition:border-color .2s, background .2s;
   }
-  .drop:hover,.drop.over{border-color:var(--tube);background:rgba(228,246,242,.03)}
-  .drop:focus-within{border-color:var(--tube);box-shadow:0 0 0 3px rgba(228,246,242,.1)}
+  .drop:hover,.drop.over{border-color:var(--tube);background:rgba(var(--tube-rgb),.03)}
+  .drop:focus-within{border-color:var(--tube);box-shadow:0 0 0 3px rgba(var(--tube-rgb),.1)}
   .drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
   .drop .ic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;background:rgba(243,243,241,.06);color:var(--white)}
   .drop strong{font-size:15px;font-weight:600}
@@ -906,7 +907,7 @@
   .es-form.sent .es-done{display:block}
   .es-done .lamp{
     width:84px;height:3px;border-radius:3px;margin:0 auto 34px;background:var(--tube);
-    box-shadow:0 0 14px 2px var(--tube),0 0 60px 10px rgba(228,246,242,.35);
+    box-shadow:0 0 14px 2px var(--tube),0 0 60px 10px rgba(var(--tube-rgb),.35);
     animation:sttube .9s steps(1,end) both;
   }
   .es-done h3{margin-bottom:12px}
@@ -1023,9 +1024,7 @@
   <div class="bay" aria-hidden="true">
     <div class="frame" id="frame">
       <img src="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=1400&q=78&auto=format"
-           srcset="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=800&q=75&auto=format 800w,
-                   https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=1400&q=78&auto=format 1400w,
-                   https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=2000&q=78&auto=format 2000w"
+           srcset="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=800&q=75&auto=format 800w, https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=1400&q=78&auto=format 1400w, https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=2000&q=78&auto=format 2000w"
            sizes="(max-width:760px) 120vw, 50vw" alt="" fetchpriority="high">
       <span class="tube t1"></span><span class="tube t2"></span><span class="tube t3"></span><span class="tube t4"></span>
       <span class="drl d1"></span><span class="drl d2"></span>
@@ -1118,7 +1117,6 @@
     <article class="pk fd" style="--d:0.0s" aria-labelledby="pk-0">
       <div class="pk-ph"><img src="https://images.unsplash.com/photo-1708805282683-50a060eba80f?w=800&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1708805282683-50a060eba80f?w=500&q=70&auto=format&fit=crop 500w, https://images.unsplash.com/photo-1708805282683-50a060eba80f?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1708805282683-50a060eba80f?w=1100&q=72&auto=format&fit=crop 1100w" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:40% 50%" loading="lazy" decoding="async"></div>
       <div class="pk-head">
-        
         <h3 class="pk-name" id="pk-0">Basic</h3>
         <p class="pk-goal">Щоб підтримувати авто чистим і доглянутим</p>
       </div>
@@ -1158,7 +1156,6 @@
     <article class="pk fd" style="--d:0.2s" aria-labelledby="pk-2">
       <div class="pk-ph"><img src="https://images.unsplash.com/photo-1662641220355-7fb77c16f733?w=800&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1662641220355-7fb77c16f733?w=500&q=70&auto=format&fit=crop 500w, https://images.unsplash.com/photo-1662641220355-7fb77c16f733?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1662641220355-7fb77c16f733?w=1100&q=72&auto=format&fit=crop 1100w" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:50% 70%" loading="lazy" decoding="async"></div>
       <div class="pk-head">
-        
         <h3 class="pk-name" id="pk-2">Full Detailing</h3>
         <p class="pk-goal">Комплексне відновлення кузова й салону</p>
       </div>
@@ -1805,24 +1802,31 @@
 </script>
 
 <script>
-/* картка студії: відкрито чи зачинено зараз (Київ, 9:00–20:00) */
+/* картка студії: відкрито чи зачинено зараз (за київським часом) */
 (() => {
+  const H = {"open": 540, "close": 1200, "openLabel": "9:00", "closeLabel": "20:00", "days": [0, 1, 2, 3, 4, 5, 6]};
+  const DAYS = ['неділю', 'понеділок', 'вівторок', 'середу', 'четвер', 'пʼятницю', 'суботу'];
   const card = document.getElementById('fqCard');
   const st = document.getElementById('fqStatus'), note = document.getElementById('fqNote');
   function upd() {
-    let h, m;
+    let h, m, wd;
     try {
-      const p = new Intl.DateTimeFormat('uk-UA', { timeZone: 'Europe/Kyiv', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date());
-      h = +p.find(x => x.type === 'hour').value; m = +p.find(x => x.type === 'minute').value;
-    } catch (e) { const d = new Date(); h = d.getHours(); m = d.getMinutes(); }
-    const t = h * 60 + m, open = t >= 540 && t < 1200;
+      const p = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Kyiv', hour: '2-digit', minute: '2-digit', weekday: 'short', hour12: false }).formatToParts(new Date());
+      h = +p.find(x => x.type === 'hour').value % 24; m = +p.find(x => x.type === 'minute').value;
+      wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.find(x => x.type === 'weekday').value);
+    } catch (e) { const d = new Date(); h = d.getHours(); m = d.getMinutes(); wd = d.getDay(); }
+    const t = h * 60 + m, open = H.days.includes(wd) && t >= H.open && t < H.close;
     card.classList.toggle('is-open', open);
     if (open) {
-      const left = 1200 - t;
-      st.textContent = left <= 60 ? 'Зараз відкрито, ще ' + left + ' хв' : 'Зараз відкрито, до 20:00';
+      const left = H.close - t;
+      st.textContent = left <= 60 ? 'Зараз відкрито, ще ' + left + ' хв' : 'Зараз відкрито, до ' + H.closeLabel;
       note.textContent = 'Майстер на місці: відповімо в Telegram протягом 15 хвилин.';
     } else {
-      st.textContent = 'Зараз зачинено, відкриємось о\u00a09:00';
+      // найближчий робочий день: сьогодні (якщо ще не відкрились), завтра або пізніше
+      let k = H.days.includes(wd) && t < H.open ? 0 : 1;
+      while (k < 7 && !H.days.includes((wd + k) % 7)) k++;
+      const when = k === 0 || H.days.length === 7 ? '' : k === 1 ? 'завтра ' : 'у ' + DAYS[(wd + k) % 7] + ' ';
+      st.textContent = 'Зараз зачинено, відкриємось ' + when + 'о ' + H.openLabel;
       note.textContent = 'Напишіть зараз, і ми відповімо першими зранку.';
     }
   }
