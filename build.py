@@ -142,6 +142,11 @@ def _minutes(hhmm):
 
 
 def derive(data):
+    # на телефоні в рядок заголовка вміщається ~14 символів, довший переноситься
+    for line in data["hero"]["title"]:
+        text = html.unescape(re.sub(r"<[^>]+>", "", line["text"]))
+        if len(text) > 14:
+            print(f"увага: рядок заголовка «{text}» ({len(text)} симв.) на телефоні перенесеться — скоротіть до 14")
     hex_ = data["accent"].lstrip("#")
     hours = data["hours"]
     data["_"] = {
