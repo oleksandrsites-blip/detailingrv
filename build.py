@@ -141,6 +141,16 @@ def _minutes(hhmm):
     return int(h) * 60 + int(m)
 
 
+def _week(hours):
+    """Графік на 7 днів (0 = неділя): [відкриття, закриття, "9:00", "20:00"] або None.
+    Або однаковий час на всі робочі дні (open/close/days), або свій для кожного дня (week)."""
+    week = hours.get("week") or [
+        [hours["open"], hours["close"]] if d in hours["days"] else None for d in range(7)
+    ]
+    days = [[_minutes(o), _minutes(c), o.lstrip("0"), c] if o else None for o, c in (d or (None, None) for d in week)]
+    return {"week": days, "daily": all(days) and len({tuple(d) for d in days}) == 1}
+
+
 def derive(data):
     # на телефоні в рядок заголовка вміщається ~14 символів, довший переноситься
     for line in data["hero"]["title"]:
@@ -154,11 +164,7 @@ def derive(data):
         "accent_url": "%23" + hex_,
         "solutions": json.dumps([p["solution"] for p in data["problems"]], ensure_ascii=False),
         "caps": json.dumps([[r["before"], r["after"]] for r in data["results"]], ensure_ascii=False),
-        "hours": json.dumps({
-            "open": _minutes(hours["open"]), "close": _minutes(hours["close"]),
-            "openLabel": hours["open"].lstrip("0"), "closeLabel": hours["close"],
-            "days": hours["days"],
-        }, ensure_ascii=False),
+        "hours": json.dumps(_week(hours), ensure_ascii=False),
     }
     return data
 

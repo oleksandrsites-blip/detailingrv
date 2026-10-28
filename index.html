@@ -455,6 +455,7 @@
   .pk-price{display:flex;align-items:baseline;gap:8px;white-space:nowrap;font-variant-numeric:tabular-nums}
   .pk-price small{font-size:14px;color:var(--grey)}
   .pk-price strong{font-size:clamp(30px, 2.6vw, 40px);font-weight:800;letter-spacing:-.04em}
+  .pk-price strong.ask{font-size:clamp(20px, 1.7vw, 24px);letter-spacing:-.02em}
   .pk-btn{
     display:inline-flex;align-items:center;justify-content:center;
     padding:16px 20px;border-radius:6px;font-size:15px;font-weight:700;white-space:nowrap;
@@ -1807,7 +1808,7 @@
 <script>
 /* картка студії: відкрито чи зачинено зараз (за київським часом) */
 (() => {
-  const H = {"open": 540, "close": 1200, "openLabel": "9:00", "closeLabel": "20:00", "days": [0, 1, 2, 3, 4, 5, 6]};
+  const H = {"week": [[540, 1200, "9:00", "20:00"], [540, 1200, "9:00", "20:00"], [540, 1200, "9:00", "20:00"], [540, 1200, "9:00", "20:00"], [540, 1200, "9:00", "20:00"], [540, 1200, "9:00", "20:00"], [540, 1200, "9:00", "20:00"]], "daily": true};
   const DAYS = ['неділю', 'понеділок', 'вівторок', 'середу', 'четвер', 'пʼятницю', 'суботу'];
   const card = document.getElementById('fqCard');
   const st = document.getElementById('fqStatus'), note = document.getElementById('fqNote');
@@ -1818,18 +1819,19 @@
       h = +p.find(x => x.type === 'hour').value % 24; m = +p.find(x => x.type === 'minute').value;
       wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.find(x => x.type === 'weekday').value);
     } catch (e) { const d = new Date(); h = d.getHours(); m = d.getMinutes(); wd = d.getDay(); }
-    const t = h * 60 + m, open = H.days.includes(wd) && t >= H.open && t < H.close;
+    const t = h * 60 + m, today = H.week[wd], open = !!today && t >= today[0] && t < today[1];
     card.classList.toggle('is-open', open);
     if (open) {
-      const left = H.close - t;
-      st.textContent = left <= 60 ? 'Зараз відкрито, ще ' + left + ' хв' : 'Зараз відкрито, до ' + H.closeLabel;
+      const left = today[1] - t;
+      st.textContent = left <= 60 ? 'Зараз відкрито, ще ' + left + ' хв' : 'Зараз відкрито, до ' + today[3];
       note.textContent = 'Майстер на місці: відповімо в Telegram протягом 15 хвилин.';
     } else {
       // найближчий робочий день: сьогодні (якщо ще не відкрились), завтра або пізніше
-      let k = H.days.includes(wd) && t < H.open ? 0 : 1;
-      while (k < 7 && !H.days.includes((wd + k) % 7)) k++;
-      const when = k === 0 || H.days.length === 7 ? '' : k === 1 ? 'завтра ' : 'у ' + DAYS[(wd + k) % 7] + ' ';
-      st.textContent = 'Зараз зачинено, відкриємось ' + when + 'о ' + H.openLabel;
+      let k = today && t < today[0] ? 0 : 1;
+      while (k < 7 && !H.week[(wd + k) % 7]) k++;
+      const next = H.week[(wd + k) % 7];
+      const when = k === 0 || H.daily ? '' : k === 1 ? 'завтра ' : 'у ' + DAYS[(wd + k) % 7] + ' ';
+      st.textContent = 'Зараз зачинено, відкриємось ' + when + 'о ' + next[2];
       note.textContent = 'Напишіть зараз, і ми відповімо першими зранку.';
     }
   }
