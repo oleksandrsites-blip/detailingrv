@@ -19,9 +19,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://images.unsplash.com">
+{{^_.local_photos}}<link rel="preconnect" href="https://images.unsplash.com">
+{{/_.local_photos}}{{#_.local_photos}}<link rel="preload" as="image" type="image/avif" imagesrcset="{{{hero.photo|avifset:800,0;1200,0;1600,0;2000,0}}}" imagesizes="(max-width:760px) 120vw, 50vw" fetchpriority="high">
+{{/_.local_photos}}
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  picture{display:contents}
   :root{
     --black:#0B0C0E;        /* obsidian graphite — основний фон */
     --surface:#131417;      /* панелі й картки, на півтону світліші */
@@ -524,6 +527,8 @@
   .ba-before .haze{position:absolute;inset:0;mix-blend-mode:screen;background:linear-gradient(160deg, rgba(200,200,196,.16), rgba(160,160,156,.08))}
   .t-lights .ba-before .haze{background:radial-gradient(48% 42% at 52% 46%, rgba(235,235,230,.38), rgba(235,235,230,0) 72%), linear-gradient(160deg, rgba(200,200,196,.16), rgba(160,160,156,.08))}
   .ba-before canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  /* справжні фото «до»: без штучних ефектів, той самий тон, що й «після» */
+  .ba-scene.real .ba-before img{filter:grayscale(1) contrast(1.14) brightness(.96)}
 
   .ba-line{
     position:absolute;top:0;bottom:0;left:var(--x);z-index:5;width:2px;margin-left:-1px;pointer-events:none;
@@ -1035,9 +1040,12 @@
 
   <div class="bay" aria-hidden="true">
     <div class="frame" id="frame">
-      <img src="{{{hero.photo|src:1400,78;nofit}}}"
-           srcset="{{{hero.photo|srcset:800,75;1400,78;2000,78;nofit}}}"
-           sizes="(max-width:760px) 120vw, 50vw" alt="" fetchpriority="high">
+      <picture>
+        <source type="image/avif" srcset="{{{hero.photo|avifset:800,0;1200,0;1600,0;2000,0}}}" sizes="(max-width:760px) 120vw, 50vw">
+        <img src="{{{hero.photo|src:1200,78;nofit}}}"
+             srcset="{{{hero.photo|srcset:800,75;1200,78;1600,78;2000,78;nofit}}}"
+             sizes="(max-width:760px) 120vw, 50vw" alt="" fetchpriority="high" decoding="async">
+      </picture>
       <span class="tube t1"></span><span class="tube t2"></span><span class="tube t3"></span><span class="tube t4"></span>
       <span class="drl d1"></span><span class="drl d2"></span>
       <span class="dark"></span>
@@ -1063,7 +1071,7 @@
     <div class="pr-home" id="prHome">
       <div class="pr-stage fd" id="prStage" role="region" aria-labelledby="pr-btn-0" style="--d:.1s">
         <div class="pr-photos">
-{{#problems}}        <div class="pr-ph{{#@first}} on{{/@first}}" data-i="{{@i}}"><img src="{{{photo|src:1200,72}}}" srcset="{{{photo|srcset:700,70;1200,72;1700,72}}}" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:{{pos}}" loading="lazy" decoding="async"></div>
+{{#problems}}        <div class="pr-ph{{#@first}} on{{/@first}}" data-i="{{@i}}"><picture><source type="image/avif" srcset="{{{photo|avifset:480,0;800,0;1200,0;1600,0}}}" sizes="(max-width:760px) 100vw, 52vw"><img src="{{{photo|src:800,72}}}" srcset="{{{photo|srcset:480,70;800,72;1200,72;1600,72}}}" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:{{pos}}" loading="lazy" decoding="async"></picture></div>
 {{/problems}}          <span class="pr-sweep" aria-hidden="true"></span>
         </div>
         <div class="pr-sol" id="prSol" aria-live="polite">
@@ -1087,7 +1095,7 @@
   </div>
   <div class="pk-list">
 {{#packages}}    <article class="pk{{#featured}} featured{{/featured}} fd" style="--d:{{@i|step:0.1,1}}s" aria-labelledby="pk-{{@i}}">
-      <div class="pk-ph"><img src="{{{photo|src:800,72}}}" srcset="{{{photo|srcset:500,70;800,72;1100,72}}}" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:{{pos}}" loading="lazy" decoding="async"></div>
+      <div class="pk-ph"><picture><source type="image/avif" srcset="{{{photo|avifset:480,0;800,0;1200,0}}}" sizes="(max-width:760px) 100vw, 320px"><img src="{{{photo|src:800,72}}}" srcset="{{{photo|srcset:480,70;800,72;1200,72}}}" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:{{pos}}" loading="lazy" decoding="async"></picture></div>
       <div class="pk-head">
         <h3 class="pk-name" id="pk-{{@i}}">{{name}}{{#tag}} <span class="pk-tag">{{tag}}</span>{{/tag}}</h3>
         <p class="pk-goal">{{goal}}</p>
@@ -1116,13 +1124,15 @@
     </div>
     <div class="ba-media fd" style="--d:.1s">
     <div class="ba" id="baStage" role="tabpanel" aria-labelledby="ba-tab-{{results.0.kind}}">
-{{#results}}      <div class="ba-scene t-{{kind}}{{#@first}} on{{/@first}}" data-kind="{{kind}}" style="--pos:{{pos}};--mpos:{{mpos}}">
-        <div class="ba-layer ba-after"><img src="{{{photo|src:1600,74}}}" srcset="{{{photo|srcset:800,72;1600,74;2200,74}}}" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-        <div class="ba-layer ba-before"><img src="{{{photo|src:1600,74}}}" srcset="{{{photo|srcset:800,72;1600,74;2200,74}}}" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
-      </div>
+{{#results}}      <div class="ba-scene t-{{kind}}{{#real}} real{{/real}}{{#@first}} on{{/@first}}" data-kind="{{kind}}" style="--pos:{{pos}};--mpos:{{mpos}}">
+{{#real}}        <div class="ba-layer ba-after"><img src="{{{after}}}" srcset="{{{after_set}}}" sizes="(max-width:760px) 100vw, 60vw" alt="{{label}}: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="{{{before}}}" srcset="{{{before_set}}}" sizes="(max-width:760px) 100vw, 60vw" alt="{{label}}: авто до робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+{{/real}}{{^real}}        <div class="ba-layer ba-after"><img src="{{{photo|src:1600,74}}}" srcset="{{{photo|srcset:800,72;1200,74;1600,74}}}" sizes="(max-width:760px) 100vw, 60vw" alt="{{label}}: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="{{{photo|src:1600,74}}}" srcset="{{{photo|srcset:800,72;1200,74;1600,74}}}" sizes="(max-width:760px) 100vw, 60vw" alt="{{label}}: авто до робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+{{/real}}      </div>
 {{/results}}      <span class="ba-line" aria-hidden="true"></span>
       <span class="ba-tag b" aria-hidden="true">До</span><span class="ba-tag a" aria-hidden="true">Після</span>
-      <span class="ba-grip" role="slider" tabindex="0" aria-label="Межа між «до» і «після»" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true"><path d="M5.5 1.5 1.5 6l4 4.5M12.5 1.5l4 4.5-4 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="ba-grip" role="slider" tabindex="0" aria-label="Межа між фото «до» і «після»" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="Видно 50% фото «до» і 50% фото «після»" aria-controls="baStage"><svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true"><path d="M5.5 1.5 1.5 6l4 4.5M12.5 1.5l4 4.5-4 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </div>
     <p class="ba-hint" id="baHint"><svg width="34" height="10" viewBox="0 0 34 10" fill="none" aria-hidden="true"><path d="M5 1 1 5l4 4M29 1l4 4-4 4M1 5h32" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Ведіть пальцем по фото</p>
     </div>
@@ -1184,7 +1194,7 @@
       <h2 class="h2 rv" id="faq-h"><span class="ln"><span>Часті питання</span></span><span class="ln"><span class="soft">перед записом</span></span></h2>
       <p class="fq-lead fd" style="--d:.15s">Зібрали те, що питають найчастіше. Не знайшли свого питання? Напишіть, і майстер відповість особисто.</p>
       <div class="fq-card fd" id="fqCard" style="--d:.25s">
-        <div class="fq-ph"><img src="{{{faq_photo.photo|src:900,72}}}" srcset="{{{faq_photo.photo|srcset:600,70;900,72}}}" sizes="(max-width:760px) 100vw, 520px" alt="" style="object-position:{{faq_photo.pos}}" loading="lazy" decoding="async"></div>
+        <div class="fq-ph"><picture><source type="image/avif" srcset="{{{faq_photo.photo|avifset:480,0;800,0;1200,0}}}" sizes="(max-width:760px) 100vw, 520px"><img src="{{{faq_photo.photo|src:800,72}}}" srcset="{{{faq_photo.photo|srcset:480,70;800,72;1200,72}}}" sizes="(max-width:760px) 100vw, 520px" alt="" style="object-position:{{faq_photo.pos}}" loading="lazy" decoding="async"></picture></div>
         <div class="fq-body">
           <p class="fq-status"><i class="fq-dot" aria-hidden="true"></i><span id="fqStatus">{{hours.label}}</span></p>
           <p class="fq-note" id="fqNote">У робочий час відповідаємо в Telegram протягом 15 хвилин.</p>
@@ -1448,6 +1458,7 @@
     x = Math.max(0, Math.min(100, v));
     stage.style.setProperty('--x', x + '%');
     grip.setAttribute('aria-valuenow', Math.round(x));
+    grip.setAttribute('aria-valuetext', 'Видно ' + Math.round(x) + '% фото «до» і ' + (100 - Math.round(x)) + '% фото «після»');
     tagB.style.opacity = x < 14 ? 0 : '';
     tagA.style.opacity = x > 86 ? 0 : '';
   }
@@ -1488,10 +1499,15 @@
     if (lock === null && Math.abs(dx) + Math.abs(dy) > 6) lock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
     if (lock === 'x') { e.preventDefault(); cancelAnimationFrame(anim); target = pct(e.touches[0].clientX); set(target); hint.classList.add('gone'); }
   }, { passive: false });
+  // клавіатура: стрілки — крок 4% (з Shift — 10%), PageUp/PageDown — 20%, Home/End — краї. Без анімації, щоб значення змінювалось одразу
+  const jump = v => { cancelAnimationFrame(anim); cancelAnimationFrame(raf); anim = raf = null; target = Math.max(0, Math.min(100, v)); set(target); };
   grip.addEventListener('keydown', e => {
     const st = e.shiftKey ? 10 : 4;
+    const goTo = jump;
     if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(x - st); }
     if (e.key === 'ArrowRight') { e.preventDefault(); goTo(x + st); }
+    if (e.key === 'PageDown') { e.preventDefault(); goTo(x - 20); }
+    if (e.key === 'PageUp') { e.preventDefault(); goTo(x + 20); }
     if (e.key === 'Home') { e.preventDefault(); goTo(0); }
     if (e.key === 'End') { e.preventDefault(); goTo(100); }
   });
@@ -1499,6 +1515,7 @@
   /* стан «до»: подряпини-павутинка, пил і плями поверх фото */
   function texture(scene) {
     const cv = scene.querySelector('canvas');
+    if (!cv) return true; // справжні фото «до» — без штучної текстури
     const r = stage.getBoundingClientRect();
     if (!r.width) return false;
     const dpr = Math.min(devicePixelRatio || 1, 2);

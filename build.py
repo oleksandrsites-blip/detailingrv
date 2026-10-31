@@ -15,9 +15,27 @@ ROOT = Path(__file__).resolve().parent
 TAG = re.compile(r"\{\{(\{?)\s*([#^/]?)\s*([^}]+?)\s*\}?\}\}")
 
 
-# ---------- фото: Unsplash-id отримує набір розмірів, власне фото лишається як є ----------
+# ---------- фото ----------
+# Unsplash-id ("photo-…"): якщо в images/photos/ є оптимізовані копії (tools/optimize-images.py),
+# сайт бере їх (AVIF + WebP, різні ширини); інакше — адаптивні посилання на Unsplash.
+# Власне фото клієнта (img/назва.jpg) лишається як є.
+LOCAL = ROOT / "images" / "photos"
+USED = set()  # локальні файли, які треба скопіювати поруч із сайтом клієнта
+
+
 def _unsplash(photo):
     return isinstance(photo, str) and photo.startswith("photo-")
+
+
+def _local(photo, widths, ext):
+    """Шляхи до локальних копій або None, якщо хоч однієї бракує."""
+    if not _unsplash(photo):
+        return None
+    paths = [f"images/photos/{photo}-{w}.{ext}" for w in widths]
+    if all((ROOT / p).exists() for p in paths):
+        USED.update(paths)
+        return paths
+    return None
 
 
 def _img_args(arg):
@@ -37,14 +55,25 @@ def f_src(photo, arg):
         return photo
     sizes, fit = _img_args(arg)
     w, q = sizes[0]
-    return _img_url(photo, w, q, fit)
+    local = _local(photo, [w], "webp")
+    return local[0] if local else _img_url(photo, w, q, fit)
 
 
 def f_srcset(photo, arg):
     if not _unsplash(photo):
         return ""
     sizes, fit = _img_args(arg)
+    local = _local(photo, [w for w, _ in sizes], "webp")
+    if local:
+        return ", ".join(f"{p} {w}w" for p, (w, _) in zip(local, sizes))
     return ", ".join(f"{_img_url(photo, w, q, fit)} {w}w" for w, q in sizes)
+
+
+def f_avifset(photo, arg):
+    """srcset у форматі AVIF для <source>; порожньо, якщо локальних копій немає (браузер пропустить source)."""
+    sizes, _ = _img_args(arg)
+    local = _local(photo, [w for w, _ in sizes], "avif")
+    return ", ".join(f"{p} {w}w" for p, (w, _) in zip(local, sizes)) if local else ""
 
 
 def f_step(i, arg):
@@ -52,7 +81,7 @@ def f_step(i, arg):
     return f"{i * float(step):.{int(dec)}f}"
 
 
-FILTERS = {"src": f_src, "srcset": f_srcset, "step": f_step}
+FILTERS = {"src": f_src, "srcset": f_srcset, "avifset": f_avifset, "step": f_step}
 
 
 # ---------- мінімальний шаблонізатор у стилі Mustache ----------
@@ -151,6 +180,32 @@ def _week(hours):
     return {"week": days, "daily": all(days) and len({tuple(d) for d in days}) == 1}
 
 
+def _pairs(data, client_dir):
+    """results[].pair = "images/before-after/<категорія>": шукаємо before/after.webp (або jpg/png)."""
+    for r in data.get("results", []):
+        folder = r.get("pair")
+        if not folder:
+            continue
+        found = {}
+        for side in ("before", "after"):
+            for base in (ROOT, client_dir):
+                hit = next((p for p in sorted((base / folder).glob(side + ".*")) if p.suffix.lower() in (".webp", ".jpg", ".jpeg", ".png")), None)
+                if hit:
+                    rel = f"{folder}/{hit.name}"
+                    small = hit.with_name(side + "-800.webp")
+                    found[side] = rel
+                    found[side + "_set"] = f"{rel} 1600w" + (f", {folder}/{small.name} 800w" if small.exists() else "")
+                    if base == ROOT:
+                        USED.add(rel)
+                        if small.exists():
+                            USED.add(f"{folder}/{small.name}")
+                    break
+        if "before" in found and "after" in found:
+            r["real"] = found
+        else:
+            print(f"увага: у {folder} немає before/after — показую фото з ефектом «до»")
+
+
 def derive(data):
     # на телефоні в рядок заголовка вміщається ~14 символів, довший переноситься
     for line in data["hero"]["title"]:
@@ -165,6 +220,8 @@ def derive(data):
         "solutions": json.dumps([p["solution"] for p in data["problems"]], ensure_ascii=False),
         "caps": json.dumps([[r["before"], r["after"]] for r in data["results"]], ensure_ascii=False),
         "hours": json.dumps(_week(hours), ensure_ascii=False),
+        # головне фото лежить локально → preload замість preconnect до Unsplash
+        "local_photos": bool(_unsplash(data["hero"]["photo"]) and (LOCAL / f"{data['hero']['photo']}-1200.webp").exists()),
     }
     return data
 
@@ -176,7 +233,9 @@ def main():
     args = ap.parse_args()
 
     client = Path(args.client)
-    data = derive(json.loads(client.read_text(encoding="utf-8")))
+    data = json.loads(client.read_text(encoding="utf-8"))
+    _pairs(data, client.with_suffix(""))
+    data = derive(data)
     page = render(parse((ROOT / "template.html").read_text(encoding="utf-8")), [data])
 
     out = Path(args.out) if args.out else ROOT / "sites" / client.stem / "index.html"
@@ -187,6 +246,12 @@ def main():
     assets = client.with_suffix("")
     if assets.is_dir():
         shutil.copytree(assets, out.parent, dirs_exist_ok=True)
+    # локальні фото (images/…) — поруч із сайтом клієнта; для index.html у корені вони вже на місці
+    if out.parent.resolve() != ROOT:
+        for rel in sorted(USED):
+            dst = out.parent / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / rel, dst)
     print(f"готово: {out}")
 
 

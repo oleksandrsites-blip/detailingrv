@@ -19,9 +19,11 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://images.unsplash.com">
+<link rel="preload" as="image" type="image/avif" imagesrcset="images/photos/photo-1567808291548-fc3ee04dbcf0-800.avif 800w, images/photos/photo-1567808291548-fc3ee04dbcf0-1200.avif 1200w, images/photos/photo-1567808291548-fc3ee04dbcf0-1600.avif 1600w, images/photos/photo-1567808291548-fc3ee04dbcf0-2000.avif 2000w" imagesizes="(max-width:760px) 120vw, 50vw" fetchpriority="high">
+
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  picture{display:contents}
   :root{
     --black:#0B0C0E;        /* obsidian graphite — основний фон */
     --surface:#131417;      /* панелі й картки, на півтону світліші */
@@ -524,6 +526,8 @@
   .ba-before .haze{position:absolute;inset:0;mix-blend-mode:screen;background:linear-gradient(160deg, rgba(200,200,196,.16), rgba(160,160,156,.08))}
   .t-lights .ba-before .haze{background:radial-gradient(48% 42% at 52% 46%, rgba(235,235,230,.38), rgba(235,235,230,0) 72%), linear-gradient(160deg, rgba(200,200,196,.16), rgba(160,160,156,.08))}
   .ba-before canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  /* справжні фото «до»: без штучних ефектів, той самий тон, що й «після» */
+  .ba-scene.real .ba-before img{filter:grayscale(1) contrast(1.14) brightness(.96)}
 
   .ba-line{
     position:absolute;top:0;bottom:0;left:var(--x);z-index:5;width:2px;margin-left:-1px;pointer-events:none;
@@ -1037,9 +1041,12 @@
 
   <div class="bay" aria-hidden="true">
     <div class="frame" id="frame">
-      <img src="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=1400&q=78&auto=format"
-           srcset="https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=800&q=75&auto=format 800w, https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=1400&q=78&auto=format 1400w, https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=2000&q=78&auto=format 2000w"
-           sizes="(max-width:760px) 120vw, 50vw" alt="" fetchpriority="high">
+      <picture>
+        <source type="image/avif" srcset="images/photos/photo-1567808291548-fc3ee04dbcf0-800.avif 800w, images/photos/photo-1567808291548-fc3ee04dbcf0-1200.avif 1200w, images/photos/photo-1567808291548-fc3ee04dbcf0-1600.avif 1600w, images/photos/photo-1567808291548-fc3ee04dbcf0-2000.avif 2000w" sizes="(max-width:760px) 120vw, 50vw">
+        <img src="images/photos/photo-1567808291548-fc3ee04dbcf0-1200.webp"
+             srcset="images/photos/photo-1567808291548-fc3ee04dbcf0-800.webp 800w, images/photos/photo-1567808291548-fc3ee04dbcf0-1200.webp 1200w, images/photos/photo-1567808291548-fc3ee04dbcf0-1600.webp 1600w, images/photos/photo-1567808291548-fc3ee04dbcf0-2000.webp 2000w"
+             sizes="(max-width:760px) 120vw, 50vw" alt="" fetchpriority="high" decoding="async">
+      </picture>
       <span class="tube t1"></span><span class="tube t2"></span><span class="tube t3"></span><span class="tube t4"></span>
       <span class="drl d1"></span><span class="drl d2"></span>
       <span class="dark"></span>
@@ -1100,12 +1107,12 @@
     <div class="pr-home" id="prHome">
       <div class="pr-stage fd" id="prStage" role="region" aria-labelledby="pr-btn-0" style="--d:.1s">
         <div class="pr-photos">
-        <div class="pr-ph on" data-i="0"><img src="https://images.unsplash.com/photo-1657884892350-509f7513207d?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1657884892350-509f7513207d?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1657884892350-509f7513207d?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1657884892350-509f7513207d?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 45%" loading="lazy" decoding="async"></div>
-        <div class="pr-ph" data-i="1"><img src="https://images.unsplash.com/photo-1605437241278-c1806d14a4d9?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1605437241278-c1806d14a4d9?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1605437241278-c1806d14a4d9?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1605437241278-c1806d14a4d9?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 55%" loading="lazy" decoding="async"></div>
-        <div class="pr-ph" data-i="2"><img src="https://images.unsplash.com/photo-1594051673969-172a6f721d3c?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1594051673969-172a6f721d3c?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1594051673969-172a6f721d3c?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1594051673969-172a6f721d3c?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 40%" loading="lazy" decoding="async"></div>
-        <div class="pr-ph" data-i="3"><img src="https://images.unsplash.com/photo-1676288176903-a68732722cce?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1676288176903-a68732722cce?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1676288176903-a68732722cce?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1676288176903-a68732722cce?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:60% 40%" loading="lazy" decoding="async"></div>
-        <div class="pr-ph" data-i="4"><img src="https://images.unsplash.com/photo-1633014041037-f5446fb4ce99?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1633014041037-f5446fb4ce99?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1633014041037-f5446fb4ce99?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1633014041037-f5446fb4ce99?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 50%" loading="lazy" decoding="async"></div>
-        <div class="pr-ph" data-i="5"><img src="https://images.unsplash.com/photo-1621592773340-dbf8760fde8b?w=1200&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1621592773340-dbf8760fde8b?w=700&q=70&auto=format&fit=crop 700w, https://images.unsplash.com/photo-1621592773340-dbf8760fde8b?w=1200&q=72&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1621592773340-dbf8760fde8b?w=1700&q=72&auto=format&fit=crop 1700w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 60%" loading="lazy" decoding="async"></div>
+        <div class="pr-ph on" data-i="0"><picture><source type="image/avif" srcset="images/photos/photo-1657884892350-509f7513207d-480.avif 480w, images/photos/photo-1657884892350-509f7513207d-800.avif 800w, images/photos/photo-1657884892350-509f7513207d-1200.avif 1200w, images/photos/photo-1657884892350-509f7513207d-1600.avif 1600w" sizes="(max-width:760px) 100vw, 52vw"><img src="images/photos/photo-1657884892350-509f7513207d-800.webp" srcset="images/photos/photo-1657884892350-509f7513207d-480.webp 480w, images/photos/photo-1657884892350-509f7513207d-800.webp 800w, images/photos/photo-1657884892350-509f7513207d-1200.webp 1200w, images/photos/photo-1657884892350-509f7513207d-1600.webp 1600w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 45%" loading="lazy" decoding="async"></picture></div>
+        <div class="pr-ph" data-i="1"><picture><source type="image/avif" srcset="images/photos/photo-1605437241278-c1806d14a4d9-480.avif 480w, images/photos/photo-1605437241278-c1806d14a4d9-800.avif 800w, images/photos/photo-1605437241278-c1806d14a4d9-1200.avif 1200w, images/photos/photo-1605437241278-c1806d14a4d9-1600.avif 1600w" sizes="(max-width:760px) 100vw, 52vw"><img src="images/photos/photo-1605437241278-c1806d14a4d9-800.webp" srcset="images/photos/photo-1605437241278-c1806d14a4d9-480.webp 480w, images/photos/photo-1605437241278-c1806d14a4d9-800.webp 800w, images/photos/photo-1605437241278-c1806d14a4d9-1200.webp 1200w, images/photos/photo-1605437241278-c1806d14a4d9-1600.webp 1600w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 55%" loading="lazy" decoding="async"></picture></div>
+        <div class="pr-ph" data-i="2"><picture><source type="image/avif" srcset="images/photos/photo-1594051673969-172a6f721d3c-480.avif 480w, images/photos/photo-1594051673969-172a6f721d3c-800.avif 800w, images/photos/photo-1594051673969-172a6f721d3c-1200.avif 1200w, images/photos/photo-1594051673969-172a6f721d3c-1600.avif 1600w" sizes="(max-width:760px) 100vw, 52vw"><img src="images/photos/photo-1594051673969-172a6f721d3c-800.webp" srcset="images/photos/photo-1594051673969-172a6f721d3c-480.webp 480w, images/photos/photo-1594051673969-172a6f721d3c-800.webp 800w, images/photos/photo-1594051673969-172a6f721d3c-1200.webp 1200w, images/photos/photo-1594051673969-172a6f721d3c-1600.webp 1600w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 40%" loading="lazy" decoding="async"></picture></div>
+        <div class="pr-ph" data-i="3"><picture><source type="image/avif" srcset="images/photos/photo-1676288176903-a68732722cce-480.avif 480w, images/photos/photo-1676288176903-a68732722cce-800.avif 800w, images/photos/photo-1676288176903-a68732722cce-1200.avif 1200w, images/photos/photo-1676288176903-a68732722cce-1600.avif 1600w" sizes="(max-width:760px) 100vw, 52vw"><img src="images/photos/photo-1676288176903-a68732722cce-800.webp" srcset="images/photos/photo-1676288176903-a68732722cce-480.webp 480w, images/photos/photo-1676288176903-a68732722cce-800.webp 800w, images/photos/photo-1676288176903-a68732722cce-1200.webp 1200w, images/photos/photo-1676288176903-a68732722cce-1600.webp 1600w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:60% 40%" loading="lazy" decoding="async"></picture></div>
+        <div class="pr-ph" data-i="4"><picture><source type="image/avif" srcset="images/photos/photo-1633014041037-f5446fb4ce99-480.avif 480w, images/photos/photo-1633014041037-f5446fb4ce99-800.avif 800w, images/photos/photo-1633014041037-f5446fb4ce99-1200.avif 1200w, images/photos/photo-1633014041037-f5446fb4ce99-1600.avif 1600w" sizes="(max-width:760px) 100vw, 52vw"><img src="images/photos/photo-1633014041037-f5446fb4ce99-800.webp" srcset="images/photos/photo-1633014041037-f5446fb4ce99-480.webp 480w, images/photos/photo-1633014041037-f5446fb4ce99-800.webp 800w, images/photos/photo-1633014041037-f5446fb4ce99-1200.webp 1200w, images/photos/photo-1633014041037-f5446fb4ce99-1600.webp 1600w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 50%" loading="lazy" decoding="async"></picture></div>
+        <div class="pr-ph" data-i="5"><picture><source type="image/avif" srcset="images/photos/photo-1621592773340-dbf8760fde8b-480.avif 480w, images/photos/photo-1621592773340-dbf8760fde8b-800.avif 800w, images/photos/photo-1621592773340-dbf8760fde8b-1200.avif 1200w, images/photos/photo-1621592773340-dbf8760fde8b-1600.avif 1600w" sizes="(max-width:760px) 100vw, 52vw"><img src="images/photos/photo-1621592773340-dbf8760fde8b-800.webp" srcset="images/photos/photo-1621592773340-dbf8760fde8b-480.webp 480w, images/photos/photo-1621592773340-dbf8760fde8b-800.webp 800w, images/photos/photo-1621592773340-dbf8760fde8b-1200.webp 1200w, images/photos/photo-1621592773340-dbf8760fde8b-1600.webp 1600w" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:50% 60%" loading="lazy" decoding="async"></picture></div>
           <span class="pr-sweep" aria-hidden="true"></span>
         </div>
         <div class="pr-sol" id="prSol" aria-live="polite">
@@ -1129,7 +1136,7 @@
   </div>
   <div class="pk-list">
     <article class="pk fd" style="--d:0.0s" aria-labelledby="pk-0">
-      <div class="pk-ph"><img src="https://images.unsplash.com/photo-1708805282683-50a060eba80f?w=800&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1708805282683-50a060eba80f?w=500&q=70&auto=format&fit=crop 500w, https://images.unsplash.com/photo-1708805282683-50a060eba80f?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1708805282683-50a060eba80f?w=1100&q=72&auto=format&fit=crop 1100w" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:40% 50%" loading="lazy" decoding="async"></div>
+      <div class="pk-ph"><picture><source type="image/avif" srcset="images/photos/photo-1708805282683-50a060eba80f-480.avif 480w, images/photos/photo-1708805282683-50a060eba80f-800.avif 800w, images/photos/photo-1708805282683-50a060eba80f-1200.avif 1200w" sizes="(max-width:760px) 100vw, 320px"><img src="images/photos/photo-1708805282683-50a060eba80f-800.webp" srcset="images/photos/photo-1708805282683-50a060eba80f-480.webp 480w, images/photos/photo-1708805282683-50a060eba80f-800.webp 800w, images/photos/photo-1708805282683-50a060eba80f-1200.webp 1200w" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:40% 50%" loading="lazy" decoding="async"></picture></div>
       <div class="pk-head">
         <h3 class="pk-name" id="pk-0">Basic</h3>
         <p class="pk-goal">Щоб підтримувати авто чистим і доглянутим</p>
@@ -1148,7 +1155,7 @@
       </div>
     </article>
     <article class="pk featured fd" style="--d:0.1s" aria-labelledby="pk-1">
-      <div class="pk-ph"><img src="https://images.unsplash.com/photo-1632823469850-2f77dd9c7f93?w=800&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1632823469850-2f77dd9c7f93?w=500&q=70&auto=format&fit=crop 500w, https://images.unsplash.com/photo-1632823469850-2f77dd9c7f93?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1632823469850-2f77dd9c7f93?w=1100&q=72&auto=format&fit=crop 1100w" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:50% 40%" loading="lazy" decoding="async"></div>
+      <div class="pk-ph"><picture><source type="image/avif" srcset="images/photos/photo-1632823469850-2f77dd9c7f93-480.avif 480w, images/photos/photo-1632823469850-2f77dd9c7f93-800.avif 800w, images/photos/photo-1632823469850-2f77dd9c7f93-1200.avif 1200w" sizes="(max-width:760px) 100vw, 320px"><img src="images/photos/photo-1632823469850-2f77dd9c7f93-800.webp" srcset="images/photos/photo-1632823469850-2f77dd9c7f93-480.webp 480w, images/photos/photo-1632823469850-2f77dd9c7f93-800.webp 800w, images/photos/photo-1632823469850-2f77dd9c7f93-1200.webp 1200w" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:50% 40%" loading="lazy" decoding="async"></picture></div>
       <div class="pk-head">
         <h3 class="pk-name" id="pk-1">Premium <span class="pk-tag">Найчастіше обирають</span></h3>
         <p class="pk-goal">Щоб повернути кузову блиск і зберегти його надовго</p>
@@ -1168,7 +1175,7 @@
       </div>
     </article>
     <article class="pk fd" style="--d:0.2s" aria-labelledby="pk-2">
-      <div class="pk-ph"><img src="https://images.unsplash.com/photo-1662641220355-7fb77c16f733?w=800&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1662641220355-7fb77c16f733?w=500&q=70&auto=format&fit=crop 500w, https://images.unsplash.com/photo-1662641220355-7fb77c16f733?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1662641220355-7fb77c16f733?w=1100&q=72&auto=format&fit=crop 1100w" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:50% 70%" loading="lazy" decoding="async"></div>
+      <div class="pk-ph"><picture><source type="image/avif" srcset="images/photos/photo-1662641220355-7fb77c16f733-480.avif 480w, images/photos/photo-1662641220355-7fb77c16f733-800.avif 800w, images/photos/photo-1662641220355-7fb77c16f733-1200.avif 1200w" sizes="(max-width:760px) 100vw, 320px"><img src="images/photos/photo-1662641220355-7fb77c16f733-800.webp" srcset="images/photos/photo-1662641220355-7fb77c16f733-480.webp 480w, images/photos/photo-1662641220355-7fb77c16f733-800.webp 800w, images/photos/photo-1662641220355-7fb77c16f733-1200.webp 1200w" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:50% 70%" loading="lazy" decoding="async"></picture></div>
       <div class="pk-head">
         <h3 class="pk-name" id="pk-2">Full Detailing</h3>
         <p class="pk-goal">Комплексне відновлення кузова й салону</p>
@@ -1199,25 +1206,25 @@
     </div>
     <div class="ba-media fd" style="--d:.1s">
     <div class="ba" id="baStage" role="tabpanel" aria-labelledby="ba-tab-polish">
-      <div class="ba-scene t-polish on" data-kind="polish" style="--pos:50% 42%;--mpos:50% 40%">
-        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1588910628735-1be499b27ca7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+      <div class="ba-scene t-polish real on" data-kind="polish" style="--pos:50% 42%;--mpos:50% 40%">
+        <div class="ba-layer ba-after"><img src="images/before-after/polishing/after.webp" srcset="images/before-after/polishing/after.webp 1600w, images/before-after/polishing/after-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Полірування: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="images/before-after/polishing/before.webp" srcset="images/before-after/polishing/before.webp 1600w, images/before-after/polishing/before-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Полірування: авто до робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
       </div>
-      <div class="ba-scene t-interior" data-kind="interior" style="--pos:50% 60%;--mpos:42% 60%">
-        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1682858110563-3f609263d418?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1682858110563-3f609263d418?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+      <div class="ba-scene t-interior real" data-kind="interior" style="--pos:50% 60%;--mpos:42% 60%">
+        <div class="ba-layer ba-after"><img src="images/before-after/interior/after.webp" srcset="images/before-after/interior/after.webp 1600w, images/before-after/interior/after-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Хімчистка салону: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="images/before-after/interior/before.webp" srcset="images/before-after/interior/before.webp 1600w, images/before-after/interior/before-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Хімчистка салону: авто до робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
       </div>
-      <div class="ba-scene t-lights" data-kind="lights" style="--pos:50% 45%;--mpos:40% 45%">
-        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1549207107-2704df6b92ab?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+      <div class="ba-scene t-lights real" data-kind="lights" style="--pos:50% 45%;--mpos:40% 45%">
+        <div class="ba-layer ba-after"><img src="images/before-after/headlights/after.webp" srcset="images/before-after/headlights/after.webp 1600w, images/before-after/headlights/after-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Відновлення фар: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="images/before-after/headlights/before.webp" srcset="images/before-after/headlights/before.webp 1600w, images/before-after/headlights/before-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Відновлення фар: авто до робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
       </div>
-      <div class="ba-scene t-complex" data-kind="complex" style="--pos:50% 58%;--mpos:50% 55%">
-        <div class="ba-layer ba-after"><img src="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-        <div class="ba-layer ba-before"><img src="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=800&q=72&auto=format&fit=crop 800w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=1600&q=74&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1673166105764-a6aa7e0e73a7?w=2200&q=74&auto=format&fit=crop 2200w" sizes="(max-width:760px) 100vw, 60vw" alt="" style="object-position:var(--pos)" loading="lazy" decoding="async"><span class="haze"></span><canvas aria-hidden="true"></canvas></div>
+      <div class="ba-scene t-complex real" data-kind="complex" style="--pos:50% 58%;--mpos:50% 55%">
+        <div class="ba-layer ba-after"><img src="images/before-after/complex/after.webp" srcset="images/before-after/complex/after.webp 1600w, images/before-after/complex/after-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Комплексний детейлінг: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="images/before-after/complex/before.webp" srcset="images/before-after/complex/before.webp 1600w, images/before-after/complex/before-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Комплексний детейлінг: авто до робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
       </div>
       <span class="ba-line" aria-hidden="true"></span>
       <span class="ba-tag b" aria-hidden="true">До</span><span class="ba-tag a" aria-hidden="true">Після</span>
-      <span class="ba-grip" role="slider" tabindex="0" aria-label="Межа між «до» і «після»" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true"><path d="M5.5 1.5 1.5 6l4 4.5M12.5 1.5l4 4.5-4 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="ba-grip" role="slider" tabindex="0" aria-label="Межа між фото «до» і «після»" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="Видно 50% фото «до» і 50% фото «після»" aria-controls="baStage"><svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true"><path d="M5.5 1.5 1.5 6l4 4.5M12.5 1.5l4 4.5-4 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </div>
     <p class="ba-hint" id="baHint"><svg width="34" height="10" viewBox="0 0 34 10" fill="none" aria-hidden="true"><path d="M5 1 1 5l4 4M29 1l4 4-4 4M1 5h32" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Ведіть пальцем по фото</p>
     </div>
@@ -1324,7 +1331,7 @@
       <h2 class="h2 rv" id="faq-h"><span class="ln"><span>Часті питання</span></span><span class="ln"><span class="soft">перед записом</span></span></h2>
       <p class="fq-lead fd" style="--d:.15s">Зібрали те, що питають найчастіше. Не знайшли свого питання? Напишіть, і майстер відповість особисто.</p>
       <div class="fq-card fd" id="fqCard" style="--d:.25s">
-        <div class="fq-ph"><img src="https://images.unsplash.com/photo-1694678505383-676d78ea3b96?w=900&q=72&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1694678505383-676d78ea3b96?w=600&q=70&auto=format&fit=crop 600w, https://images.unsplash.com/photo-1694678505383-676d78ea3b96?w=900&q=72&auto=format&fit=crop 900w" sizes="(max-width:760px) 100vw, 520px" alt="" style="object-position:50% 40%" loading="lazy" decoding="async"></div>
+        <div class="fq-ph"><picture><source type="image/avif" srcset="images/photos/photo-1694678505383-676d78ea3b96-480.avif 480w, images/photos/photo-1694678505383-676d78ea3b96-800.avif 800w, images/photos/photo-1694678505383-676d78ea3b96-1200.avif 1200w" sizes="(max-width:760px) 100vw, 520px"><img src="images/photos/photo-1694678505383-676d78ea3b96-800.webp" srcset="images/photos/photo-1694678505383-676d78ea3b96-480.webp 480w, images/photos/photo-1694678505383-676d78ea3b96-800.webp 800w, images/photos/photo-1694678505383-676d78ea3b96-1200.webp 1200w" sizes="(max-width:760px) 100vw, 520px" alt="" style="object-position:50% 40%" loading="lazy" decoding="async"></picture></div>
         <div class="fq-body">
           <p class="fq-status"><i class="fq-dot" aria-hidden="true"></i><span id="fqStatus">Працюємо щодня з 9:00 до 20:00</span></p>
           <p class="fq-note" id="fqNote">У робочий час відповідаємо в Telegram протягом 15 хвилин.</p>
@@ -1623,6 +1630,7 @@
     x = Math.max(0, Math.min(100, v));
     stage.style.setProperty('--x', x + '%');
     grip.setAttribute('aria-valuenow', Math.round(x));
+    grip.setAttribute('aria-valuetext', 'Видно ' + Math.round(x) + '% фото «до» і ' + (100 - Math.round(x)) + '% фото «після»');
     tagB.style.opacity = x < 14 ? 0 : '';
     tagA.style.opacity = x > 86 ? 0 : '';
   }
@@ -1663,10 +1671,15 @@
     if (lock === null && Math.abs(dx) + Math.abs(dy) > 6) lock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
     if (lock === 'x') { e.preventDefault(); cancelAnimationFrame(anim); target = pct(e.touches[0].clientX); set(target); hint.classList.add('gone'); }
   }, { passive: false });
+  // клавіатура: стрілки — крок 4% (з Shift — 10%), PageUp/PageDown — 20%, Home/End — краї. Без анімації, щоб значення змінювалось одразу
+  const jump = v => { cancelAnimationFrame(anim); cancelAnimationFrame(raf); anim = raf = null; target = Math.max(0, Math.min(100, v)); set(target); };
   grip.addEventListener('keydown', e => {
     const st = e.shiftKey ? 10 : 4;
+    const goTo = jump;
     if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(x - st); }
     if (e.key === 'ArrowRight') { e.preventDefault(); goTo(x + st); }
+    if (e.key === 'PageDown') { e.preventDefault(); goTo(x - 20); }
+    if (e.key === 'PageUp') { e.preventDefault(); goTo(x + 20); }
     if (e.key === 'Home') { e.preventDefault(); goTo(0); }
     if (e.key === 'End') { e.preventDefault(); goTo(100); }
   });
@@ -1674,6 +1687,7 @@
   /* стан «до»: подряпини-павутинка, пил і плями поверх фото */
   function texture(scene) {
     const cv = scene.querySelector('canvas');
+    if (!cv) return true; // справжні фото «до» — без штучної текстури
     const r = stage.getBoundingClientRect();
     if (!r.width) return false;
     const dpr = Math.min(devicePixelRatio || 1, 2);
