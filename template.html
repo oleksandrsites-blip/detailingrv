@@ -904,9 +904,16 @@
   .es-submit{width:100%;margin-top:28px;border:0;cursor:pointer;font-family:inherit;padding:19px 26px}
   .es-submit[disabled]{opacity:.6;cursor:progress}
   .es-note{font-size:13px;line-height:1.55;color:#7C7D81;margin-top:14px;text-align:center}
-  .es-err{display:none;margin-top:14px;font-size:14px;line-height:1.5;color:#F08A82;text-align:center}
+  .es-err{display:none;margin-top:16px;padding:16px;border-radius:8px;border:1px solid rgba(240,138,130,.35);background:rgba(240,138,130,.06);text-align:center}
   .es-err.on{display:block}
-  .es-err a{color:var(--white);border-bottom:1px solid rgba(243,243,241,.4)}
+  .es-err p{font-size:14px;line-height:1.5;color:#F4A39C;margin-bottom:12px}
+  .es-err .btn-o{width:100%;min-height:48px}
+  .ph-note{font-size:13px;line-height:1.5;color:#B5B5B1;margin-top:8px}
+  .ph-note:empty{display:none}
+  .th.busy{display:grid;place-items:center}
+  .th.busy::after{content:"";width:18px;height:18px;border-radius:50%;border:2px solid rgba(243,243,241,.25);border-top-color:var(--white);animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .es-submit[aria-busy="true"]{opacity:.7;cursor:progress}
   .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
   .es-done{display:none;text-align:center;padding:clamp(28px, calc(var(--vh, 1svh) * 7), 64px) 8px}
@@ -1216,6 +1223,7 @@
 
     <form class="es-form fd" id="esForm" name="estimate" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data" novalidate style="--d:.1s">
       <input type="hidden" name="form-name" value="estimate">
+      <input type="hidden" name="site" value="{{brand}}">
       <p class="hp"><label>Не заповнюйте це поле <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
       <input type="file" name="photo1" accept="image/*" hidden><input type="file" name="photo2" accept="image/*" hidden><input type="file" name="photo3" accept="image/*" hidden><input type="file" name="photo4" accept="image/*" hidden><input type="file" name="photo5" accept="image/*" hidden>
       <h3>Швидка оцінка авто</h3>
@@ -1231,8 +1239,9 @@
           <span class="msg">Перевірте номер</span>
         </div>
         <div class="fld full">
-          <input class="inp" id="f-car" name="car" type="text" placeholder=" " autocomplete="off">
+          <input class="inp" id="f-car" name="car" type="text" placeholder=" " autocomplete="off" required>
           <label for="f-car">Марка та модель авто</label>
+          <span class="msg">Вкажіть марку й модель</span>
         </div>
         <div class="fld full">
           <textarea class="inp" id="f-msg" name="message" placeholder=" " rows="1"></textarea>
@@ -1245,16 +1254,20 @@
             <strong>Додати фото авто</strong>
             <small>3–5 фото</small>
           </label>
-          <div class="thumbs" id="esThumbs"></div>
+          <div class="thumbs" id="esThumbs" aria-live="polite"></div>
+          <p class="ph-note" id="esPhNote" role="status"></p>
         </div>
       </div>
       <button class="btn es-submit" type="submit" id="esSubmit">Оцінити авто за фото <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="1.5" y="4" width="15" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9.5" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 4l1.2-2h3.6L12 4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
       <p class="es-note">Без зобов’язань. Відповімо протягом години.</p>
-      <p class="es-err" id="esErr" role="alert">Не вдалося надіслати заявку. Спробуйте ще раз або напишіть нам у <a href="{{contacts.telegram.url}}" target="_blank" rel="noopener">Telegram</a>.</p>
+      <div class="es-err" id="esErr" role="alert">
+        <p>Не вдалося надіслати заявку. Перевірте інтернет і спробуйте ще раз або напишіть нам напряму.</p>
+        <a class="btn-o" href="{{contacts.telegram.url}}" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.5 3.5 2.8 10.7c-.9.4-.9 1.6.1 1.9l4.6 1.5 1.8 5.6c.3.8 1.3 1 1.9.4l2.6-2.5 4.7 3.5c.7.5 1.7.1 1.9-.7l3-15.1c.2-1-.8-1.8-1.7-1.3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8 14 9-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Написати в Telegram</a>
+      </div>
       <div class="es-done" aria-live="polite">
         <div class="lamp" aria-hidden="true"></div>
-        <h3>Заявку надіслано</h3>
-        <p>Дякуємо! Майстер подивиться фото й зв’яжеться з вами протягом години.</p>
+        <h3>Дякуємо!</h3>
+        <p>Заявку отримали. Відповімо протягом години.</p>
         <a class="link" href="{{contacts.telegram.url}}" target="_blank" rel="noopener">Написати нам у Telegram</a>
       </div>
     </form>
@@ -1681,46 +1694,95 @@
 </script>
 
 <script>
-/* форма оцінки: фото, телефон, відправка в Netlify Forms */
+/* форма оцінки: фото стискаються в браузері, заявка йде в Telegram-бот (Netlify Function)
+   і паралельно в Netlify Forms як резерв. Успіх — якщо дійшла хоча б в одне місце. */
 (() => {
   const form = document.getElementById('esForm');
   const input = document.getElementById('f-photos');
   const drop = document.getElementById('esDrop');
   const thumbs = document.getElementById('esThumbs');
+  const note = document.getElementById('esPhNote');
   const btn = document.getElementById('esSubmit');
   const err = document.getElementById('esErr');
   const phone = document.getElementById('f-phone');
-  const MAX = 5;
-  let files = [];
+  const MAX = 5, SIDE = 1600, QUALITY = .8, BUDGET = 5.5e6; // 5,5 МБ на всі фото: запас до лімітів Netlify (6 МБ функція, 8 МБ форми)
+  let photos = [];   // { id, file (стиснений JPEG) | null поки обробляється }
+  let queue = Promise.resolve(), seq = 0, sending = false;
 
-  // фото: додаємо, показуємо мініатюри, можна прибрати
+  // ---------- стиснення: найдовша сторона ≤1600 px, JPEG ~0.8 ----------
+  async function decode(file) {
+    if ('createImageBitmap' in window) {
+      try { return await createImageBitmap(file, { imageOrientation: 'from-image' }); } catch (e) {}
+    }
+    return new Promise((res, rej) => {
+      const url = URL.createObjectURL(file), im = new Image();
+      im.onload = () => { URL.revokeObjectURL(url); res(im); };
+      im.onerror = () => { URL.revokeObjectURL(url); rej(new Error('decode')); };
+      im.src = url;
+    });
+  }
+  async function shrink(file, side = SIDE, q = QUALITY) {
+    const img = await decode(file);
+    const w = img.width, h = img.height, k = Math.min(1, side / Math.max(w, h));
+    const c = document.createElement('canvas');
+    c.width = Math.round(w * k); c.height = Math.round(h * k);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    if (img.close) img.close();
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', q));
+    c.width = c.height = 0; // звільняємо пам’ять (важливо для iPhone)
+    if (!blob) throw new Error('encode');
+    return new File([blob], (file.name.replace(/\.[^.]+$/, '') || 'photo') + '.jpg', { type: 'image/jpeg' });
+  }
+
+  // ---------- мініатюри ----------
   function render() {
     thumbs.innerHTML = '';
-    files.forEach((f, i) => {
-      const d = document.createElement('div'); d.className = 'th';
-      const im = document.createElement('img'); im.alt = 'Фото ' + (i + 1); im.src = URL.createObjectURL(f);
-      im.onload = () => URL.revokeObjectURL(im.src);
+    photos.forEach((p, i) => {
+      const d = document.createElement('div'); d.className = 'th' + (p.file ? '' : ' busy');
+      if (p.file) {
+        const im = document.createElement('img'); im.alt = 'Фото авто ' + (i + 1); im.src = p.url;
+        d.append(im);
+      }
       const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Прибрати фото ' + (i + 1)); b.textContent = '×';
-      b.onclick = () => { files.splice(i, 1); render(); };
-      d.append(im, b); thumbs.append(d);
+      b.onclick = () => { if (p.url) URL.revokeObjectURL(p.url); photos = photos.filter(x => x !== p); render(); };
+      d.append(b); thumbs.append(d);
     });
-    drop.querySelector('strong').textContent = files.length ? 'Додано ' + files.length + ' з ' + MAX + ' фото' : 'Додати фото авто';
+    drop.querySelector('strong').textContent = photos.length ? 'Додано ' + photos.length + ' з ' + MAX + ' фото' : 'Додати фото авто';
   }
   function add(list) {
-    [...list].filter(f => f.type.startsWith('image/') || /\.(heic|heif)$/i.test(f.name)).forEach(f => { if (files.length < MAX) files.push(f); });
-    render();
+    let skipped = 0, failed = 0;
+    const room = MAX - photos.length;
+    const picked = [...list].filter(f => f.type.startsWith('image/') || /\.(heic|heif|jpe?g|png|webp)$/i.test(f.name));
+    if (picked.length > room) skipped = picked.length - room;
+    picked.slice(0, Math.max(0, room)).forEach(f => {
+      const p = { id: ++seq, file: null, url: null };
+      photos.push(p);
+      // по одному, щоб не переповнити пам’ять телефона
+      queue = queue.then(async () => {
+        if (!photos.includes(p)) return;
+        try { p.file = await shrink(f); p.url = URL.createObjectURL(p.file); }
+        catch (e) { photos = photos.filter(x => x !== p); failed++; }
+        render(); say(skipped, failed);
+      });
+    });
+    render(); say(skipped, failed);
+  }
+  function say(skipped, failed) {
+    const t = [];
+    if (skipped) t.push('Можна додати до ' + MAX + ' фото, зайві не додано.');
+    if (failed) t.push('Одне з фото не вдалося відкрити. Спробуйте зберегти його як JPG.');
+    note.textContent = t.join(' ');
   }
   input.addEventListener('change', () => { add(input.files); input.value = ''; });
   ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
   ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
   drop.addEventListener('drop', e => add(e.dataTransfer.files));
 
-  // телефон: +380 XX XXX XX XX
+  // ---------- телефон: +380 XX XXX XX XX ----------
   function fmt(v) {
     let d = v.replace(/\D/g, '');
     if (d.startsWith('380')) d = d.slice(3); else if (d.startsWith('80')) d = d.slice(2);
-    d = d.replace(/^0+/, '');
-    d = d.slice(0, 9);
+    d = d.replace(/^0+/, '').slice(0, 9);
     const p = [d.slice(0, 2), d.slice(2, 5), d.slice(5, 7), d.slice(7, 9)].filter(Boolean);
     return '+380' + (p.length ? ' ' + p.join(' ') : ' ');
   }
@@ -1729,57 +1791,65 @@
   phone.addEventListener('input', () => { phone.value = fmt(phone.value); });
 
   const msg = document.getElementById('f-msg');
-  const grow = () => { msg.style.height = 'auto'; msg.style.height = Math.max(58, msg.scrollHeight) + 'px'; };
-  msg.addEventListener('input', grow);
+  msg.addEventListener('input', () => { msg.style.height = 'auto'; msg.style.height = Math.max(58, msg.scrollHeight) + 'px'; });
+
+  // ---------- перевірка ----------
   const fld = el => el.closest('.fld');
   form.querySelectorAll('.inp').forEach(el => el.addEventListener('input', () => fld(el).classList.remove('err')));
   function check() {
-    let ok = true, first = null;
-    const name = form.elements.name;
-    if (!name.value.trim()) { fld(name).classList.add('err'); ok = false; first = first || name; }
-    if (phone.value.replace(/\D/g, '').length !== 12) { fld(phone).classList.add('err'); ok = false; first = first || phone; }
+    let first = null;
+    const bad = el => { fld(el).classList.add('err'); el.setAttribute('aria-invalid', 'true'); first = first || el; };
+    form.querySelectorAll('.inp').forEach(el => el.removeAttribute('aria-invalid'));
+    if (!form.elements.name.value.trim()) bad(form.elements.name);
+    if (phone.value.replace(/\D/g, '').length !== 12) bad(phone);
+    if (!form.elements.car.value.trim()) bad(form.elements.car);
     if (first) first.focus();
-    return ok;
+    return !first;
   }
 
-  // стискаємо фото, щоб уся заявка вмістилась у ліміт Netlify (8 МБ)
-  function shrink(file) {
-    return new Promise(res => {
-      const url = URL.createObjectURL(file);
-      const im = new Image();
-      im.onload = () => {
-        const k = Math.min(1, 1600 / Math.max(im.width, im.height));
-        const c = document.createElement('canvas');
-        c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
-        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
-        URL.revokeObjectURL(url);
-        c.toBlob(b => res(b ? new File([b], (file.name.replace(/\.\w+$/, '') || 'photo') + '.jpg', { type: 'image/jpeg' }) : (file.size < 1.4e6 ? file : null)), 'image/jpeg', .82);
-      };
-      im.onerror = () => { URL.revokeObjectURL(url); res(file.size < 1.4e6 ? file : null); };
-      im.src = url;
-    });
+  // ---------- відправка ----------
+  async function fit(list) {
+    // якщо разом більше бюджету — стискаємо сильніше
+    let total = list.reduce((a, f) => a + f.size, 0);
+    if (total <= BUDGET) return list;
+    const out = [];
+    for (const f of list) out.push(await shrink(f, 1280, .7));
+    return out;
   }
+  function build(files) {
+    const fd = new FormData(form);
+    for (let i = 1; i <= MAX; i++) fd.delete('photo' + i);
+    files.forEach((f, i) => fd.append('photo' + (i + 1), f, 'photo' + (i + 1) + '.jpg'));
+    return fd;
+  }
+  const post = (url, body) => fetch(url, { method: 'POST', body }).then(r => { if (!r.ok) throw new Error(url + ' ' + r.status); return true; });
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
+    if (sending) return;
     err.classList.remove('on');
     if (!check()) return;
-    btn.disabled = true;
+    sending = true;
+    btn.disabled = true; btn.setAttribute('aria-busy', 'true');
     const label = btn.firstChild.nodeValue;
     btn.firstChild.nodeValue = 'Надсилаємо… ';
     try {
-      const fd = new FormData(form);
-      for (let i = 1; i <= MAX; i++) fd.delete('photo' + i);
-      const small = (await Promise.all(files.map(shrink))).filter(Boolean);
-      small.forEach((f, i) => fd.append('photo' + (i + 1), f, f.name));
-      const r = await fetch('/', { method: 'POST', body: fd });
-      if (!r.ok) throw new Error(r.status);
+      await queue; // дочекатися фото, які ще стискаються
+      const files = await fit(photos.map(p => p.file).filter(Boolean));
+      const results = await Promise.allSettled([
+        post('/api/estimate', build(files)), // Telegram-бот
+        post('/', build(files))              // Netlify Forms (резерв)
+      ]);
+      if (!results.some(r => r.status === 'fulfilled')) throw new Error('both failed');
       form.classList.add('sent');
       form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      photos.forEach(p => p.url && URL.revokeObjectURL(p.url)); photos = [];
     } catch (x) {
       err.classList.add('on');
+      err.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } finally {
-      btn.disabled = false; btn.firstChild.nodeValue = label;
+      sending = false;
+      btn.disabled = false; btn.removeAttribute('aria-busy'); btn.firstChild.nodeValue = label;
     }
   });
 })();
