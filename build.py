@@ -212,6 +212,7 @@ def derive(data):
         text = html.unescape(re.sub(r"<[^>]+>", "", line["text"]))
         if len(text) + text.count("-") > 14:  # по дефісу браузер теж переносить
             print(f"увага: рядок заголовка «{text}» на телефоні перенесеться — скоротіть (до ~14 символів, дефіс рахується за два)")
+    og = data["seo"]["og_image"]
     hex_ = data["accent"].lstrip("#")
     hours = data["hours"]
     data["_"] = {
@@ -220,6 +221,8 @@ def derive(data):
         "solutions": json.dumps([p["solution"] for p in data["problems"]], ensure_ascii=False),
         "caps": json.dumps([[r["before"], r["after"]] for r in data["results"]], ensure_ascii=False),
         "hours": json.dumps(_week(hours), ensure_ascii=False),
+        # OG-картинка: відносний шлях → повна адреса (Telegram, Facebook тощо потребують абсолютного URL)
+        "og_image": og if og.startswith("http") or not data.get("site_url") else data["site_url"].rstrip("/") + "/" + og.lstrip("/"),
         # головне фото лежить локально → preload замість preconnect до Unsplash
         "local_photos": bool(_unsplash(data["hero"]["photo"]) and (LOCAL / f"{data['hero']['photo']}-1200.webp").exists()),
     }
