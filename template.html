@@ -14,7 +14,9 @@
 <link rel="icon" href="{{brand_assets}}/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="{{brand_assets}}/apple-touch-icon.png">
 {{/brand_assets}}{{^brand_assets}}<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B0C0E'/%3E%3Crect x='14' y='22' width='36' height='4' rx='2' fill='{{_.accent_url}}'/%3E%3Crect x='20' y='32' width='24' height='3' rx='1.5' fill='{{_.accent_url}}' opacity='.7'/%3E%3Crect x='25' y='41' width='14' height='2.5' rx='1.25' fill='{{_.accent_url}}' opacity='.45'/%3E%3C/svg%3E">
-{{/brand_assets}}<meta property="og:type" content="website">
+{{/brand_assets}}{{#site_url}}<link rel="canonical" href="{{site_url}}/">
+<meta property="og:url" content="{{site_url}}/">
+{{/site_url}}<meta property="og:type" content="website">
 <meta property="og:title" content="{{seo.title}}">
 <meta property="og:description" content="{{seo.og_description}}">
 <meta property="og:image" content="{{_.og_image}}">
@@ -24,13 +26,12 @@
 {{/seo.og_image_alt}}<meta property="og:site_name" content="{{brand}}">
 <meta property="og:locale" content="uk_UA">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 {{^_.local_photos}}<link rel="preconnect" href="https://images.unsplash.com">
 {{/_.local_photos}}{{#_.local_photos}}<link rel="preload" as="image" type="image/avif" imagesrcset="{{{hero.photo|avifset:800,0;1200,0;1600,0;2000,0}}}" imagesizes="(max-width:760px) 120vw, 50vw" fetchpriority="high">
 {{/_.local_photos}}
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/manrope-var.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  @font-face{font-family:"Manrope";src:url("fonts/manrope-var.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
   picture{display:contents}
   :root{
     --black:#0B0C0E;        /* obsidian graphite — основний фон */
@@ -1020,6 +1021,7 @@
     .js .top,.js .row{animation:none;opacity:1}
   }
 </style>
+<script type="application/ld+json">{{{_.jsonld}}}</script>
 </head>
 <body>
 
@@ -1085,7 +1087,7 @@
     <div class="pr-home" id="prHome">
       <div class="pr-stage fd" id="prStage" role="region" aria-labelledby="pr-btn-0" style="--d:.1s">
         <div class="pr-photos">
-{{#problems}}        <div class="pr-ph{{#@first}} on{{/@first}}" data-i="{{@i}}"><picture><source type="image/avif" srcset="{{{photo|avifset:480,0;800,0;1200,0;1600,0}}}" sizes="(max-width:760px) 100vw, 52vw"><img src="{{{photo|src:800,72}}}" srcset="{{{photo|srcset:480,70;800,72;1200,72;1600,72}}}" sizes="(max-width:760px) 100vw, 52vw" alt="" style="object-position:{{pos}}" loading="lazy" decoding="async"></picture></div>
+{{#problems}}        <div class="pr-ph{{#@first}} on{{/@first}}" data-i="{{@i}}"><picture><source type="image/avif" srcset="{{{photo|avifset:480,0;800,0;1200,0;1600,0}}}" sizes="(max-width:760px) 100vw, 52vw"><img src="{{{photo|src:800,72}}}" srcset="{{{photo|srcset:480,70;800,72;1200,72;1600,72}}}" sizes="(max-width:760px) 100vw, 52vw" alt="{{solution.h}}: {{title}}" style="object-position:{{pos}}" loading="lazy" decoding="async"></picture></div>
 {{/problems}}          <span class="pr-sweep" aria-hidden="true"></span>
         </div>
         <div class="pr-sol" id="prSol" aria-live="polite">
@@ -1109,7 +1111,7 @@
   </div>
   <div class="pk-list">
 {{#packages}}    <article class="pk{{#featured}} featured{{/featured}} fd" style="--d:{{@i|step:0.1,1}}s" aria-labelledby="pk-{{@i}}">
-      <div class="pk-ph"><picture><source type="image/avif" srcset="{{{photo|avifset:480,0;800,0;1200,0}}}" sizes="(max-width:760px) 100vw, 320px"><img src="{{{photo|src:800,72}}}" srcset="{{{photo|srcset:480,70;800,72;1200,72}}}" sizes="(max-width:760px) 100vw, 320px" alt="" style="object-position:{{pos}}" loading="lazy" decoding="async"></picture></div>
+      <div class="pk-ph"><picture><source type="image/avif" srcset="{{{photo|avifset:480,0;800,0;1200,0}}}" sizes="(max-width:760px) 100vw, 320px"><img src="{{{photo|src:800,72}}}" srcset="{{{photo|srcset:480,70;800,72;1200,72}}}" sizes="(max-width:760px) 100vw, 320px" alt="Комплекс {{name}}" style="object-position:{{pos}}" loading="lazy" decoding="async"></picture></div>
       <div class="pk-head">
         <h3 class="pk-name" id="pk-{{@i}}">{{name}}{{#tag}} <span class="pk-tag">{{tag}}</span>{{/tag}}</h3>
         <p class="pk-goal">{{goal}}</p>
@@ -1208,7 +1210,7 @@
       <h2 class="h2 rv" id="faq-h"><span class="ln"><span>Часті питання</span></span><span class="ln"><span class="soft">перед записом</span></span></h2>
       <p class="fq-lead fd" style="--d:.15s">Зібрали те, що питають найчастіше. Не знайшли свого питання? Напишіть, і майстер відповість особисто.</p>
       <div class="fq-card fd" id="fqCard" style="--d:.25s">
-        <div class="fq-ph"><picture><source type="image/avif" srcset="{{{faq_photo.photo|avifset:480,0;800,0;1200,0}}}" sizes="(max-width:760px) 100vw, 520px"><img src="{{{faq_photo.photo|src:800,72}}}" srcset="{{{faq_photo.photo|srcset:480,70;800,72;1200,72}}}" sizes="(max-width:760px) 100vw, 520px" alt="" style="object-position:{{faq_photo.pos}}" loading="lazy" decoding="async"></picture></div>
+        <div class="fq-ph"><picture><source type="image/avif" srcset="{{{faq_photo.photo|avifset:480,0;800,0;1200,0}}}" sizes="(max-width:760px) 100vw, 520px"><img src="{{{faq_photo.photo|src:800,72}}}" srcset="{{{faq_photo.photo|srcset:480,70;800,72;1200,72}}}" sizes="(max-width:760px) 100vw, 520px" alt="Майстер студії {{brand}} за роботою" style="object-position:{{faq_photo.pos}}" loading="lazy" decoding="async"></picture></div>
         <div class="fq-body">
           <p class="fq-status"><i class="fq-dot" aria-hidden="true"></i><span id="fqStatus">{{hours.label}}</span></p>
           <p class="fq-note" id="fqNote">У робочий час відповідаємо в Telegram протягом 15 хвилин.</p>

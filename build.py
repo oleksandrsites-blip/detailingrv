@@ -206,6 +206,41 @@ def _pairs(data, client_dir):
             print(f"увага: у {folder} немає before/after — показую фото з ефектом «до»")
 
 
+def _strip(h):
+    return html.unescape(re.sub(r"<[^>]+>", "", h)).strip()
+
+
+def _jsonld(data):
+    """Структуровані дані для Google: детейлінг-студія (AutoRepair) і блок питань (FAQPage)."""
+    site = data.get("site_url", "").rstrip("/")
+    c, h = data["contacts"], data["hours"]
+    names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    week = h.get("week") or [[h["open"], h["close"]] if d in h["days"] else None for d in range(7)]
+    hours = [{"@type": "OpeningHoursSpecification", "dayOfWeek": names[d], "opens": w[0], "closes": w[1]} for d, w in enumerate(week) if w]
+    prices = [int(re.sub(r"\D", "", p["price"])) for p in data.get("packages", []) if re.sub(r"\D", "", p.get("price", ""))]
+    biz = {
+        "@type": "AutoRepair",
+        "name": data["brand"],
+        "description": data["seo"]["description"],
+        "telephone": c["phone_tel"],
+        "address": {"@type": "PostalAddress", "addressLocality": data.get("city", "Рівне"), "addressCountry": "UA"},
+        "areaServed": data.get("city", "Рівне"),
+        "openingHoursSpecification": hours,
+        "sameAs": [v["url"] for k, v in c.items() if isinstance(v, dict) and v.get("url")],
+    }
+    if prices:
+        biz["priceRange"] = f"{min(prices)}–{max(prices)} грн"
+    if site:
+        biz.update({"@id": site + "/#business", "url": site + "/", "image": data["_"]["og_image"]})
+        if data.get("brand_assets"):
+            biz["logo"] = f"{site}/{data['brand_assets']}/apple-touch-icon.png"
+    faq = {"@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": _strip(q["q"]), "acceptedAnswer": {"@type": "Answer", "text": _strip(q["a"])}}
+        for q in data.get("faq", [])]}
+    out = json.dumps({"@context": "https://schema.org", "@graph": [biz, faq]}, ensure_ascii=False)
+    return out.replace("</", "<\\/")
+
+
 def derive(data):
     # на телефоні в рядок заголовка вміщається ~14 символів, довший переноситься
     for line in data["hero"]["title"]:
@@ -226,6 +261,7 @@ def derive(data):
         # головне фото лежить локально → preload замість preconnect до Unsplash
         "local_photos": bool(_unsplash(data["hero"]["photo"]) and (LOCAL / f"{data['hero']['photo']}-1200.webp").exists()),
     }
+    data["_"]["jsonld"] = _jsonld(data)
     return data
 
 
