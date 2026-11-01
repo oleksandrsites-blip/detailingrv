@@ -1744,8 +1744,8 @@
 </script>
 
 <script>
-/* форма оцінки: фото стискаються в браузері, заявка йде в Telegram-бот (Netlify Function)
-   і паралельно в Netlify Forms як резерв. Успіх — якщо дійшла хоча б в одне місце. */
+/* форма оцінки: фото стискаються в браузері, заявка йде в Telegram-бот (функція /api/estimate:
+   Cloudflare Pages або Netlify). Якщо бот недоступний — резерв у Netlify Forms (лише на Netlify). */
 (() => {
   const form = document.getElementById('esForm');
   const input = document.getElementById('f-photos');
@@ -1886,11 +1886,9 @@
     try {
       await queue; // дочекатися фото, які ще стискаються
       const files = await fit(photos.map(p => p.file).filter(Boolean));
-      const results = await Promise.allSettled([
-        post('/api/estimate', build(files)), // Telegram-бот
-        post('/', build(files))              // Netlify Forms (резерв)
-      ]);
-      if (!results.some(r => r.status === 'fulfilled')) throw new Error('both failed');
+      // спершу Telegram-бот; якщо він не відповів — резервна копія в Netlify Forms (працює лише на Netlify)
+      try { await post('/api/estimate', build(files)); }
+      catch (x) { await post('/', build(files)); }
       form.classList.add('sent');
       form.scrollIntoView({ behavior: 'smooth', block: 'center' });
       photos.forEach(p => p.url && URL.revokeObjectURL(p.url)); photos = [];

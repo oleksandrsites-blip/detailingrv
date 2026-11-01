@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://detailingrv.netlify.app/sitemap.xml
+Sitemap: https://detailingrv.pages.dev/sitemap.xml

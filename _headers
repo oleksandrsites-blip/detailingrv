@@ -1,0 +1,8 @@
+# Кеш у браузері: шрифт не змінюється, фото — на 30 днів
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/images/*
+  Cache-Control: public, max-age=2592000
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
