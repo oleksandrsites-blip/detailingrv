@@ -537,6 +537,7 @@
   .ba-before canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
   /* справжні фото «до»: без штучних ефектів, той самий тон, що й «після» */
   .ba-scene.real .ba-before img{filter:grayscale(1) contrast(1.14) brightness(.96)}
+.ba-scene.real .ba-layer img{filter:none !important} /* реальні фото клієнта — у природних кольорах */
 
   .ba-line{
     position:absolute;top:0;bottom:0;left:var(--x);z-index:5;width:2px;margin-left:-1px;pointer-events:none;
@@ -1237,18 +1238,18 @@
       <p class="ba-lead fd" style="--d:.15s">Перетягніть лампу по фото й порівняйте: зліва авто до детейлінгу, справа після.</p>
     </div>
     <div class="ba-media fd" style="--d:.1s">
-    <div class="ba" id="baStage" role="tabpanel" aria-labelledby="ba-tab-polish">
-      <div class="ba-scene t-polish real on" data-kind="polish" style="--pos:50% 42%;--mpos:50% 40%">
+    <div class="ba" id="baStage" role="tabpanel" aria-labelledby="ba-tab-interior">
+      <div class="ba-scene t-interior real on" data-kind="interior" style="--pos:50% 62%;--mpos:50% 60%">
+        <div class="ba-layer ba-after"><img src="images/before-after/cabin/after.webp" srcset="images/before-after/cabin/after.webp 1600w, images/before-after/cabin/after-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Хімчистка салону: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="images/before-after/cabin/before.webp" srcset="images/before-after/cabin/before.webp 1600w, images/before-after/cabin/before-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Хімчистка салону: авто до робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+      </div>
+      <div class="ba-scene t-mats real" data-kind="mats" style="--pos:50% 55%;--mpos:50% 55%">
+        <div class="ba-layer ba-after"><img src="images/before-after/mats/after.webp" srcset="images/before-after/mats/after.webp 1600w, images/before-after/mats/after-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Чистка підлоги: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+        <div class="ba-layer ba-before"><img src="images/before-after/mats/before.webp" srcset="images/before-after/mats/before.webp 1600w, images/before-after/mats/before-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Чистка підлоги: авто до робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
+      </div>
+      <div class="ba-scene t-polish real" data-kind="polish" style="--pos:50% 42%;--mpos:50% 40%">
         <div class="ba-layer ba-after"><img src="images/before-after/polishing/after.webp" srcset="images/before-after/polishing/after.webp 1600w, images/before-after/polishing/after-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Полірування: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
         <div class="ba-layer ba-before"><img src="images/before-after/polishing/before.webp" srcset="images/before-after/polishing/before.webp 1600w, images/before-after/polishing/before-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Полірування: авто до робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-      </div>
-      <div class="ba-scene t-interior real" data-kind="interior" style="--pos:50% 60%;--mpos:42% 60%">
-        <div class="ba-layer ba-after"><img src="images/before-after/interior/after.webp" srcset="images/before-after/interior/after.webp 1600w, images/before-after/interior/after-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Хімчистка салону: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-        <div class="ba-layer ba-before"><img src="images/before-after/interior/before.webp" srcset="images/before-after/interior/before.webp 1600w, images/before-after/interior/before-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Хімчистка салону: авто до робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-      </div>
-      <div class="ba-scene t-lights real" data-kind="lights" style="--pos:50% 45%;--mpos:40% 45%">
-        <div class="ba-layer ba-after"><img src="images/before-after/headlights/after.webp" srcset="images/before-after/headlights/after.webp 1600w, images/before-after/headlights/after-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Відновлення фар: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
-        <div class="ba-layer ba-before"><img src="images/before-after/headlights/before.webp" srcset="images/before-after/headlights/before.webp 1600w, images/before-after/headlights/before-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Відновлення фар: авто до робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
       </div>
       <div class="ba-scene t-complex real" data-kind="complex" style="--pos:50% 58%;--mpos:50% 55%">
         <div class="ba-layer ba-after"><img src="images/before-after/complex/after.webp" srcset="images/before-after/complex/after.webp 1600w, images/before-after/complex/after-800.webp 800w" sizes="(max-width:760px) 100vw, 60vw" alt="Комплексний детейлінг: авто після робіт" style="object-position:var(--pos)" loading="lazy" decoding="async"></div>
@@ -1261,14 +1262,14 @@
     <p class="ba-hint" id="baHint"><svg width="34" height="10" viewBox="0 0 34 10" fill="none" aria-hidden="true"><path d="M5 1 1 5l4 4M29 1l4 4-4 4M1 5h32" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Ведіть пальцем по фото</p>
     </div>
     <div class="ba-tabs fd" style="--d:.2s" role="tablist" aria-label="Вид робіт">
-      <button class="ba-tab" role="tab" id="ba-tab-polish" aria-selected="true" aria-controls="baStage" data-i="0">Полірування</button>
-      <button class="ba-tab" role="tab" id="ba-tab-interior" aria-selected="false" aria-controls="baStage" data-i="1" tabindex="-1">Хімчистка салону</button>
-      <button class="ba-tab" role="tab" id="ba-tab-lights" aria-selected="false" aria-controls="baStage" data-i="2" tabindex="-1">Відновлення фар</button>
+      <button class="ba-tab" role="tab" id="ba-tab-interior" aria-selected="true" aria-controls="baStage" data-i="0">Хімчистка салону</button>
+      <button class="ba-tab" role="tab" id="ba-tab-mats" aria-selected="false" aria-controls="baStage" data-i="1" tabindex="-1">Чистка підлоги</button>
+      <button class="ba-tab" role="tab" id="ba-tab-polish" aria-selected="false" aria-controls="baStage" data-i="2" tabindex="-1">Полірування</button>
       <button class="ba-tab" role="tab" id="ba-tab-complex" aria-selected="false" aria-controls="baStage" data-i="3" tabindex="-1">Комплексний детейлінг</button>
     </div>
     <div class="ba-caps fd" id="baCaps" style="--d:.25s">
-        <p class="ba-cap"><b>До</b><span>Тьмяний лак, павутинка подряпин і сліди від мийок.</span></p>
-        <p class="ba-cap"><b>Після</b><span>Глибокий колір і чисті, дзеркальні відблиски на кузові.</span></p>
+        <p class="ba-cap"><b>До</b><span>Пісок, хвоя й бруд у ворсі підлоги та під сидіннями.</span></p>
+        <p class="ba-cap"><b>Після</b><span>Чистий ворс, пластик і стики — салон як після заводу.</span></p>
     </div>
   </div>
 </section>
@@ -1654,7 +1655,7 @@
   const tabs = [...document.querySelectorAll('.ba-tab')];
   const caps = document.getElementById('baCaps');
   const hint = document.getElementById('baHint');
-  const CAPS = [["Тьмяний лак, павутинка подряпин і сліди від мийок.", "Глибокий колір і чисті, дзеркальні відблиски на кузові."], ["Плями, пил у стиках і затерта, засалена шкіра.", "Чисті сидіння, пластик і стики, без різкого запаху хімії."], ["Помутніння й жовтизна, світло розсіюється.", "Прозора оптика й свіжий вигляд передньої частини авто."], ["Втомлений вигляд і кузова, і салону, і дрібних деталей.", "Авто доглянуте повністю, від лаку до стиків у салоні."]];
+  const CAPS = [["Пісок, хвоя й бруд у ворсі підлоги та під сидіннями.", "Чистий ворс, пластик і стики — салон як після заводу."], ["Наліт, бруд і сліди вологи, в'їдені в килим.", "Глибоко вичищений килим без плям і запаху."], ["Тьмяний лак, павутинка подряпин і сліди від мийок.", "Глибокий колір і чисті, дзеркальні відблиски на кузові."], ["Втомлений вигляд і кузова, і салону, і дрібних деталей.", "Авто доглянуте повністю, від лаку до стиків у салоні."]];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let x = 50, target = 50, raf = null, anim = null, cur = 0, sceneT = null;
 
