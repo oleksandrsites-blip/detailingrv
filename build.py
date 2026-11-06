@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Збирає сайт клієнта з template.html і JSON-файлу з даними.
 
-    python3 build.py clients/prime-detailing.json            -> sites/prime-detailing/index.html
     python3 build.py clients/detailingrv.json --out index.html
 """
 import argparse
@@ -267,7 +266,7 @@ def derive(data):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("client", help="JSON-файл клієнта, напр. clients/prime-detailing.json")
+    ap.add_argument("client", help="JSON-файл клієнта, напр. clients/detailingrv.json")
     ap.add_argument("--out", help="куди записати сайт (типово sites/<назва-файлу>/index.html)")
     args = ap.parse_args()
 

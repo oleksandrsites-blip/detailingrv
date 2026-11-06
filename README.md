@@ -1,52 +1,12 @@
-# Шаблон сайту для детейлінгу
+# detailingrv — сайт-портфоліо
 
-Один дизайн, різні клієнти. Усе, що змінюється від клієнта до клієнта, лежить в одному JSON-файлі в `clients/`.
+Концепт сайту детейлінг-студії для портфоліо: https://detailingrv.pages.dev/
+Хостинг — Cloudflare Pages (автодеплой з гілки main), заявки з форми — у Telegram.
 
-```
-template.html          дизайн, анімації, скрипти (спільні для всіх)
-clients/<клієнт>.json  назва, контакти, графік, послуги, ціни, фото, відгуки, FAQ
-build.py               збирає сайт: шаблон + дані клієнта
-sites/<клієнт>/        готові сайти
-index.html             концепт detailingrv для портфоліо (те, що зараз на Netlify)
-```
+- Дані сайту: `clients/detailingrv.json`; дизайн: `template.html`.
+- Після правок: `python3 build.py clients/detailingrv.json --out index.html`, потім коміт і push.
+- Форма: `functions/api/estimate.js` → `lib/estimate-core.mjs` → Telegram. Змінні в Cloudflare: `TELEGRAM_BOT_TOKEN` (Secret), `TELEGRAM_CHAT_ID`.
+- Cloudflare: Build command `bash tools/cf-build.sh`, Build output directory `public`.
+- Гілка `demo/zakhar` — демо з фото Захара (окрема прев'ю-адреса Cloudflare).
 
-## Новий клієнт
-
-1. Скопіювати `clients/prime-detailing.json` у `clients/<назва>.json` і замінити дані.
-2. Зібрати:
-
-   ```
-   python3 build.py clients/<назва>.json
-   ```
-
-3. Готовий сайт: `sites/<назва>/index.html`.
-
-Після змін у `template.html` треба перезібрати й портфоліо:
-
-```
-python3 build.py clients/detailingrv.json --out index.html
-```
-
-## Поля, які варто знати
-
-- `accent` — колір «ламп» і підсвіток під бренд клієнта (hex).
-- `hours.days` — робочі дні: 0 = неділя … 6 = субота. Від них залежить статус «відкрито / зачинено».
-- Якщо години різні по днях — `hours.week`: 7 пар `["09:00", "21:00"]` або `null` (вихідний), починаючи з неділі.
-- Фото: id з Unsplash (`photo-…`) отримує адаптивні розміри автоматично. Власні фото клієнта кладіть у `clients/<клієнт>/img/` і вказуйте як `img/назва.jpg`: збирач скопіює папку поруч із сайтом.
-- Необов’язкові поля: `tag`, `gift`, `cta`, `price` і `currency` (типово «грн») у комплексах (без `price` буде «Ціна за запитом»), `footer.note`, `contacts.booking` (посилання на онлайн-запис: тоді на першому екрані замість «Підібрати послуги» буде «Записатись онлайн»; інший підпис — у `contacts.booking_label`, напр. «Записатись у Direct»).
-
-## Заявки в Telegram
-
-Форма «Оцінити авто за фото» відправляє заявку двома шляхами одночасно:
-
-1. у Telegram-бот через функцію `netlify/functions/estimate.mjs` (адреса `/api/estimate`);
-2. у Netlify Forms (резерв, заявки видно в Netlify → Forms).
-
-Успіх показується, якщо заявка дійшла хоча б в одне місце. Фото стискаються в браузері (до 1600 px, JPEG ~0.8, максимум 5).
-
-Щоб бот працював, у Netlify → Project configuration → Environment variables додайте:
-
-- `TELEGRAM_BOT_TOKEN` — токен від @BotFather;
-- `TELEGRAM_CHAT_ID` — id чату, куди слати заявки.
-
-У коді токенів немає й бути не повинно.
+Сайти для реальних клієнтів робимо в окремих репозиторіях (наприклад, `detailing-client`), а не тут.

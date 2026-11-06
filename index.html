@@ -1435,8 +1435,7 @@
       <p class="es-meta fd" style="--d:.3s">Рівне. Щодня з 9:00 до 20:00.</p>
     </div>
 
-    <form class="es-form fd" id="esForm" name="estimate" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data" novalidate style="--d:.1s">
-      <input type="hidden" name="form-name" value="estimate">
+    <form class="es-form fd" id="esForm" name="estimate" method="POST" enctype="multipart/form-data" novalidate style="--d:.1s">
       <input type="hidden" name="site" value="detailingrv">
       <p class="hp"><label>Не заповнюйте це поле <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
       <input type="file" name="photo1" accept="image/*" hidden><input type="file" name="photo2" accept="image/*" hidden><input type="file" name="photo3" accept="image/*" hidden><input type="file" name="photo4" accept="image/*" hidden><input type="file" name="photo5" accept="image/*" hidden>
@@ -2057,9 +2056,7 @@
     try {
       await queue; // дочекатися фото, які ще стискаються
       const files = await fit(photos.map(p => p.file).filter(Boolean));
-      // спершу Telegram-бот; якщо він не відповів — резервна копія в Netlify Forms (працює лише на Netlify)
-      try { await post('/api/estimate', build(files)); }
-      catch (x) { await post('/', build(files)); }
+      await post('/api/estimate', build(files)); // заявка → Telegram (functions/api/estimate.js)
       form.classList.add('sent');
       form.scrollIntoView({ behavior: 'smooth', block: 'center' });
       photos.forEach(p => p.url && URL.revokeObjectURL(p.url)); photos = [];
